@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Delete Property{% endblock %}
+{% block content %}
+<h2>Delete "{{ property.title }}"?</h2>
+<p class="text-danger">This action cannot be undone.</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a href="{% url 'properties:my_properties' %}" class="btn btn-link">Cancel</a>
+</form>
+{% endblock %}

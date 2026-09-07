@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — RentCheck Tanzania{% endblock %}
+{% block content %}
+<h2>{{ title }}</h2>
+<form method="post" enctype="multipart/form-data" class="row g-3">
+    {% csrf_token %}
+    <div class="col-12">
+        <label class="form-label">Title</label>
+        {{ form.title }}
+    </div>
+    <div class="col-12">
+        <label class="form-label">Description</label>
+        {{ form.description }}
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">Property Type</label>
+        {{ form.property_type }}
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">Region</label>
+        {{ form.region }}
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">City</label>
+        {{ form.city }}
+    </div>
+    <div class="col-12">
+        <label class="form-label">Address (optional)</label>
+        {{ form.address }}
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Monthly Rent (TZS)</label>
+        {{ form.price }}
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Bedrooms</label>
+        {{ form.bedrooms }}
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Bathrooms</label>
+        {{ form.bathrooms }}
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Size (sqm)</label>
+        {{ form.size_sqm }}
+    </div>
+    <div class="col-12">
+        <label class="form-label">Amenities</label>
+        <div class="row">
+            {{ form.amenities }}
+        </div>
+    </div>
+    <div class="col-12">
+        <label class="form-label">Upload Images</label>
+        {{ form.images }}
+        <div class="form-text">You can click "Choose Files" more than once — newly picked photos are added to the ones already queued below, they don't replace them.</div>
+        <div id="image-queue-preview" class="d-flex flex-wrap gap-2 mt-2"></div>
+    </div>
+
+    {% if property and property.images.exists %}
+        <div class="col-12">
+            <label class="form-label">Existing Images</label>
+            <div class="d-flex flex-wrap gap-2">
+                {% for image in property.images.all %}
+                    <div class="position-relative">
+                        <img src="{{ image.image.url }}" style="width:100px;height:80px;object-fit:cover;" class="rounded border">
+                        <a href="{% url 'properties:delete_image' image.pk %}" class="btn btn-sm btn-danger position-absolute top-0 end-0" title="Remove">&times;</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-success">Save Property</button>
+        <a href="{% url 'properties:my_properties' %}" class="btn btn-link">Cancel</a>
+    </div>
+</form>
+
+<script>
+(function () {
+    var input = document.getElementById("id_images");
+    if (!input) return;
+    var preview = document.getElementById("image-queue-preview");
+    var queued = [];
+
+    function sameFile(a, b) {
+        return a.name === b.name && a.size === b.size && a.lastModified === b.lastModified;
+    }
+
+    function rebuildInputFiles() {
+        var dt = new DataTransfer();
+        queued.forEach(function (f) { dt.items.add(f); });
+        input.files = dt.files;
+    }
+
+    function renderPreview() {
+        preview.innerHTML = "";
+        queued.forEach(function (file, index) {
+            var url = URL.createObjectURL(file);
+            var wrap = document.createElement("div");
+            wrap.className = "position-relative";
+            wrap.innerHTML =
+                '<img src="' + url + '" style="width:100px;height:80px;object-fit:cover;" class="rounded border">' +
+                '<button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" title="Remove">&times;</button>';
+            wrap.querySelector("button").addEventListener("click", function () {
+                queued.splice(index, 1);
+                rebuildInputFiles();
+                renderPreview();
+            });
+            preview.appendChild(wrap);
+        });
+    }
+
+    input.addEventListener("change", function () {
+        Array.prototype.forEach.call(input.files, function (file) {
+            if (!queued.some(function (f) { return sameFile(f, file); })) {
+                queued.push(file);
+            }
+        });
+        rebuildInputFiles();
+        renderPreview();
+    });
+})();
+</script>
+{% endblock %}

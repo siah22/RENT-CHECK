@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}My Profile — RentCheck Tanzania{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="mb-3">My Profile</h2>
+        <p class="text-muted">Role: <strong>{{ user.get_role_display }}</strong> · Status: <strong>{{ user.get_account_status_display }}</strong></p>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-success">Save Changes</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

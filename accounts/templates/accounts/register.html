@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Register — RentCheck Tanzania{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="mb-3">Create an Account</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+                    {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-success w-100"><i class="bi bi-person-plus-fill"></i> Sign Up</button>
+        </form>
+        <p class="mt-3">Already have an account? <a href="{% url 'accounts:login' %}">Login here</a>.</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}RentCheck Tanzania{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="{% static 'css/rentcheck.css' %}" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top shadow-sm">
+    <div class="container">
+        <a class="brand-lockup" href="{% url 'core:home' %}">
+            <svg class="brand-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 24L24 8L42 24" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M11 20V38C11 39.1 11.9 40 13 40H35C36.1 40 37 39.1 37 38V20" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M18 29L22.5 33.5L31 24" stroke="#D9A441" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="brand-text">
+                <span class="brand-word">RentCheck</span>
+                <span class="brand-sub">TANZANIA</span>
+            </span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMain">
+            {% with vn=request.resolver_match.view_name %}
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link {% if vn == 'properties:browse' %}active{% endif %}" href="{% url 'properties:browse' %}">
+                        <i class="bi bi-compass"></i> Browse Properties
+                    </a>
+                </li>
+                {% if user.is_authenticated %}
+                    {% if user.is_tenant %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if vn == 'engagement:favorite_list' %}active{% endif %}" href="{% url 'engagement:favorite_list' %}">
+                                <i class="bi bi-heart"></i> Favorites
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if user.is_owner_agent %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if vn == 'properties:my_properties' %}active{% endif %}" href="{% url 'properties:my_properties' %}">
+                                <i class="bi bi-buildings"></i> My Properties
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if vn == 'engagement:inquiry_list' or vn == 'engagement:viewing_list' or vn == 'engagement:booking_list' %}active{% endif %}"
+                           href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-collection"></i> Activity
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'engagement:inquiry_list' %}"><i class="bi bi-chat-dots"></i> Inquiries</a></li>
+                            <li><a class="dropdown-item" href="{% url 'engagement:viewing_list' %}"><i class="bi bi-calendar-check"></i> Viewings</a></li>
+                            <li><a class="dropdown-item" href="{% url 'engagement:booking_list' %}"><i class="bi bi-calendar2-check"></i> Bookings</a></li>
+                        </ul>
+                    </li>
+                    {% if user.is_admin_role %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if vn == 'core:dashboard' %}active{% endif %}" href="{% url 'core:dashboard' %}">
+                                <i class="bi bi-speedometer2"></i> Admin Dashboard
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav align-items-lg-center">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link position-relative" href="{% url 'engagement:notification_list' %}" title="Notifications">
+                            <i class="bi bi-bell-fill"></i>
+                            {% if unread_notifications_count %}
+                                <span class="notif-badge">{{ unread_notifications_count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="avatar-circle avatar-circle-sm">{{ user.username|slice:":2"|upper }}</span>
+                            {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}"><i class="bi bi-person"></i> My Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="post" action="{% url 'accounts:logout' %}">
+                                    {% csrf_token %}
+                                    <button class="dropdown-item text-danger" type="submit"><i class="bi bi-box-arrow-right"></i> Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item"><a class="btn btn-outline-light btn-sm me-lg-2" href="{% url 'accounts:login' %}">Login</a></li>
+                    <li class="nav-item"><a class="btn btn-signup btn-sm" href="{% url 'accounts:register' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+            {% endwith %}
+        </div>
+    </div>
+</nav>
+
+<main class="container my-4">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="bg-dark text-light py-4 mt-5">
+    <div class="container text-center small">
+        &copy; {% now "Y" %} RentCheck Tanzania — Centralized rental property discovery platform.
+    </div>
+</footer>
+
+{% if user.is_authenticated %}
+<nav class="mobile-tabbar">
+    <a href="{% url 'core:home' %}" class="{% if request.resolver_match.view_name == 'core:home' %}active{% endif %}">
+        <i class="bi bi-house-door-fill"></i> Home
+    </a>
+    <a href="{% url 'properties:browse' %}" class="{% if request.resolver_match.view_name == 'properties:browse' %}active{% endif %}">
+        <i class="bi bi-search"></i> Search
+    </a>
+    {% if user.is_tenant %}
+        <a href="{% url 'engagement:favorite_list' %}" class="{% if request.resolver_match.view_name == 'engagement:favorite_list' %}active{% endif %}">
+            <i class="bi bi-heart-fill"></i> Favorites
+        </a>
+    {% else %}
+        <a href="{% url 'properties:my_properties' %}" class="{% if request.resolver_match.view_name == 'properties:my_properties' %}active{% endif %}">
+            <i class="bi bi-buildings-fill"></i> Listings
+        </a>
+    {% endif %}
+    <a href="{% url 'accounts:profile' %}" class="{% if request.resolver_match.view_name == 'accounts:profile' %}active{% endif %}">
+        <i class="bi bi-person-circle"></i> Profile
+    </a>
+</nav>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

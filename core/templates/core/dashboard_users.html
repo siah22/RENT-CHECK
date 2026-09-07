@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Manage Users — Admin{% endblock %}
+{% block content %}
+<h2 class="mb-3">Manage Users</h2>
+<table class="table bg-white align-middle">
+    <thead><tr><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for u in users %}
+        <tr>
+            <td>{{ u.username }}</td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.get_role_display }}</td>
+            <td>
+                {% if u.account_status == "ACTIVE" %}<span class="badge bg-success">Active</span>
+                {% else %}<span class="badge bg-danger">Suspended</span>{% endif %}
+            </td>
+            <td>{{ u.created_at|date:"d M Y" }}</td>
+            <td>
+                <form method="post" action="{% url 'core:dashboard_toggle_user_status' u.pk %}">
+                    {% csrf_token %}
+                    <button class="btn btn-sm {% if u.account_status == 'ACTIVE' %}btn-outline-danger{% else %}btn-outline-success{% endif %}" type="submit">
+                        {% if u.account_status == "ACTIVE" %}Suspend{% else %}Reactivate{% endif %}
+                    </button>
+                </form>
+            </td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="6" class="text-muted text-center">No users found.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

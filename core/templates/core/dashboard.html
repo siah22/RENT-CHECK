@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — RentCheck Tanzania{% endblock %}
+{% block content %}
+<h2 class="mb-4">Administrator Dashboard</h2>
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
+        <h6 class="text-muted">Total Users</h6><h3>{{ stats.total_users }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
+        <h6 class="text-muted">Tenants</h6><h3>{{ stats.total_tenants }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
+        <h6 class="text-muted">Owners/Agents</h6><h3>{{ stats.total_owners }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
+        <h6 class="text-muted">Total Properties</h6><h3>{{ stats.total_properties }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
+        <h6 class="text-muted">Verified Properties</h6><h3>{{ stats.verified_properties }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
+        <h6 class="text-muted">Pending Verification</h6><h3>{{ stats.pending_properties }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
+        <h6 class="text-muted">Pending Reports</h6><h3>{{ stats.reported_properties }}</h3></div></div></div>
+    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
+        <h6 class="text-muted">Active Listings</h6><h3>{{ stats.active_listings }}</h3></div></div></div>
+</div>
+
+<div class="d-flex gap-2">
+    <a href="{% url 'core:dashboard_properties' %}" class="btn btn-success">Review Property Listings</a>
+    <a href="{% url 'core:dashboard_reports' %}" class="btn btn-outline-danger">Review Reports</a>
+    <a href="{% url 'core:dashboard_users' %}" class="btn btn-outline-secondary">Manage Users</a>
+    <a href="/admin/" class="btn btn-outline-dark">Django Admin</a>
+</div>
+{% endblock %}

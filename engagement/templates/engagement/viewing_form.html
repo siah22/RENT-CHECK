@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Request a Viewing — {{ property.title }}{% endblock %}
+{% block content %}
+<h2>Request a viewing for "{{ property.title }}"</h2>
+<form method="post" class="row g-3">
+    {% csrf_token %}
+    <div class="col-md-6">
+        <label class="form-label">Preferred Date</label>
+        {{ form.preferred_date }}
+    </div>
+    <div class="col-md-6">
+        <label class="form-label">Preferred Time</label>
+        {{ form.preferred_time }}
+    </div>
+    <div class="col-12">
+        <label class="form-label">Message (optional)</label>
+        {{ form.message }}
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-success">Submit Request</button>
+        <a href="{% url 'properties:detail' property.pk %}" class="btn btn-link">Cancel</a>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Respond to Inquiry{% endblock %}
+{% block content %}
+<h2>Respond to {{ inquiry.tenant.username }}'s inquiry</h2>
+<p class="border p-3 bg-white">{{ inquiry.message }}</p>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        {{ form.response }}
+    </div>
+    <button type="submit" class="btn btn-success">Send Response</button>
+    <a href="{% url 'engagement:inquiry_list' %}" class="btn btn-link">Cancel</a>
+</form>
+{% endblock %}

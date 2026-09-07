@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}My Inquiries — RentCheck Tanzania{% endblock %}
+{% block content %}
+<h2 class="mb-3">My Inquiries</h2>
+
+{% if user.is_owner_agent %}
+<h5>Received</h5>
+<table class="table bg-white">
+    <thead><tr><th>Tenant</th><th>Property</th><th>Message</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+    {% for inquiry in received %}
+        <tr>
+            <td>{{ inquiry.tenant.username }}</td>
+            <td><a href="{% url 'properties:detail' inquiry.property.pk %}">{{ inquiry.property.title }}</a></td>
+            <td>{{ inquiry.message }}</td>
+            <td><span class="badge bg-secondary">{{ inquiry.get_status_display }}</span></td>
+            <td>{% if inquiry.status == "OPEN" %}<a href="{% url 'engagement:respond_inquiry' inquiry.pk %}" class="btn btn-sm btn-outline-success">Respond</a>{% else %}{{ inquiry.response }}{% endif %}</td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="5" class="text-muted text-center">No inquiries received yet.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+<h5>Sent</h5>
+<table class="table bg-white">
+    <thead><tr><th>Property</th><th>Message</th><th>Response</th><th>Status</th></tr></thead>
+    <tbody>
+    {% for inquiry in sent %}
+        <tr>
+            <td><a href="{% url 'properties:detail' inquiry.property.pk %}">{{ inquiry.property.title }}</a></td>
+            <td>{{ inquiry.message }}</td>
+            <td>{{ inquiry.response|default:"—" }}</td>
+            <td><span class="badge bg-secondary">{{ inquiry.get_status_display }}</span></td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="4" class="text-muted text-center">You haven't sent any inquiries yet.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

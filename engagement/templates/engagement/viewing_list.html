@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Viewing Requests — RentCheck Tanzania{% endblock %}
+{% block content %}
+<h2 class="mb-3">Viewing Requests</h2>
+<table class="table bg-white align-middle">
+    <thead>
+        <tr>
+            <th>{% if user.is_owner_agent %}Tenant{% endif %}</th><th>Property</th><th>Date</th><th>Time</th><th>Message</th><th>Status</th>
+            {% if user.is_owner_agent %}<th>Action</th>{% endif %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for viewing in viewings %}
+        <tr>
+            {% if user.is_owner_agent %}<td>{{ viewing.tenant.username }}</td>{% endif %}
+            <td><a href="{% url 'properties:detail' viewing.property.pk %}">{{ viewing.property.title }}</a></td>
+            <td>{{ viewing.preferred_date }}</td>
+            <td>{{ viewing.preferred_time }}</td>
+            <td>{{ viewing.message|default:"—" }}</td>
+            <td>
+                {% if viewing.status == "ACCEPTED" %}<span class="badge bg-success">Accepted</span>
+                {% elif viewing.status == "REJECTED" %}<span class="badge bg-danger">Rejected</span>
+                {% else %}<span class="badge bg-warning text-dark">Pending</span>{% endif %}
+            </td>
+            {% if user.is_owner_agent %}
+            <td class="d-flex gap-1">
+                {% if viewing.status == "PENDING" %}
+                <form method="post" action="{% url 'engagement:update_viewing_status' viewing.pk 'ACCEPTED' %}">
+                    {% csrf_token %}<button class="btn btn-sm btn-success" type="submit">Accept</button>
+                </form>
+                <form method="post" action="{% url 'engagement:update_viewing_status' viewing.pk 'REJECTED' %}">
+                    {% csrf_token %}<button class="btn btn-sm btn-outline-danger" type="submit">Reject</button>
+                </form>
+                {% endif %}
+            </td>
+            {% endif %}
+        </tr>
+    {% empty %}
+        <tr><td colspan="7" class="text-muted text-center">No viewing requests.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

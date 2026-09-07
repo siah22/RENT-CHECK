@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Verify Properties — Admin{% endblock %}
+{% block content %}
+<h2 class="mb-3">Property Listings</h2>
+<div class="mb-3">
+    <a href="?status=PENDING" class="btn btn-sm {% if current_status == 'PENDING' %}btn-warning{% else %}btn-outline-warning{% endif %}">Pending</a>
+    <a href="?status=APPROVED" class="btn btn-sm {% if current_status == 'APPROVED' %}btn-success{% else %}btn-outline-success{% endif %}">Approved</a>
+    <a href="?status=REJECTED" class="btn btn-sm {% if current_status == 'REJECTED' %}btn-danger{% else %}btn-outline-danger{% endif %}">Rejected</a>
+    <a href="?status=" class="btn btn-sm {% if not current_status %}btn-dark{% else %}btn-outline-dark{% endif %}">All</a>
+</div>
+<table class="table bg-white align-middle">
+    <thead><tr><th>Title</th><th>Owner</th><th>Location</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for property in listings %}
+        <tr>
+            <td><a href="{% url 'properties:detail' property.pk %}">{{ property.title }}</a></td>
+            <td>{{ property.owner.username }}</td>
+            <td>{{ property.city }}, {{ property.region }}</td>
+            <td>TZS {{ property.price|floatformat:0 }}</td>
+            <td>
+                {% if property.verification_status == "APPROVED" %}<span class="badge bg-success">Approved</span>
+                {% elif property.verification_status == "REJECTED" %}<span class="badge bg-danger">Rejected</span>
+                {% else %}<span class="badge bg-warning text-dark">Pending</span>{% endif %}
+            </td>
+            <td class="d-flex gap-1">
+                <form method="post" action="{% url 'core:dashboard_property_action' property.pk 'approve' %}">
+                    {% csrf_token %}<button class="btn btn-sm btn-success" type="submit">Approve</button>
+                </form>
+                <form method="post" action="{% url 'core:dashboard_property_action' property.pk 'reject' %}">
+                    {% csrf_token %}<button class="btn btn-sm btn-outline-danger" type="submit">Reject</button>
+                </form>
+            </td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="6" class="text-muted text-center">No properties found.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

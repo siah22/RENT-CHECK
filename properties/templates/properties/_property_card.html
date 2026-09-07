@@ -1,0 +1,39 @@
+{% load static %}
+<div class="card property-card h-100 shadow-sm">
+    <div class="card-img-wrap">
+        {% if property.main_image %}
+            <img src="{{ property.main_image.image.url }}" alt="{{ property.title }}">
+        {% else %}
+            <div class="card-img-placeholder"><i class="bi bi-house-door"></i></div>
+        {% endif %}
+        <div class="ribbon-stack">
+            {% if property.is_verified %}
+                <span class="ribbon-verified"><i class="bi bi-patch-check-fill"></i> Verified</span>
+            {% endif %}
+            {% if property.is_bnb %}
+                <span class="ribbon-bnb"><i class="bi bi-suitcase-lg-fill"></i> Airbnb</span>
+            {% endif %}
+        </div>
+        {% if user.is_authenticated and user.is_tenant %}
+            <form method="post" action="{% url 'engagement:toggle_favorite' property.pk %}">
+                {% csrf_token %}
+                <button class="fav-toggle {% if property.pk in favorite_ids %}is-active{% endif %}" type="submit" title="Toggle favorite">
+                    <i class="bi {% if property.pk in favorite_ids %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                </button>
+            </form>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        <h5 class="card-title mb-1">{{ property.title }}</h5>
+        <p class="location-line mb-2"><i class="bi bi-geo-alt-fill"></i> {{ property.city }}, {{ property.region }}</p>
+        <p class="price-tag mb-2">TZS {{ property.price|floatformat:0 }} {% if property.is_bnb %}/ night{% else %}/ month{% endif %}</p>
+        <div class="spec-row mb-1">
+            <span><i class="bi bi-door-closed-fill"></i>{{ property.bedrooms }} bed</span>
+            <span><i class="bi bi-droplet-fill"></i>{{ property.bathrooms }} bath</span>
+            {% if property.size_sqm %}<span><i class="bi bi-rulers"></i>{{ property.size_sqm }} sqm</span>{% endif %}
+        </div>
+    </div>
+    <div class="card-footer bg-white border-0">
+        <a href="{% url 'properties:detail' property.pk %}" class="btn btn-gold w-100">View Details <i class="bi bi-arrow-right"></i></a>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: rentcheck-tanzania
+    runtime: python
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn PEPE.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: DATABASE_URL
+        sync: false
+      - key: CLOUDINARY_URL
+        sync: false
+      - key: PYTHON_VERSION
+        value: "3.12.7"

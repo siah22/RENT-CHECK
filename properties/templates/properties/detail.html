@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}{{ property.title }} — RentCheck Tanzania{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div id="carousel" class="carousel slide mb-4 shadow-sm" data-bs-ride="carousel">
+            <div class="carousel-inner" style="height:400px; border-radius: 0.65rem; overflow:hidden;">
+                {% for image in property.images.all %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %} h-100">
+                        <img src="{{ image.image.url }}" class="d-block w-100 h-100" style="object-fit:cover;" alt="">
+                    </div>
+                {% empty %}
+                    <div class="d-flex align-items-center justify-content-center h-100 text-muted">
+                        <i class="bi bi-house-door display-4"></i>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if property.images.count > 1 %}
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            {% endif %}
+        </div>
+
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+            <h2 class="mb-0">{{ property.title }}</h2>
+            {% if property.is_verified %}
+                <span class="badge badge-verified"><i class="bi bi-patch-check-fill"></i> Verified</span>
+            {% else %}
+                <span class="badge bg-warning text-dark">Pending Verification</span>
+            {% endif %}
+        </div>
+        <p class="text-muted mt-1"><i class="bi bi-geo-alt-fill"></i> {{ property.address }}{% if property.address %}, {% endif %}{{ property.city }}, {{ property.region }}</p>
+        <h4 class="price-tag fw-bold">TZS {{ property.price|floatformat:0 }} {% if property.is_bnb %}/ night{% else %}/ month{% endif %}</h4>
+
+        <ul class="list-inline">
+            <li class="list-inline-item badge bg-light text-dark border"><i class="bi bi-house-door"></i> {{ property.get_property_type_display }}</li>
+            <li class="list-inline-item badge bg-light text-dark border"><i class="bi bi-door-closed-fill"></i> {{ property.bedrooms }} Bedrooms</li>
+            <li class="list-inline-item badge bg-light text-dark border"><i class="bi bi-droplet-fill"></i> {{ property.bathrooms }} Bathrooms</li>
+            {% if property.size_sqm %}<li class="list-inline-item badge bg-light text-dark border"><i class="bi bi-rulers"></i> {{ property.size_sqm }} sqm</li>{% endif %}
+            {% if property.average_rating %}<li class="list-inline-item badge bg-light text-dark border"><i class="bi bi-star-fill text-warning"></i> {{ property.average_rating }}</li>{% endif %}
+        </ul>
+
+        <h5 class="mt-3">Description</h5>
+        <p>{{ property.description|linebreaks }}</p>
+
+        <h5>Amenities</h5>
+        <div class="mb-3 d-flex flex-wrap gap-2">
+            {% for amenity in property.amenities.all %}
+                <span class="amenity-chip"><i class="bi bi-check-circle-fill"></i> {{ amenity.name }}</span>
+            {% empty %}
+                <span class="text-muted">No amenities listed.</span>
+            {% endfor %}
+        </div>
+
+        <h5>Location</h5>
+        <div class="map-placeholder mb-4">
+            <i class="bi bi-geo-alt-fill"></i>
+            <div class="flex-grow-1">
+                <div class="fw-semibold">{{ property.city }}, {{ property.region }}</div>
+                <small class="text-muted">{{ property.address|default:"Exact address shared after inquiry" }}</small>
+            </div>
+            <a class="btn btn-sm btn-outline-success"
+               href="https://www.google.com/maps/search/?api=1&query={{ property.address|default:property.city|urlencode }}+{{ property.city|urlencode }}+{{ property.region|urlencode }}"
+               target="_blank" rel="noopener">View on Map <i class="bi bi-box-arrow-up-right"></i></a>
+        </div>
+
+        <hr>
+        <h5>Reviews</h5>
+        {% for review in property.reviews.all %}
+            <div class="border-bottom py-2">
+                <strong>{{ review.user.username }}</strong> — {{ review.rating }}★
+                <p class="mb-0">{{ review.comment }}</p>
+                <small class="text-muted">{{ review.date|date:"d M Y" }}</small>
+            </div>
+        {% empty %}
+            <p class="text-muted">No reviews yet.</p>
+        {% endfor %}
+        {% if user.is_authenticated %}
+            <a class="btn btn-sm btn-outline-secondary mt-2" href="{% url 'engagement:add_review' property.pk %}">Write a Review</a>
+        {% endif %}
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body d-flex align-items-center gap-3">
+                <span class="avatar-circle">{{ property.owner.username|slice:":2"|upper }}</span>
+                <div>
+                    <h6 class="card-title mb-0">{{ property.owner.get_full_name|default:property.owner.username }}</h6>
+                    <small class="text-muted"><i class="bi bi-telephone-fill"></i> {{ property.owner.phone_number|default:"Not provided" }}</small>
+                </div>
+            </div>
+        </div>
+
+        {% if is_owner %}
+            <div class="d-grid gap-2">
+                <a href="{% url 'properties:edit' property.pk %}" class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Edit Listing</a>
+                <a href="{% url 'properties:delete' property.pk %}" class="btn btn-outline-danger"><i class="bi bi-trash3"></i> Delete Listing</a>
+            </div>
+        {% elif user.is_authenticated %}
+            <div class="d-grid gap-2 mb-3">
+                <form method="post" action="{% url 'engagement:toggle_favorite' property.pk %}">
+                    {% csrf_token %}
+                    <button class="btn {% if is_favorited %}btn-danger{% else %}btn-outline-danger{% endif %} w-100" type="submit">
+                        <i class="bi {% if is_favorited %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                        {% if is_favorited %}Remove Favorite{% else %}Save to Favorites{% endif %}
+                    </button>
+                </form>
+                <a class="btn btn-success" href="{% url 'engagement:send_inquiry' property.pk %}"><i class="bi bi-chat-dots-fill"></i> Contact Owner / Agent</a>
+                {% if property.is_bnb %}
+                    <a class="btn btn-gold" href="{% url 'engagement:request_booking' property.pk %}"><i class="bi bi-calendar2-check"></i> Book Now</a>
+                {% else %}
+                    <a class="btn btn-outline-success" href="{% url 'engagement:request_viewing' property.pk %}"><i class="bi bi-calendar-check"></i> Request a Viewing</a>
+                {% endif %}
+                <a class="btn btn-outline-secondary" href="{% url 'engagement:report_property' property.pk %}"><i class="bi bi-flag-fill"></i> Report this Listing</a>
+            </div>
+        {% else %}
+            <p><a href="{% url 'accounts:login' %}?next={{ request.path }}">Log in</a> to contact the owner, save favorites, or {% if property.is_bnb %}book this stay{% else %}request a viewing{% endif %}.</p>
+        {% endif %}
+
+        <h6 class="mt-3">Share this listing</h6>
+        <div class="share-row">
+            <a href="https://wa.me/?text={{ share_url|urlencode }}" target="_blank" rel="noopener" title="Share on WhatsApp"><i class="bi bi-whatsapp"></i></a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url|urlencode }}" target="_blank" rel="noopener" title="Share on Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" onclick="navigator.clipboard.writeText('{{ share_url }}'); this.querySelector('i').className='bi bi-check2'; return false;" title="Copy link"><i class="bi bi-link-45deg"></i></a>
+        </div>
+    </div>
+</div>
+{% endblock %}

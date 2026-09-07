@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Reports — Admin{% endblock %}
+{% block content %}
+<h2 class="mb-3">Reported Properties</h2>
+<div class="mb-3">
+    <a href="?status=PENDING" class="btn btn-sm {% if current_status == 'PENDING' %}btn-warning{% else %}btn-outline-warning{% endif %}">Pending</a>
+    <a href="?status=REVIEWED" class="btn btn-sm {% if current_status == 'REVIEWED' %}btn-info{% else %}btn-outline-info{% endif %}">Reviewed</a>
+    <a href="?status=ACTIONED" class="btn btn-sm {% if current_status == 'ACTIONED' %}btn-danger{% else %}btn-outline-danger{% endif %}">Actioned</a>
+    <a href="?status=DISMISSED" class="btn btn-sm {% if current_status == 'DISMISSED' %}btn-secondary{% else %}btn-outline-secondary{% endif %}">Dismissed</a>
+    <a href="?status=" class="btn btn-sm {% if not current_status %}btn-dark{% else %}btn-outline-dark{% endif %}">All</a>
+</div>
+<table class="table bg-white align-middle">
+    <thead><tr><th>Property</th><th>Reporter</th><th>Reason</th><th>Description</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for report in reports %}
+        <tr>
+            <td><a href="{% url 'properties:detail' report.property.pk %}">{{ report.property.title }}</a></td>
+            <td>{{ report.reporter.username }}</td>
+            <td>{{ report.get_reason_display }}</td>
+            <td>{{ report.description|default:"—" }}</td>
+            <td><span class="badge bg-secondary">{{ report.get_status_display }}</span></td>
+            <td class="d-flex gap-1">
+                <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'REVIEWED' %}">
+                    {% csrf_token %}<button class="btn btn-sm btn-outline-info" type="submit">Reviewed</button>
+                </form>
+                <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'ACTIONED' %}">
+                    {% csrf_token %}<button class="btn btn-sm btn-danger" type="submit">Action</button>
+                </form>
+                <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'DISMISSED' %}">
+                    {% csrf_token %}<button class="btn btn-sm btn-outline-secondary" type="submit">Dismiss</button>
+                </form>
+            </td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="6" class="text-muted text-center">No reports found.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

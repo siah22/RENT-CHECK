@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Notifications — RentCheck Tanzania{% endblock %}
+{% block content %}
+<h2 class="mb-3">Notifications</h2>
+<div class="list-group">
+    {% for notification in notifications %}
+        <a href="{{ notification.link|default:'#' }}" class="list-group-item list-group-item-action {% if not notification.is_read %}fw-bold{% endif %}">
+            {{ notification.message }}
+            <span class="text-muted small float-end">{{ notification.created_at|timesince }} ago</span>
+        </a>
+    {% empty %}
+        <p class="text-muted">No notifications yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}
