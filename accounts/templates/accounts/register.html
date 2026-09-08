@@ -1,22 +1,51 @@
 {% extends "base.html" %}
 {% block title %}Register — RentCheck Tanzania{% endblock %}
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <h2 class="mb-3">Create an Account</h2>
-        <form method="post">
-            {% csrf_token %}
-            {% for field in form %}
-                <div class="mb-3">
-                    <label class="form-label">{{ field.label }}</label>
-                    {{ field }}
-                    {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
-                    {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+<div class="row justify-content-center my-4">
+    <div class="col-md-7 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <div class="avatar-circle mx-auto mb-2" style="width: 50px; height: 50px; font-size: 1.25rem;">
+                        <i class="bi bi-person-plus-fill"></i>
+                    </div>
+                    <h3 class="fw-bold mb-1">Create an Account</h3>
+                    <p class="text-muted small">Join RentCheck Tanzania to discover or list properties</p>
                 </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-success w-100"><i class="bi bi-person-plus-fill"></i> Sign Up</button>
-        </form>
-        <p class="mt-3">Already have an account? <a href="{% url 'accounts:login' %}">Login here</a>.</p>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {% if "password" in field.name %}
+                                <div class="input-group">
+                                    {{ field }}
+                                    <button class="btn btn-outline-secondary toggle-password-btn" type="button" data-target="{{ field.id_for_label }}" aria-label="Toggle password visibility" title="Show/Hide password" tabindex="-1">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            {% else %}
+                                {{ field }}
+                            {% endif %}
+                            {% if field.help_text %}
+                                <div class="form-text small text-muted">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-success w-100 py-2 fw-semibold mt-2">
+                        <i class="bi bi-person-plus-fill me-1"></i> Complete Registration
+                    </button>
+                </form>
+                <div class="text-center mt-3 pt-3 border-top small">
+                    <span class="text-muted">Already have an account?</span>
+                    <a href="{% url 'accounts:login' %}" class="fw-semibold text-decoration-none ms-1">Login here</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
+

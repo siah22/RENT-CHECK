@@ -4,11 +4,21 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import redirect, render
 
+from django.urls import reverse
+
 from .forms import ProfileForm, RegistrationForm
 
 
 class RentCheckLoginView(LoginView):
     template_name = "accounts/login.html"
+
+    def get_success_url(self):
+        redirect_to = self.get_redirect_field_value()
+        if redirect_to:
+            return redirect_to
+        if self.request.user.is_authenticated and self.request.user.is_admin_role:
+            return reverse("core:dashboard")
+        return super().get_success_url()
 
 
 class RentCheckLogoutView(LogoutView):

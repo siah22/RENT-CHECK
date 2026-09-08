@@ -1,21 +1,69 @@
 {% extends "base.html" %}
 {% block title %}My Profile — RentCheck Tanzania{% endblock %}
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <h2 class="mb-3">My Profile</h2>
-        <p class="text-muted">Role: <strong>{{ user.get_role_display }}</strong> · Status: <strong>{{ user.get_account_status_display }}</strong></p>
-        <form method="post">
-            {% csrf_token %}
-            {% for field in form %}
-                <div class="mb-3">
-                    <label class="form-label">{{ field.label }}</label>
-                    {{ field }}
-                    {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+<div class="row justify-content-center my-4">
+    <div class="col-md-7 col-lg-6">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
+                    <div class="avatar-circle {% if user.is_admin_role %}bg-warning text-dark{% endif %}" style="width: 58px; height: 58px; font-size: 1.4rem;">
+                        {% if user.is_admin_role %}
+                            <i class="bi bi-shield-shaded"></i>
+                        {% else %}
+                            {{ user.username|slice:":2"|upper }}
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h4 class="fw-bold mb-1">{{ user.get_full_name|default:user.username }}</h4>
+                        <div class="d-flex flex-wrap gap-2 align-items-center">
+                            {% if user.is_admin_role %}
+                                <span class="badge bg-warning text-dark"><i class="bi bi-shield-check me-1"></i>Administrator</span>
+                            {% elif user.is_owner_agent %}
+                                <span class="badge bg-info text-dark"><i class="bi bi-building me-1"></i>Owner / Agent</span>
+                            {% else %}
+                                <span class="badge bg-primary"><i class="bi bi-person me-1"></i>Tenant</span>
+                            {% endif %}
+                            {% if user.account_status == "ACTIVE" %}
+                                <span class="badge bg-success-subtle text-success border border-success-subtle">Active Account</span>
+                            {% else %}
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Suspended</span>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
-            {% endfor %}
-            <button type="submit" class="btn btn-success">Save Changes</button>
-        </form>
+
+                {% if user.is_admin_role %}
+                    <div class="alert alert-warning d-flex justify-content-between align-items-center py-2 px-3 mb-4">
+                        <span class="small"><i class="bi bi-shield-lock-fill me-1"></i> You have administrative privileges.</span>
+                        <a href="{% url 'core:dashboard' %}" class="btn btn-sm btn-dark py-1">Admin Dashboard</a>
+                    </div>
+                {% endif %}
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-success px-4 py-2 fw-semibold">
+                            <i class="bi bi-check-lg me-1"></i> Save Changes
+                        </button>
+                        {% if user.is_admin_role %}
+                            <a href="{% url 'core:dashboard' %}" class="btn btn-outline-secondary px-3 py-2">
+                                Back to Dashboard
+                            </a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
+

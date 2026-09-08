@@ -1,30 +1,454 @@
 {% extends "base.html" %}
-{% block title %}Admin Dashboard — RentCheck Tanzania{% endblock %}
+{% block title %}Admin Control Center — RentCheck Tanzania{% endblock %}
 {% block content %}
-<h2 class="mb-4">Administrator Dashboard</h2>
-<div class="row g-3 mb-4">
-    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
-        <h6 class="text-muted">Total Users</h6><h3>{{ stats.total_users }}</h3></div></div></div>
-    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
-        <h6 class="text-muted">Tenants</h6><h3>{{ stats.total_tenants }}</h3></div></div></div>
-    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
-        <h6 class="text-muted">Owners/Agents</h6><h3>{{ stats.total_owners }}</h3></div></div></div>
-    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
-        <h6 class="text-muted">Total Properties</h6><h3>{{ stats.total_properties }}</h3></div></div></div>
-    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
-        <h6 class="text-muted">Verified Properties</h6><h3>{{ stats.verified_properties }}</h3></div></div></div>
-    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
-        <h6 class="text-muted">Pending Verification</h6><h3>{{ stats.pending_properties }}</h3></div></div></div>
-    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
-        <h6 class="text-muted">Pending Reports</h6><h3>{{ stats.reported_properties }}</h3></div></div></div>
-    <div class="col-md-3"><div class="card stat-card shadow-sm"><div class="card-body">
-        <h6 class="text-muted">Active Listings</h6><h3>{{ stats.active_listings }}</h3></div></div></div>
+
+<!-- Executive Header Banner -->
+<div class="admin-hero-card card border-0 shadow-sm text-white rounded-3 mb-4 p-4">
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+        <div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <span class="badge bg-warning text-dark fw-bold px-2 py-1"><i class="bi bi-shield-check me-1"></i>Administrator Control Center</span>
+                <span class="badge bg-success-subtle text-success border border-success-subtle"><i class="bi bi-circle-fill me-1 small"></i>Live System</span>
+            </div>
+            <h2 class="fw-bold mb-1 text-white">Hello, {{ request.user.first_name|default:request.user.username }}</h2>
+            <p class="mb-0 text-white-50 small">
+                Manage Tanzania's verified rental listings, user accounts, and platform integrity from one centralized console.
+            </p>
+        </div>
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+            <a href="{% url 'core:dashboard_properties' %}?status=PENDING" class="btn btn-warning btn-sm fw-semibold shadow-sm">
+                <i class="bi bi-patch-check me-1"></i> Verify Listings
+                {% if stats.pending_properties %}
+                    <span class="badge bg-dark text-warning ms-1">{{ stats.pending_properties }}</span>
+                {% endif %}
+            </a>
+            <a href="{% url 'core:dashboard_reports' %}?status=PENDING" class="btn btn-danger btn-sm fw-semibold shadow-sm">
+                <i class="bi bi-flag me-1"></i> Reports
+                {% if stats.pending_reports %}
+                    <span class="badge bg-white text-danger ms-1">{{ stats.pending_reports }}</span>
+                {% endif %}
+            </a>
+            <a href="{% url 'core:dashboard_users' %}" class="btn btn-light btn-sm fw-semibold shadow-sm">
+                <i class="bi bi-people me-1"></i> Users
+            </a>
+            <a href="/admin/" target="_blank" class="btn btn-outline-light btn-sm fw-semibold">
+                <i class="bi bi-shield-lock me-1"></i> Django Admin <i class="bi bi-box-arrow-up-right small"></i>
+            </a>
+            <a href="{% url 'core:home' %}?preview=1" class="btn btn-outline-light btn-sm fw-semibold">
+                <i class="bi bi-globe me-1"></i> Preview Site
+            </a>
+        </div>
+    </div>
 </div>
 
-<div class="d-flex gap-2">
-    <a href="{% url 'core:dashboard_properties' %}" class="btn btn-success">Review Property Listings</a>
-    <a href="{% url 'core:dashboard_reports' %}" class="btn btn-outline-danger">Review Reports</a>
-    <a href="{% url 'core:dashboard_users' %}" class="btn btn-outline-secondary">Manage Users</a>
-    <a href="/admin/" class="btn btn-outline-dark">Django Admin</a>
+<!-- Primary Metric KPI Cards -->
+<div class="row g-3 mb-4">
+    <!-- Pending Verifications -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card-modern border-0 shadow-sm rounded-3 h-100 p-3 {% if stats.pending_properties %}stat-card-attention{% endif %}">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <span class="text-uppercase fw-semibold small text-muted">Awaiting Verification</span>
+                    <h2 class="fw-bold mt-2 mb-1 {% if stats.pending_properties %}text-warning-emphasis{% else %}text-dark{% endif %}">
+                        {{ stats.pending_properties }}
+                    </h2>
+                    <span class="small {% if stats.pending_properties %}text-warning-emphasis fw-medium{% else %}text-muted{% endif %}">
+                        {% if stats.pending_properties %}
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i>Requires admin review
+                        {% else %}
+                            <i class="bi bi-check-circle-fill text-success me-1"></i>All listings up to date
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="stat-icon-bubble bg-warning-subtle text-warning">
+                    <i class="bi bi-hourglass-split"></i>
+                </div>
+            </div>
+            <div class="mt-3 pt-2 border-top">
+                <a href="{% url 'core:dashboard_properties' %}?status=PENDING" class="small text-decoration-none fw-semibold text-primary">
+                    Review listings <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flagged Reports -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card-modern border-0 shadow-sm rounded-3 h-100 p-3 {% if stats.pending_reports %}stat-card-danger{% endif %}">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <span class="text-uppercase fw-semibold small text-muted">Pending Reports</span>
+                    <h2 class="fw-bold mt-2 mb-1 {% if stats.pending_reports %}text-danger{% else %}text-dark{% endif %}">
+                        {{ stats.pending_reports }}
+                    </h2>
+                    <span class="small {% if stats.pending_reports %}text-danger fw-medium{% else %}text-muted{% endif %}">
+                        {% if stats.pending_reports %}
+                            <i class="bi bi-shield-exclamation me-1"></i>Unresolved user flags
+                        {% else %}
+                            <i class="bi bi-check-circle-fill text-success me-1"></i>Zero unresolved flags
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="stat-icon-bubble bg-danger-subtle text-danger">
+                    <i class="bi bi-shield-exclamation"></i>
+                </div>
+            </div>
+            <div class="mt-3 pt-2 border-top">
+                <a href="{% url 'core:dashboard_reports' %}?status=PENDING" class="small text-decoration-none fw-semibold text-danger">
+                    Review reports <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Verified & Active Listings -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card-modern border-0 shadow-sm rounded-3 h-100 p-3">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <span class="text-uppercase fw-semibold small text-muted">Verified Listings</span>
+                    <h2 class="fw-bold mt-2 mb-1 text-success">{{ stats.verified_properties }}</h2>
+                    <span class="small text-muted">
+                        <i class="bi bi-check2-all text-success me-1"></i>{{ stats.active_listings }} active for rent
+                    </span>
+                </div>
+                <div class="stat-icon-bubble bg-success-subtle text-success">
+                    <i class="bi bi-patch-check-fill"></i>
+                </div>
+            </div>
+            <div class="mt-3 pt-2 border-top">
+                <a href="{% url 'core:dashboard_properties' %}?status=APPROVED" class="small text-decoration-none fw-semibold text-success">
+                    View verified properties <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Platform Users -->
+    <div class="col-sm-6 col-xl-3">
+        <div class="card stat-card-modern border-0 shadow-sm rounded-3 h-100 p-3">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <span class="text-uppercase fw-semibold small text-muted">Total Accounts</span>
+                    <h2 class="fw-bold mt-2 mb-1 text-dark">{{ stats.total_users }}</h2>
+                    <span class="small text-muted">
+                        {{ stats.total_tenants }} Tenants &middot; {{ stats.total_owners }} Landlords
+                    </span>
+                </div>
+                <div class="stat-icon-bubble bg-info-subtle text-info">
+                    <i class="bi bi-people-fill"></i>
+                </div>
+            </div>
+            <div class="mt-3 pt-2 border-top">
+                <a href="{% url 'core:dashboard_users' %}" class="small text-decoration-none fw-semibold text-primary">
+                    Manage users <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Secondary Metric Bar -->
+<div class="card border-0 shadow-sm rounded-3 mb-4 bg-white">
+    <div class="card-body py-3">
+        <div class="row text-center divide-cols gy-2">
+            <div class="col-6 col-md-3">
+                <div class="small text-muted">Total Properties</div>
+                <div class="fs-5 fw-bold text-dark">{{ stats.total_properties }}</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="small text-muted">Available Now</div>
+                <div class="fs-5 fw-bold text-success">{{ stats.active_listings }}</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="small text-muted">Rejected Listings</div>
+                <div class="fs-5 fw-bold text-secondary">{{ stats.rejected_properties }}</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="small text-muted">System Administrators</div>
+                <div class="fs-5 fw-bold text-warning-emphasis">{{ stats.total_admins }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Section 1: Listings Awaiting Verification -->
+<div class="card border-0 shadow-sm rounded-3 mb-4">
+    <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-warning text-dark p-2 rounded-circle"><i class="bi bi-building-check"></i></span>
+            <div>
+                <h5 class="fw-bold mb-0">Listings Awaiting Verification</h5>
+                <small class="text-muted">Review submitted properties before they go live on RentCheck</small>
+            </div>
+        </div>
+        <a href="{% url 'core:dashboard_properties' %}?status=PENDING" class="btn btn-outline-success btn-sm fw-semibold">
+            View All Pending ({{ stats.pending_properties }})
+        </a>
+    </div>
+    <div class="card-body p-0">
+        {% if recent_pending %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small text-uppercase text-muted">
+                        <tr>
+                            <th style="width: 70px;">Photo</th>
+                            <th>Property</th>
+                            <th>Landlord / Agent</th>
+                            <th>Location</th>
+                            <th>Rent / Month</th>
+                            <th>Submitted</th>
+                            <th class="text-end pe-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for property in recent_pending %}
+                            <tr>
+                                <td>
+                                    {% if property.main_image %}
+                                        <img src="{{ property.main_image.image.url }}" alt="{{ property.title }}" class="rounded shadow-sm" style="width: 54px; height: 40px; object-fit: cover;">
+                                    {% else %}
+                                        <div class="bg-light rounded d-flex align-items-center justify-content-center text-muted" style="width: 54px; height: 40px;">
+                                            <i class="bi bi-image"></i>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="fw-bold">
+                                        <a href="{% url 'properties:detail' property.pk %}" target="_blank" class="text-dark text-decoration-none hover-primary">
+                                            {{ property.title }} <i class="bi bi-box-arrow-up-right small text-muted"></i>
+                                        </a>
+                                    </div>
+                                    <span class="badge bg-light text-secondary border small">{{ property.get_property_type_display }}</span>
+                                </td>
+                                <td>
+                                    <div class="fw-medium text-dark">{{ property.owner.get_full_name|default:property.owner.username }}</div>
+                                    <small class="text-muted">{{ property.owner.phone_number|default:property.owner.email }}</small>
+                                </td>
+                                <td>
+                                    <div class="small"><i class="bi bi-geo-alt-fill text-danger me-1"></i>{{ property.city }}, {{ property.region }}</div>
+                                </td>
+                                <td>
+                                    <div class="fw-bold text-success">TZS {{ property.price|floatformat:0 }}</div>
+                                </td>
+                                <td>
+                                    <small class="text-muted">{{ property.date_listed|date:"d M Y" }}</small>
+                                </td>
+                                <td class="text-end pe-3">
+                                    <div class="d-inline-flex gap-1">
+                                        <form method="post" action="{% url 'core:dashboard_property_action' property.pk 'approve' %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="next" value="{% url 'core:dashboard' %}">
+                                            <button class="btn btn-sm btn-success fw-semibold" type="submit" title="Approve and publish listing">
+                                                <i class="bi bi-check-lg me-1"></i>Approve
+                                            </button>
+                                        </form>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#rejectModal{{ property.pk }}" title="Reject listing">
+                                            <i class="bi bi-x-lg me-1"></i>Reject
+                                        </button>
+                                    </div>
+
+                                    <!-- Rejection Modal -->
+                                    <div class="modal fade text-start" id="rejectModal{{ property.pk }}" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <form method="post" action="{% url 'core:dashboard_property_action' property.pk 'reject' %}">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="next" value="{% url 'core:dashboard' %}">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title fw-bold">Reject Listing: {{ property.title }}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p class="small text-muted mb-2">
+                                                            Please provide a clear reason for rejecting this listing. The landlord will be notified with this feedback.
+                                                        </p>
+                                                        <label class="form-label fw-semibold">Rejection Reason</label>
+                                                        <textarea name="reason" class="form-control" rows="3" placeholder="E.g. Inaccurate location, unclear property photos, or mismatched pricing." required></textarea>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="btn btn-danger btn-sm fw-semibold">Confirm Rejection</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <div class="avatar-circle mx-auto bg-success-subtle text-success mb-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                    <i class="bi bi-check2-circle"></i>
+                </div>
+                <h5 class="fw-bold mb-1">All Listings are Verified</h5>
+                <p class="text-muted small mb-3">There are currently no new property listings awaiting verification.</p>
+                <a href="{% url 'core:dashboard_properties' %}?status=" class="btn btn-outline-success btn-sm">
+                    Browse All Listings
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <!-- Section 2: Flagged Content & Reports -->
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-danger text-white p-2 rounded-circle"><i class="bi bi-flag"></i></span>
+                    <div>
+                        <h5 class="fw-bold mb-0">Flagged Listings & Reports</h5>
+                        <small class="text-muted">User complaints and potential violations</small>
+                    </div>
+                </div>
+                <a href="{% url 'core:dashboard_reports' %}" class="btn btn-outline-danger btn-sm fw-semibold">
+                    All Reports ({{ stats.total_reports }})
+                </a>
+            </div>
+            <div class="card-body p-0">
+                {% if recent_reports %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light small text-uppercase text-muted">
+                                <tr>
+                                    <th>Property</th>
+                                    <th>Reason</th>
+                                    <th>Reporter</th>
+                                    <th>Date</th>
+                                    <th class="text-end pe-3">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for report in recent_reports %}
+                                    <tr>
+                                        <td>
+                                            <a href="{% url 'properties:detail' report.property.pk %}" target="_blank" class="fw-semibold text-dark text-decoration-none">
+                                                {{ report.property.title|truncatechars:25 }}
+                                            </a>
+                                            {% if report.description %}
+                                                <div class="small text-muted text-truncate" style="max-width: 200px;" title="{{ report.description }}">
+                                                    "{{ report.description }}"
+                                                </div>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle small">
+                                                {{ report.get_reason_display }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">{{ report.reporter.username }}</small>
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">{{ report.date_reported|date:"d M" }}</small>
+                                        </td>
+                                        <td class="text-end pe-3">
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    Action
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                    <li>
+                                                        <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'REVIEWED' %}">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="next" value="{% url 'core:dashboard' %}">
+                                                            <button class="dropdown-item small" type="submit"><i class="bi bi-eye me-2 text-info"></i>Mark Reviewed</button>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'ACTIONED' %}">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="next" value="{% url 'core:dashboard' %}">
+                                                            <button class="dropdown-item small text-danger" type="submit"><i class="bi bi-shield-x me-2"></i>Take Action</button>
+                                                        </form>
+                                                    </li>
+                                                    <li>
+                                                        <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'DISMISSED' %}">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="next" value="{% url 'core:dashboard' %}">
+                                                            <button class="dropdown-item small text-muted" type="submit"><i class="bi bi-check me-2"></i>Dismiss Report</button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <div class="avatar-circle mx-auto bg-success-subtle text-success mb-3" style="width: 50px; height: 50px;">
+                            <i class="bi bi-shield-check fs-4"></i>
+                        </div>
+                        <h6 class="fw-bold mb-1">No Pending Reports</h6>
+                        <p class="text-muted small mb-0">Platform listings are currently in good standing.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3: Recent Registered Users -->
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-primary text-white p-2 rounded-circle"><i class="bi bi-people"></i></span>
+                    <div>
+                        <h5 class="fw-bold mb-0">Recent Users</h5>
+                        <small class="text-muted">New registrations & roles</small>
+                    </div>
+                </div>
+                <a href="{% url 'core:dashboard_users' %}" class="btn btn-outline-secondary btn-sm fw-semibold">
+                    Manage ({{ stats.total_users }})
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    {% for u in recent_users %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="avatar-circle avatar-circle-sm {% if u.is_admin_role %}bg-warning text-dark{% else %}bg-light text-success{% endif %}">
+                                    {% if u.is_admin_role %}
+                                        <i class="bi bi-shield-fill small"></i>
+                                    {% else %}
+                                        {{ u.username|slice:":2"|upper }}
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <div class="fw-semibold text-dark small">{{ u.username }}</div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">{{ u.email|default:"No email" }}</div>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <div>
+                                    {% if u.is_admin_role %}
+                                        <span class="badge bg-warning text-dark small">Admin</span>
+                                    {% elif u.is_owner_agent %}
+                                        <span class="badge bg-info-subtle text-info border border-info-subtle small">Landlord</span>
+                                    {% else %}
+                                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle small">Tenant</span>
+                                    {% endif %}
+                                </div>
+                                <div class="text-muted" style="font-size: 0.72rem;">{{ u.date_joined|date:"d M Y" }}</div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="text-center py-4 text-muted small">No users found.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
+

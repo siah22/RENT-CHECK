@@ -1,39 +1,148 @@
 {% extends "base.html" %}
-{% block title %}Reports — Admin{% endblock %}
+{% block title %}Flagged Reports — Admin{% endblock %}
 {% block content %}
-<h2 class="mb-3">Reported Properties</h2>
-<div class="mb-3">
-    <a href="?status=PENDING" class="btn btn-sm {% if current_status == 'PENDING' %}btn-warning{% else %}btn-outline-warning{% endif %}">Pending</a>
-    <a href="?status=REVIEWED" class="btn btn-sm {% if current_status == 'REVIEWED' %}btn-info{% else %}btn-outline-info{% endif %}">Reviewed</a>
-    <a href="?status=ACTIONED" class="btn btn-sm {% if current_status == 'ACTIONED' %}btn-danger{% else %}btn-outline-danger{% endif %}">Actioned</a>
-    <a href="?status=DISMISSED" class="btn btn-sm {% if current_status == 'DISMISSED' %}btn-secondary{% else %}btn-outline-secondary{% endif %}">Dismissed</a>
-    <a href="?status=" class="btn btn-sm {% if not current_status %}btn-dark{% else %}btn-outline-dark{% endif %}">All</a>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-1 small">
+                <li class="breadcrumb-item"><a href="{% url 'core:dashboard' %}" class="text-decoration-none">Dashboard</a></li>
+                <li class="breadcrumb-item active">Reports</li>
+            </ol>
+        </nav>
+        <h3 class="fw-bold mb-0">Platform Reports & Flagged Listings</h3>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{% url 'core:dashboard' %}" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+        </a>
+        <a href="/admin/engagement/report/" target="_blank" class="btn btn-outline-dark btn-sm">
+            <i class="bi bi-database me-1"></i> Django Admin
+        </a>
+    </div>
 </div>
-<table class="table bg-white align-middle">
-    <thead><tr><th>Property</th><th>Reporter</th><th>Reason</th><th>Description</th><th>Status</th><th>Actions</th></tr></thead>
-    <tbody>
-    {% for report in reports %}
-        <tr>
-            <td><a href="{% url 'properties:detail' report.property.pk %}">{{ report.property.title }}</a></td>
-            <td>{{ report.reporter.username }}</td>
-            <td>{{ report.get_reason_display }}</td>
-            <td>{{ report.description|default:"—" }}</td>
-            <td><span class="badge bg-secondary">{{ report.get_status_display }}</span></td>
-            <td class="d-flex gap-1">
-                <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'REVIEWED' %}">
-                    {% csrf_token %}<button class="btn btn-sm btn-outline-info" type="submit">Reviewed</button>
-                </form>
-                <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'ACTIONED' %}">
-                    {% csrf_token %}<button class="btn btn-sm btn-danger" type="submit">Action</button>
-                </form>
-                <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'DISMISSED' %}">
-                    {% csrf_token %}<button class="btn btn-sm btn-outline-secondary" type="submit">Dismiss</button>
-                </form>
-            </td>
-        </tr>
-    {% empty %}
-        <tr><td colspan="6" class="text-muted text-center">No reports found.</td></tr>
-    {% endfor %}
-    </tbody>
-</table>
+
+<!-- Filter Tabs -->
+<div class="card border-0 shadow-sm rounded-3 mb-4">
+    <div class="card-body p-2 d-flex flex-wrap gap-2">
+        <a href="?status=PENDING" class="btn btn-sm {% if current_status == 'PENDING' %}btn-danger text-white fw-bold{% else %}btn-outline-secondary{% endif %}">
+            <i class="bi bi-shield-exclamation me-1"></i>Pending Review
+            <span class="badge {% if current_status == 'PENDING' %}bg-white text-danger{% else %}bg-secondary{% endif %} ms-1">{{ status_counts.PENDING }}</span>
+        </a>
+        <a href="?status=REVIEWED" class="btn btn-sm {% if current_status == 'REVIEWED' %}btn-info text-white fw-bold{% else %}btn-outline-secondary{% endif %}">
+            <i class="bi bi-eye me-1"></i>Reviewed
+            <span class="badge {% if current_status == 'REVIEWED' %}bg-white text-dark{% else %}bg-secondary{% endif %} ms-1">{{ status_counts.REVIEWED }}</span>
+        </a>
+        <a href="?status=ACTIONED" class="btn btn-sm {% if current_status == 'ACTIONED' %}btn-warning text-dark fw-bold{% else %}btn-outline-secondary{% endif %}">
+            <i class="bi bi-check2-circle me-1"></i>Actioned
+            <span class="badge {% if current_status == 'ACTIONED' %}bg-dark text-warning{% else %}bg-secondary{% endif %} ms-1">{{ status_counts.ACTIONED }}</span>
+        </a>
+        <a href="?status=DISMISSED" class="btn btn-sm {% if current_status == 'DISMISSED' %}btn-secondary fw-bold{% else %}btn-outline-secondary{% endif %}">
+            <i class="bi bi-slash-circle me-1"></i>Dismissed
+            <span class="badge bg-light text-dark ms-1">{{ status_counts.DISMISSED }}</span>
+        </a>
+        <a href="?status=" class="btn btn-sm {% if not current_status %}btn-dark fw-bold{% else %}btn-outline-secondary{% endif %}">
+            <i class="bi bi-collection me-1"></i>All Reports
+            <span class="badge bg-secondary ms-1">{{ status_counts.ALL }}</span>
+        </a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light small text-uppercase text-muted">
+                <tr>
+                    <th>Reported Property</th>
+                    <th>Reporter</th>
+                    <th>Reason</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Date Filed</th>
+                    <th class="text-end pe-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for report in reports %}
+                <tr>
+                    <td>
+                        <div class="fw-bold">
+                            <a href="{% url 'properties:detail' report.property.pk %}" target="_blank" class="text-dark text-decoration-none">
+                                {{ report.property.title }} <i class="bi bi-box-arrow-up-right small text-muted"></i>
+                            </a>
+                        </div>
+                        <small class="text-muted">Landlord: {{ report.property.owner.username }}</small>
+                    </td>
+                    <td>
+                        <div class="fw-medium text-dark">{{ report.reporter.username }}</div>
+                        <small class="text-muted">{{ report.reporter.email|default:"—" }}</small>
+                    </td>
+                    <td>
+                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1">
+                            {{ report.get_reason_display }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="small text-muted" style="max-width: 250px;">
+                            {{ report.description|default:"No written description provided." }}
+                        </div>
+                    </td>
+                    <td>
+                        {% if report.status == "PENDING" %}
+                            <span class="badge bg-danger text-white"><i class="bi bi-hourglass me-1"></i>Pending</span>
+                        {% elif report.status == "REVIEWED" %}
+                            <span class="badge bg-info text-dark"><i class="bi bi-eye me-1"></i>Reviewed</span>
+                        {% elif report.status == "ACTIONED" %}
+                            <span class="badge bg-success"><i class="bi bi-check-lg me-1"></i>Actioned</span>
+                        {% else %}
+                            <span class="badge bg-secondary"><i class="bi bi-slash-circle me-1"></i>Dismissed</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <small class="text-muted">{{ report.date_reported|date:"d M Y" }}</small>
+                    </td>
+                    <td class="text-end pe-3">
+                        <div class="d-inline-flex gap-1">
+                            {% if report.status != "REVIEWED" %}
+                                <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'REVIEWED' %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-outline-info" type="submit" title="Mark reviewed">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+                            {% if report.status != "ACTIONED" %}
+                                <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'ACTIONED' %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-danger fw-semibold" type="submit" title="Mark actioned">
+                                        <i class="bi bi-shield-x me-1"></i>Action
+                                    </button>
+                                </form>
+                            {% endif %}
+                            {% if report.status != "DISMISSED" %}
+                                <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'DISMISSED' %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-outline-secondary" type="submit" title="Dismiss report">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center py-5">
+                        <div class="avatar-circle mx-auto bg-light text-muted mb-3" style="width: 50px; height: 50px;">
+                            <i class="bi bi-shield-check fs-4"></i>
+                        </div>
+                        <h6 class="fw-bold mb-1">No Reports Found</h6>
+                        <p class="text-muted small mb-0">No reports matched the selected filter.</p>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
+
