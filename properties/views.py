@@ -5,18 +5,18 @@ from .models import Property, PropertyImage
 from .forms import PropertyForm
 
 def browse_properties(request):
-    """View to list all available properties."""
+    """List all available properties."""
     properties = Property.objects.filter(is_available=True)
     return render(request, 'properties/browse.html', {'properties': properties})
 
 def property_detail(request, pk):
-    """View to show details for a single property."""
+    """Display details for a single property."""
     property_obj = get_object_or_404(Property, pk=pk)
     return render(request, 'properties/property_detail.html', {'property': property_obj})
 
 @login_required
 def property_create(request):
-    """View to create a new property listing."""
+    """Handle new property creation and file uploads safely."""
     if request.method == 'POST':
         form = PropertyForm(request.POST)
         if form.is_valid():
@@ -25,7 +25,7 @@ def property_create(request):
                 property_obj.owner = request.user
                 property_obj.save()
 
-                # Process uploaded images safely
+                # Safely save uploaded images
                 images = request.FILES.getlist('images')
                 for idx, image_file in enumerate(images):
                     PropertyImage.objects.create(
