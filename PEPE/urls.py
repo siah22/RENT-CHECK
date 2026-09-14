@@ -2,17 +2,22 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import RedirectView
 
 urlpatterns = [
     # Admin interface
     path('admin/', admin.site.urls),
-    
+
+    # Home page, dashboard, etc.
+    path('', include('core.urls')),
+
+    # Account management (login, register, logout, profile)
+    path('accounts/', include('accounts.urls')),
+
     # Properties application routes
     path('properties/', include('properties.urls')),
-    
-    # Redirect root URL ('/') directly to '/properties/'
-    path('', RedirectView.as_view(url='/properties/', permanent=False)),
+
+    # Favorites, inquiries, viewings, bookings, reviews, notifications
+    path('engagement/', include('engagement.urls')),
 ]
 
 # Serve user-uploaded media files (property images) during development and testing

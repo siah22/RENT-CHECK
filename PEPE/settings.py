@@ -184,3 +184,8 @@ if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_HSTS_SECONDS = 60 * 60 * 24 * 7  # 1 week; raise once confident SSL never breaks
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+# Session Timeout Configuration
+SESSION_COOKIE_AGE = 300         # Log out user after 5 minutes (300 seconds) of inactivity
+SESSION_SAVE_EVERY_REQUEST = True  # Reset timeout timer on every request/page load
+SSSION_EXPIRE_AT_BROWSER_CLOSE = True # Expire session when the user closes their browser
