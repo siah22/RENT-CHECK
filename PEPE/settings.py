@@ -153,11 +153,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Cloudinary keeps uploaded property photos when CLOUDINARY_URL is set (production).
 # Locally (no CLOUDINARY_URL), files are written to MEDIA_ROOT as usual.
+# A placeholder value (contains "<") is treated as unset so app still works.
+_cloudinary_url = env("CLOUDINARY_URL", default="")
+_use_cloudinary = bool(_cloudinary_url) and "<" not in _cloudinary_url
 STORAGES = {
     "default": {
         "BACKEND": (
             "cloudinary_storage.storage.MediaCloudinaryStorage"
-            if env("CLOUDINARY_URL", default="")
+            if _use_cloudinary
             else "django.core.files.storage.FileSystemStorage"
         ),
     },
