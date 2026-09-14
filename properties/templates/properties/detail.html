@@ -3,8 +3,8 @@
 {% block content %}
 <div class="row">
     <div class="col-md-8">
-        <div id="carousel" class="carousel slide mb-4 shadow-sm" data-bs-ride="carousel">
-            <div class="carousel-inner" style="height:400px; border-radius: 0.65rem; overflow:hidden;">
+        <div id="carousel" class="carousel slide mb-4 shadow-sm" data-bs-ride="carousel" data-bs-interval="4000" data-bs-pause="hover">
+            <div class="carousel-inner" style="height:520px; border-radius: 0.65rem; overflow:hidden;">
                 {% for image in property.images.all %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %} h-100">
                         <img src="{{ image.image.url }}" class="d-block w-100 h-100" style="object-fit:cover;" alt="">
@@ -22,6 +22,11 @@
                 <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
                     <span class="carousel-control-next-icon"></span>
                 </button>
+                <div class="carousel-indicators">
+                    {% for image in property.images.all %}
+                        <button type="button" data-bs-target="#carousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></button>
+                    {% endfor %}
+                </div>
             {% endif %}
         </div>
 
