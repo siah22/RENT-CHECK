@@ -13,7 +13,7 @@ class RentCheckLoginView(LoginView):
     template_name = "accounts/login.html"
 
     def get_success_url(self):
-        redirect_to = self.get_redirect_field_value()
+        redirect_to = self.request.POST.get(self.redirect_field_name) or self.request.GET.get(self.redirect_field_name)
         if redirect_to:
             return redirect_to
         if self.request.user.is_authenticated and self.request.user.is_admin_role:
