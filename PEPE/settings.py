@@ -188,4 +188,4 @@ if not DEBUG:
 # Session Timeout Configuration
 SESSION_COOKIE_AGE = 300         # Log out user after 5 minutes (300 seconds) of inactivity
 SESSION_SAVE_EVERY_REQUEST = True  # Reset timeout timer on every request/page load
-SSSION_EXPIRE_AT_BROWSER_CLOSE = True # Expire session when the user closes their browser
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True # Expire session when the user closes their browser
