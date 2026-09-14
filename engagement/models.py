@@ -164,3 +164,47 @@ class Notification(models.Model):
 
     def __str__(self):
         return self.message
+
+
+class Conversation(models.Model):
+    listing = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="conversations")
+    tenant = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="conversations_as_tenant"
+    )
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="conversations_as_owner"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ("listing", "tenant")
+        ordering = ["-updated_at"]
+
+    def __str__(self):
+        return f"Conversation: {self.tenant} <-> {self.owner} on {self.listing}"
+
+    @property
+    def last_message(self):
+        return self.messages.last()
+
+    def other_user(self, user):
+        return self.owner if user == self.tenant else self.tenant
+
+
+class Message(models.Model):
+    conversation = models.ForeignKey(
+        Conversation, on_delete=models.CASCADE, related_name="messages"
+    )
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sent_chat_messages"
+    )
+    body = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at"]
+
+    def __str__(self):
+        return f"Message by {self.sender} in {self.conversation}"

@@ -101,6 +101,9 @@
                                 <li><a class="dropdown-item" href="{% url 'engagement:inquiry_list' %}"><i class="bi bi-chat-dots"></i> Inquiries</a></li>
                                 <li><a class="dropdown-item" href="{% url 'engagement:viewing_list' %}"><i class="bi bi-calendar-check"></i> Viewings</a></li>
                                 <li><a class="dropdown-item" href="{% url 'engagement:booking_list' %}"><i class="bi bi-calendar2-check"></i> Bookings</a></li>
+                                <li><a class="dropdown-item" href="{% url 'engagement:conversation_list' %}"><i class="bi bi-chat-left-text"></i> Messages
+                                    {% if unread_message_count %}<span class="badge bg-danger ms-1">{{ unread_message_count }}</span>{% endif %}
+                                </a></li>
                             </ul>
                         </li>
                     {% endif %}
@@ -214,6 +217,10 @@
                 <i class="bi bi-buildings-fill"></i> Listings
             </a>
         {% endif %}
+        <a href="{% url 'engagement:conversation_list' %}" class="{% if request.resolver_match.view_name == 'engagement:conversation_list' %}active{% endif %}">
+            <i class="bi bi-chat-left-text-fill"></i> Messages
+            {% if unread_message_count %}<span class="notif-badge">{{ unread_message_count }}</span>{% endif %}
+        </a>
         <a href="{% url 'accounts:profile' %}" class="{% if request.resolver_match.view_name == 'accounts:profile' %}active{% endif %}">
             <i class="bi bi-person-circle"></i> Profile
         </a>

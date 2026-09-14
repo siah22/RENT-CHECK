@@ -1,14 +1,72 @@
+﻿from calendar import month_name, monthcalendar, monthrange
+from datetime import date as date_cls
+from datetime import timedelta
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 
 from core.decorators import owner_agent_required
 from properties.models import Property
 
-from .forms import BookingForm, InquiryForm, InquiryResponseForm, ReportForm, ReviewForm, ViewingRequestForm
-from .models import Booking, Favorite, Inquiry, Notification, Report, Review, ViewingRequest
+from .forms import (BookingForm, InquiryForm, InquiryResponseForm, MessageForm,
+                    ReportForm, ReviewForm, ViewingRequestForm)
+from .models import (Booking, Conversation, Favorite, Inquiry, Message,
+                     Notification, Report, Review, ViewingRequest)
 from .utils import notify
+
+
+def booked_dates_for_property(property_obj, days=180):
+    """Return the set of date objects that are blocked by active bookings."""
+    start = timezone.localdate()
+    end = start + timedelta(days=days)
+    active = property_obj.bookings.filter(
+        status__in=[Booking.Status.CONFIRMED, Booking.Status.PENDING],
+        check_in__lt=end,
+        check_out__gt=start,
+    )
+    dates = set()
+    for booking in active:
+        day = max(booking.check_in, start)
+        while day < min(booking.check_out, end):
+            dates.add(day)
+            day += timedelta(days=1)
+    return dates
+
+
+def build_calendar(blocked_dates, months=3):
+    """Build the next N months as calendar cells for the availability widget."""
+    today = timezone.localdate()
+    first = today.replace(day=1)
+    months = []
+    for offset in range(months if months else 3):
+        year = (first.month - 1 + offset) // 12 + first.year
+        month = (first.month - 1 + offset) % 12 + 1
+        weeks = []
+        for week in monthcalendar(year, month):
+            row = []
+            for day in week:
+                if day == 0:
+                    row.append(None)
+                else:
+                    cell_date = date_cls(year, month, day)
+                    row.append({
+                        "date": cell_date,
+                        "day": day,
+                        "booked": cell_date in blocked_dates,
+                        "past": cell_date < today,
+                    })
+            weeks.append(row)
+        months.append({
+            "year": year,
+            "month": month,
+            "month_name": month_name[month],
+            "weeks": weeks,
+        })
+    return months
 
 
 @login_required
@@ -124,8 +182,10 @@ def update_viewing_status(request, pk, new_status):
 @login_required
 def request_booking(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
+    blocked = booked_dates_for_property(property_obj)
+    calendar = build_calendar(blocked)
     if request.method == "POST":
-        form = BookingForm(request.POST)
+        form = BookingForm(request.POST, property_obj=property_obj)
         if form.is_valid():
             booking = form.save(commit=False)
             booking.tenant = request.user
@@ -136,8 +196,13 @@ def request_booking(request, pk):
             messages.success(request, "Booking request submitted.")
             return redirect("properties:detail", pk=pk)
     else:
-        form = BookingForm()
-    return render(request, "engagement/booking_form.html", {"form": form, "property": property_obj})
+        form = BookingForm(property_obj=property_obj)
+    return render(request, "engagement/booking_form.html", {
+        "form": form,
+        "property": property_obj,
+        "calendar": calendar,
+        "today": timezone.localdate(),
+    })
 
 
 @login_required
@@ -203,3 +268,64 @@ def notification_list(request):
     notifications = Notification.objects.filter(user=request.user)
     notifications.filter(is_read=False).update(is_read=True)
     return render(request, "engagement/notification_list.html", {"notifications": notifications})
+
+
+@login_required
+def conversation_list(request):
+    conversations = Conversation.objects.filter(
+        Q(tenant=request.user) | Q(owner=request.user)
+    ).select_related("listing", "tenant", "owner", "listing__owner")
+    return render(request, "engagement/conversation_list.html", {"conversations": conversations})
+
+
+@login_required
+def start_conversation(request, pk):
+    property_obj = get_object_or_404(Property, pk=pk)
+    if property_obj.owner == request.user:
+        messages.info(request, "You cannot message yourself about your own listing.")
+        return redirect("properties:detail", pk=pk)
+    conversation, _ = Conversation.objects.get_or_create(
+        listing=property_obj,
+        tenant=request.user,
+        defaults={"owner": property_obj.owner},
+    )
+    return redirect("engagement:conversation_detail", pk=conversation.pk)
+
+
+@login_required
+def conversation_detail(request, pk):
+    conversation = get_object_or_404(
+        Conversation.objects.select_related("listing", "tenant", "owner").prefetch_related("messages"),
+        pk=pk,
+    )
+    if request.user not in (conversation.tenant, conversation.owner):
+        messages.error(request, "You do not have access to that conversation.")
+        return redirect("core:home")
+
+    other_user = conversation.other_user(request.user)
+
+    if request.method == "POST":
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            Message.objects.create(
+                conversation=conversation,
+                sender=request.user,
+                body=form.cleaned_data["body"],
+            )
+            conversation.save()
+            notify(
+                other_user,
+                f"New message from {request.user.username} about '{conversation.listing.title}'",
+                reverse("engagement:conversation_detail", args=[conversation.pk]),
+            )
+            messages.success(request, "Message sent.")
+            return redirect("engagement:conversation_detail", pk=conversation.pk)
+    else:
+        form = MessageForm()
+
+    conversation.messages.filter(~Q(sender=request.user), is_read=False).update(is_read=True)
+    return render(request, "engagement/conversation_detail.html", {
+        "conversation": conversation,
+        "other_user": other_user,
+        "form": form,
+    })

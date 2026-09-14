@@ -1,0 +1,62 @@
+﻿{% extends "base.html" %}
+{% block title %}Messages — {{ conversation.listing.title }}{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+            <div class="fw-semibold"><i class="bi bi-chat-left-text"></i> {{ conversation.listing.title }}</div>
+            <small class="text-muted">
+                Chatting with {{ other_user.get_full_name|default:other_user.username }}
+                &middot; <a href="{% url 'properties:detail' conversation.listing.pk %}">View listing</a>
+            </small>
+        </div>
+        <a href="{% url 'engagement:conversation_list' %}" class="btn btn-sm btn-outline-secondary">All Messages</a>
+    </div>
+    <div class="card-body" style="max-height:460px; overflow-y:auto;" id="chatWindow">
+        {% for message in conversation.messages.all %}
+            <div class="mb-3 d-flex {% if message.sender == user %}justify-content-end{% endif %}">
+                <div class="chat-bubble p-2 px-3 rounded {% if message.sender == user %}bg-success text-white{% else %}bg-light border{% endif %}"
+                     style="max-width:75%;">
+                    <div>{{ message.body|linebreaksbr }}</div>
+                    <div class="small {% if message.sender == user %}text-white-50{% else %}text-muted{% endif %}">
+                        {{ message.created_at|timesince }} ago
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-muted text-center my-4">No messages yet &mdash; say hello!</p>
+        {% endfor %}
+    </div>
+    <div class="card-footer">
+        <form method="post">
+            {% csrf_token %}
+            {% if form.body.errors %}
+                <div class="alert alert-danger py-2">{{ form.body.errors }}</div>
+            {% endif %}
+            <div class="input-group">
+                {{ form.body }}
+                <button class="btn btn-success" type="submit"><i class="bi bi-send"></i> Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    (function () {
+        var win = document.getElementById('chatWindow');
+        win.scrollTop = win.scrollHeight;
+        setInterval(function () {
+            fetch(window.location.href, {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+                .then(function (r) { return r.text(); })
+                .then(function (html) {
+                    var doc = new DOMParser().parseFromString(html, 'text/html');
+                    var fresh = doc.getElementById('chatWindow');
+                    if (fresh && fresh.innerHTML !== win.innerHTML) {
+                        win.innerHTML = fresh.innerHTML;
+                        win.scrollTop = win.scrollHeight;
+                    }
+                })
+                .catch(function () {});
+        }, 6000);
+    })();
+</script>
+{% endblock %}
