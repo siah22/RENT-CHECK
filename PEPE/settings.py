@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
     'core',
     'accounts',
     'properties',
@@ -149,12 +151,18 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Uploaded property photos are stored on the local filesystem (MEDIA_ROOT).
-# Cloudinary was removed from this project's stack; images persist only as long
-# as the instance disk does (ephemeral on Render free tier).
+# Cloudinary keeps uploaded property photos when CLOUDINARY_URL is set (production).
+# Locally (no CLOUDINARY_URL), files are written to MEDIA_ROOT as usual.
+# A placeholder value (contains "<") is treated as unset so the build never breaks.
+_cloudinary_url = env("CLOUDINARY_URL", default="")
+_use_cloudinary = bool(_cloudinary_url) and _cloudinary_url.startswith("cloudinary://") and "<" not in _cloudinary_url
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": (
+            "cloudinary_storage.storage.MediaCloudinaryStorage"
+            if _use_cloudinary
+            else "django.core.files.storage.FileSystemStorage"
+        ),
     },
     "staticfiles": {
         "BACKEND": (
