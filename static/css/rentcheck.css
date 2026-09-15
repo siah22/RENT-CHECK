@@ -379,6 +379,18 @@ a:hover {
     background: var(--rc-gold);
 }
 
+.property-card .ribbon-booked {
+    background: #dc3545;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
 .property-card .fav-toggle {
     position: absolute;
     top: 0.55rem;

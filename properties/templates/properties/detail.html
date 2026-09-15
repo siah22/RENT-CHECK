@@ -37,6 +37,9 @@
             {% else %}
                 <span class="badge bg-warning text-dark">Pending Verification</span>
             {% endif %}
+            {% if property.is_rented and property.is_bnb %}
+                <span class="badge bg-danger text-white"><i class="bi bi-calendar2-x-fill me-1"></i>Booked</span>
+            {% endif %}
         </div>
         <p class="text-muted mt-1"><i class="bi bi-geo-alt-fill"></i> {{ property.address }}{% if property.address %}, {% endif %}{{ property.city }}, {{ property.region }}</p>
         <h4 class="price-tag fw-bold">TZS {{ property.price|floatformat:0 }} {% if property.is_bnb %}/ night{% else %}/ month{% endif %}</h4>
@@ -123,14 +126,20 @@
                 <a class="btn btn-success" href="{% url 'engagement:send_inquiry' property.pk %}"><i class="bi bi-chat-dots-fill"></i> Contact Owner / Agent</a>
                 <a class="btn btn-outline-success" href="{% url 'engagement:start_conversation' property.pk %}"><i class="bi bi-chat-left-text"></i> Message Owner</a>
                 {% if property.is_bnb %}
-                    <a class="btn btn-gold" href="{% url 'engagement:request_booking' property.pk %}"><i class="bi bi-calendar2-check"></i> Book Now</a>
+                    {% if property.is_rented %}
+                        <button class="btn btn-secondary w-100" type="button" disabled title="This Airbnb is currently booked">
+                            <i class="bi bi-calendar2-x me-1"></i> Booked &mdash; Unavailable
+                        </button>
+                    {% else %}
+                        <a class="btn btn-gold" href="{% url 'engagement:request_booking' property.pk %}"><i class="bi bi-calendar2-check"></i> Book Now</a>
+                    {% endif %}
                 {% else %}
                     <a class="btn btn-outline-success" href="{% url 'engagement:request_viewing' property.pk %}"><i class="bi bi-calendar-check"></i> Request a Viewing</a>
                 {% endif %}
                 <a class="btn btn-outline-secondary" href="{% url 'engagement:report_property' property.pk %}"><i class="bi bi-flag-fill"></i> Report this Listing</a>
             </div>
         {% else %}
-            <p><a href="{% url 'accounts:login' %}?next={{ request.path }}">Log in</a> to contact the owner, save favorites, or {% if property.is_bnb %}book this stay{% else %}request a viewing{% endif %}.</p>
+            <p><a href="{% url 'accounts:login' %}?next={{ request.path }}">Log in</a> to contact the owner, save favorites, or {% if property.is_bnb and not property.is_rented %}book this stay{% else %}request a viewing{% endif %}.</p>
         {% endif %}
 
         <h6 class="mt-3">Share this listing</h6>

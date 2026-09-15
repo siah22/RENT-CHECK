@@ -17,7 +17,9 @@ def home(request):
         return redirect("core:dashboard")
 
     listings = Property.objects.filter(
-        is_available=True, is_rented=False, verification_status=Property.VerificationStatus.APPROVED
+        is_available=True, verification_status=Property.VerificationStatus.APPROVED
+    ).filter(
+        models.Q(is_rented=False) | models.Q(property_type=Property.PropertyType.BNB)
     ).prefetch_related("images").order_by("-date_listed")
 
     paginator = Paginator(listings, 9)

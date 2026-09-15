@@ -12,10 +12,13 @@ def browse_properties(request):
     """List available properties, honoring the sidebar search filters."""
     form = PropertySearchForm(request.GET)
 
+    # Regular listings vanish once rented; Airbnb/short-stay listings stay
+    # visible but display a "Booked" badge instead of booking functionality.
     properties = Property.objects.filter(
         is_available=True,
-        is_rented=False,
         verification_status=Property.VerificationStatus.APPROVED,
+    ).filter(
+        Q(is_rented=False) | Q(property_type=Property.PropertyType.BNB)
     ).prefetch_related("images")
 
     if form.is_valid():

@@ -182,6 +182,9 @@ def update_viewing_status(request, pk, new_status):
 @login_required
 def request_booking(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
+    if property_obj.is_rented and property_obj.is_bnb:
+        messages.error(request, "This Airbnb is currently booked and not accepting new reservations.")
+        return redirect("properties:detail", pk=pk)
     blocked = booked_dates_for_property(property_obj)
     calendar = build_calendar(blocked)
     if request.method == "POST":

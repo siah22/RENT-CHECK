@@ -7,11 +7,14 @@
             <div class="card-img-placeholder"><i class="bi bi-house-door"></i></div>
         {% endif %}
         <div class="ribbon-stack">
+            {% if property.is_bnb %}
+                <span class="ribbon-bnb"><i class="bi bi-suitcase-lg-fill"></i> Airbnb</span>
+            {% endif %}
             {% if property.is_verified %}
                 <span class="ribbon-verified"><i class="bi bi-patch-check-fill"></i> Verified</span>
             {% endif %}
-            {% if property.is_bnb %}
-                <span class="ribbon-bnb"><i class="bi bi-suitcase-lg-fill"></i> Airbnb</span>
+            {% if property.is_rented and property.is_bnb %}
+                <span class="ribbon-booked"><i class="bi bi-calendar2-x-fill"></i> Booked</span>
             {% endif %}
         </div>
         {% if user.is_authenticated and user.is_tenant %}
