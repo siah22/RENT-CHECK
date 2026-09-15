@@ -266,8 +266,21 @@ def add_review(request, pk):
 @login_required
 def notification_list(request):
     notifications = Notification.objects.filter(user=request.user)
+    unread_ids = list(notifications.filter(is_read=False).values_list("id", flat=True))
     notifications.filter(is_read=False).update(is_read=True)
-    return render(request, "engagement/notification_list.html", {"notifications": notifications})
+    return render(request, "engagement/notification_list.html", {
+        "notifications": notifications,
+        "unread_count": len(unread_ids),
+        "unread_ids": unread_ids,
+    })
+
+
+@login_required
+def notification_delete(request, pk):
+    notification = get_object_or_404(Notification, pk=pk, user=request.user)
+    notification.delete()
+    messages.success(request, "Notification deleted.")
+    return redirect("engagement:notification_list")
 
 
 @login_required

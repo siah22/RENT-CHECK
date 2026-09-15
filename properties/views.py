@@ -1,15 +1,79 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import Http404
 from engagement.models import Favorite
 from .models import Property, PropertyImage
-from .forms import PropertyForm
+from .forms import PropertyForm, PropertySearchForm
 
 def browse_properties(request):
-    """List all available properties."""
-    properties = Property.objects.filter(is_available=True)
-    return render(request, 'properties/browse.html', {'properties': properties})
+    """List available properties, honoring the sidebar search filters."""
+    form = PropertySearchForm(request.GET)
+
+    properties = Property.objects.filter(
+        is_available=True,
+        is_rented=False,
+        verification_status=Property.VerificationStatus.APPROVED,
+    ).prefetch_related("images")
+
+    if form.is_valid():
+        data = form.cleaned_data
+
+        keyword = (data.get("q") or "").strip()
+        if keyword:
+            properties = properties.filter(
+                Q(title__icontains=keyword) |
+                Q(city__icontains=keyword) |
+                Q(region__icontains=keyword) |
+                Q(address__icontains=keyword)
+            )
+
+        if data.get("property_type"):
+            properties = properties.filter(property_type=data["property_type"])
+        if data.get("min_price") is not None:
+            properties = properties.filter(price__gte=data["min_price"])
+        if data.get("max_price") is not None:
+            properties = properties.filter(price__lte=data["max_price"])
+        if data.get("bedrooms"):
+            properties = properties.filter(bedrooms__gte=data["bedrooms"])
+        if data.get("bathrooms"):
+            properties = properties.filter(bathrooms__gte=data["bathrooms"])
+        if data.get("min_size") is not None:
+            properties = properties.filter(size_sqm__gte=data["min_size"])
+
+        amenities = data.get("amenities")
+        if amenities:
+            properties = properties.filter(amenities__in=amenities).distinct()
+
+        sort_key = data.get("sort")
+        allowed_sorts = {"-date_listed", "price", "-price", "-size_sqm"}
+        properties = properties.order_by(sort_key if sort_key in allowed_sorts else "-date_listed")
+    else:
+        properties = properties.order_by("-date_listed")
+
+    paginator = Paginator(properties, 9)
+    page_obj = paginator.get_page(request.GET.get("page"))
+
+    favorite_ids = set()
+    if request.user.is_authenticated:
+        favorite_ids = set(
+            Favorite.objects.filter(tenant=request.user).values_list("property_id", flat=True)
+        )
+
+    return render(request, "properties/browse.html", {
+        "form": form,
+        "page_obj": page_obj,
+        "favorite_ids": favorite_ids,
+        "query_string": _strip_page(request.GET.urlencode()),
+    })
+
+
+def _strip_page(querystring):
+    params = querystring.split("&") if querystring else []
+    kept = [p for p in params if p and not p.startswith("page=")]
+    return "&".join(kept)
 
 def property_detail(request, pk):
     """Display details for a single property."""

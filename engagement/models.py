@@ -165,6 +165,36 @@ class Notification(models.Model):
     def __str__(self):
         return self.message
 
+    @property
+    def icon_class(self):
+        text = self.message.lower()
+        if "message" in text:
+            return "bi-chat-left-text-fill"
+        if "inquiry" in text:
+            return "bi-chat-dots-fill"
+        if "viewing" in text:
+            return "bi-calendar-check-fill"
+        if "booking" in text:
+            return "bi-calendar2-check-fill"
+        if "report" in text:
+            return "bi-flag-fill"
+        if any(w in text for w in ("verified", "approved", "rejected", "verification")):
+            return "bi-shield-check"
+        return "bi-bell-fill"
+
+    @property
+    def icon_tone(self):
+        text = self.message.lower()
+        if any(w in text for w in ("message", "inquiry")):
+            return "info"
+        if any(w in text for w in ("viewing", "booking")):
+            return "gold"
+        if "report" in text:
+            return "danger"
+        if any(w in text for w in ("verified", "approved", "rejected", "verification", "listing")):
+            return "success"
+        return "primary"
+
 
 class Conversation(models.Model):
     listing = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="conversations")

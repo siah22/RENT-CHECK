@@ -1,15 +1,59 @@
 {% extends "base.html" %}
 {% block title %}Notifications — RentCheck Tanzania{% endblock %}
 {% block content %}
-<h2 class="mb-3">Notifications</h2>
-<div class="list-group">
-    {% for notification in notifications %}
-        <a href="{{ notification.link|default:'#' }}" class="list-group-item list-group-item-action {% if not notification.is_read %}fw-bold{% endif %}">
-            {{ notification.message }}
-            <span class="text-muted small float-end">{{ notification.created_at|timesince }} ago</span>
-        </a>
-    {% empty %}
-        <p class="text-muted">No notifications yet.</p>
-    {% endfor %}
+<div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+    <div>
+        <h2 class="mb-0"><i class="bi bi-bell-fill"></i> Notifications</h2>
+        <small class="text-muted">Updates about your listings, messages, and bookings</small>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+        <span class="badge bg-success-subtle text-success border border-success-subtle fw-semibold px-3 py-2">
+            <i class="bi bi-bell me-1"></i>{{ unread_count }} unread
+        </span>
+        <span class="badge bg-light text-secondary border fw-semibold px-3 py-2">
+            {{ notifications|length }} total
+        </span>
+    </div>
 </div>
+
+{% if notifications %}
+    <div class="list-group shadow-sm rounded-3 overflow-hidden">
+        {% for notification in notifications %}
+            <div class="list-group-item d-flex align-items-center gap-3 py-3 {% if notification.pk in unread_ids %}notif-unread{% endif %}">
+                <div class="notif-icon notif-icon-{{ notification.icon_tone }}">
+                    <i class="bi {{ notification.icon_class }}"></i>
+                </div>
+                <div class="flex-grow-1 min-w-0">
+                    <a href="{{ notification.link|default:'#' }}"
+                       class="text-decoration-none {% if notification.pk in unread_ids %}fw-semibold text-dark{% else %}text-body{% endif %} d-block">
+                        {{ notification.message }}
+                    </a>
+                    <small class="text-muted">
+                        <i class="bi bi-clock me-1"></i>{{ notification.created_at|timesince }} ago
+                    </small>
+                </div>
+                {% if notification.pk in unread_ids %}
+                    <span class="notif-pip ms-1" title="Unread"></span>
+                {% endif %}
+                <form method="post" action="{% url 'engagement:notification_delete' notification.pk %}"
+                      onsubmit="return confirm('Delete this notification?');">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-outline-danger notif-delete" type="submit" title="Delete notification" aria-label="Delete notification">
+                        <i class="bi bi-trash3"></i>
+                    </button>
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body text-center py-5">
+            <div class="avatar-circle mx-auto mb-3 bg-success-subtle text-success" style="width: 72px; height: 72px; font-size: 2rem;">
+                <i class="bi bi-bell-slash"></i>
+            </div>
+            <h4 class="fw-bold mb-1">All Caught Up</h4>
+            <p class="text-muted small mb-0">You have no notifications right now. New activity on your listings, messages, and bookings will appear here.</p>
+        </div>
+    </div>
+{% endif %}
 {% endblock %}

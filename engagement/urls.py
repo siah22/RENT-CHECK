@@ -24,6 +24,7 @@ urlpatterns = [
     path("reviews/new/<int:pk>/", views.add_review, name="add_review"),
 
     path("notifications/", views.notification_list, name="notification_list"),
+    path("notifications/<int:pk>/delete/", views.notification_delete, name="notification_delete"),
 
     path("messages/", views.conversation_list, name="conversation_list"),
     path("messages/start/<int:pk>/", views.start_conversation, name="start_conversation"),
