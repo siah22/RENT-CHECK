@@ -323,7 +323,16 @@ def conversation_detail(request, pk):
     else:
         form = MessageForm()
 
-    conversation.messages.filter(~Q(sender=request.user), is_read=False).update(is_read=True)
+    # WhatsApp-style delivery tracking:
+    #  - AJAX polling = the other party's device has received the messages -> DELIVERED
+    #  - Normal page load = the other party has actually opened the thread -> READ
+    incoming = conversation.messages.filter(~Q(sender=request.user))
+    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        incoming.filter(is_read=False, status=Message.Status.SENT).update(
+            status=Message.Status.DELIVERED
+        )
+    else:
+        incoming.filter(is_read=False).update(status=Message.Status.READ, is_read=True)
     return render(request, "engagement/conversation_detail.html", {
         "conversation": conversation,
         "other_user": other_user,

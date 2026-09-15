@@ -188,6 +188,22 @@ LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'core:home'
 LOGOUT_REDIRECT_URL = 'core:home'
 
+# Password reset — signed tokens expire after 1 hour (default is 72h).
+PASSWORD_RESET_TIMEOUT = 3600
+
+# Email — defaults to the console backend so password-reset emails can be
+# tested locally without an SMTP server. Production sets EMAIL_HOST etc.
+EMAIL_BACKEND = env("EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend")
+EMAIL_HOST = env("EMAIL_HOST", default="")
+EMAIL_PORT = env.int("EMAIL_PORT", default=587)
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
+EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
+DEFAULT_FROM_EMAIL = env(
+    "DEFAULT_FROM_EMAIL", default="RentCheck Tanzania <noreply@rentcheck.co.tz>"
+)
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
 # Production security hardening (only kicks in once DEBUG=False, e.g. on Render).
 if not DEBUG:
     SECURE_SSL_REDIRECT = True

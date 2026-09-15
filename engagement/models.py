@@ -193,6 +193,11 @@ class Conversation(models.Model):
 
 
 class Message(models.Model):
+    class Status(models.TextChoices):
+        SENT = "SENT", "Sent"
+        DELIVERED = "DELIVERED", "Delivered"
+        READ = "READ", "Read"
+
     conversation = models.ForeignKey(
         Conversation, on_delete=models.CASCADE, related_name="messages"
     )
@@ -200,6 +205,9 @@ class Message(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sent_chat_messages"
     )
     body = models.TextField()
+    status = models.CharField(
+        max_length=20, choices=Status.choices, default=Status.SENT
+    )
     is_read = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

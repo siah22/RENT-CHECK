@@ -12,17 +12,39 @@
         </div>
         <a href="{% url 'engagement:conversation_list' %}" class="btn btn-sm btn-outline-secondary">All Messages</a>
     </div>
-    <div class="card-body" style="max-height:460px; overflow-y:auto;" id="chatWindow">
+    <div class="card-body chat-window" style="max-height:460px; overflow-y:auto;" id="chatWindow">
         {% for message in conversation.messages.all %}
-            <div class="mb-3 d-flex {% if message.sender == user %}justify-content-end{% endif %}">
-                <div class="chat-bubble p-2 px-3 rounded {% if message.sender == user %}bg-success text-white{% else %}bg-light border{% endif %}"
-                     style="max-width:75%;">
-                    <div>{{ message.body|linebreaksbr }}</div>
-                    <div class="small {% if message.sender == user %}text-white-50{% else %}text-muted{% endif %}">
-                        {{ message.created_at|timesince }} ago
+            {% if message.sender == user %}
+                <div class="chat-row chat-row-out">
+                    <div class="chat-bubble chat-bubble-out">
+                        <div class="chat-body">{{ message.body|linebreaksbr }}</div>
+                        <div class="chat-meta">
+                            <span class="chat-time">{{ message.created_at|timesince }} ago</span>
+                            <span class="msg-ticks" title="Message status">
+                                <span class="msg-tick-label">
+                                    {{ message.get_status_display }}
+                                </span>
+                                {% if message.status == "SENT" %}
+                                    <i class="bi bi-check tick"></i>
+                                {% elif message.status == "DELIVERED" %}
+                                    <i class="bi bi-check-all tick"></i>
+                                {% else %}
+                                    <i class="bi bi-check-all tick tick-read"></i>
+                                {% endif %}
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% else %}
+                <div class="chat-row chat-row-in">
+                    <div class="chat-bubble chat-bubble-in">
+                        <div class="chat-body">{{ message.body|linebreaksbr }}</div>
+                        <div class="chat-meta">
+                            <span class="chat-time">{{ message.created_at|timesince }} ago</span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         {% empty %}
             <p class="text-muted text-center my-4">No messages yet &mdash; say hello!</p>
         {% endfor %}

@@ -1,10 +1,12 @@
+import hashlib
+
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView
+from django.core.cache import cache
 from django.shortcuts import redirect, render
-
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 from .forms import ProfileForm, RegistrationForm
 
@@ -23,6 +25,38 @@ class RentCheckLoginView(LoginView):
 
 class RentCheckLogoutView(LogoutView):
     pass
+
+
+class SecurePasswordResetView(PasswordResetView):
+    """Email-based password reset hardened with a per-IP+email attempt throttle.
+
+    Django's built-in reset flow is already secure (signed, single-use,
+    time-limited tokens, no user enumeration, password validators on reset).
+    We additionally throttle submissions so a single caller cannot spam the
+    reset endpoint or burn through the mail provider.
+    """
+    template_name = "registration/password_reset_form.html"
+    email_template_name = "registration/password_reset_email.txt"
+    html_email_template_name = "registration/password_reset_email.html"
+    subject_template_name = "registration/password_reset_subject.txt"
+    success_url = reverse_lazy("accounts:password_reset_done")
+
+    MAX_ATTEMPTS = 5
+    WINDOW_SECONDS = 15 * 60
+
+    def form_valid(self, form):
+        raw = f"{self.request.META.get('REMOTE_ADDR', '')}|{form.cleaned_data.get('email', '').lower()}"
+        key = "pwreset:" + hashlib.sha256(raw.encode("utf-8")).hexdigest()
+        attempts = cache.get(key, 0)
+        if attempts >= self.MAX_ATTEMPTS:
+            form.add_error(
+                None,
+                "Too many password reset requests from this device. "
+                "Please wait about 15 minutes and try again.",
+            )
+            return self.form_invalid(form)
+        cache.set(key, attempts + 1, self.WINDOW_SECONDS)
+        return super().form_valid(form)
 
 
 def register(request):

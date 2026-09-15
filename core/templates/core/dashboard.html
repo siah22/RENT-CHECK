@@ -3,38 +3,38 @@
 {% block content %}
 
 <!-- Executive Header Banner -->
-<div class="admin-hero-card card border-0 shadow-sm text-white rounded-3 mb-4 p-4">
-    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+<div class="admin-hero-card card border-0 text-white rounded-4 mb-4 p-4 p-lg-5 shadow-sm">
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-4">
         <div>
-            <div class="d-flex align-items-center gap-2 mb-2">
+            <div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
                 <span class="badge bg-warning text-dark fw-bold px-2 py-1"><i class="bi bi-shield-check me-1"></i>Administrator Control Center</span>
                 <span class="badge bg-success-subtle text-success border border-success-subtle"><i class="bi bi-circle-fill me-1 small"></i>Live System</span>
             </div>
-            <h2 class="fw-bold mb-1 text-white">Hello, {{ request.user.first_name|default:request.user.username }}</h2>
-            <p class="mb-0 text-white-50 small">
+            <h1 class="fw-bold mb-2 text-white">Hello, {{ request.user.first_name|default:request.user.username }}</h1>
+            <p class="mb-0 text-white-50 small" style="max-width: 560px;">
                 Manage Tanzania's verified rental listings, user accounts, and platform integrity from one centralized console.
             </p>
         </div>
         <div class="d-flex flex-wrap gap-2 align-items-center">
-            <a href="{% url 'core:dashboard_properties' %}?status=PENDING" class="btn btn-warning btn-sm fw-semibold shadow-sm">
+            <a href="{% url 'core:dashboard_properties' %}?status=PENDING" class="btn btn-warning btn-sm fw-semibold shadow-sm px-3 py-2">
                 <i class="bi bi-patch-check me-1"></i> Verify Listings
                 {% if stats.pending_properties %}
                     <span class="badge bg-dark text-warning ms-1">{{ stats.pending_properties }}</span>
                 {% endif %}
             </a>
-            <a href="{% url 'core:dashboard_reports' %}?status=PENDING" class="btn btn-danger btn-sm fw-semibold shadow-sm">
+            <a href="{% url 'core:dashboard_reports' %}?status=PENDING" class="btn btn-danger btn-sm fw-semibold shadow-sm px-3 py-2">
                 <i class="bi bi-flag me-1"></i> Reports
                 {% if stats.pending_reports %}
                     <span class="badge bg-white text-danger ms-1">{{ stats.pending_reports }}</span>
                 {% endif %}
             </a>
-            <a href="{% url 'core:dashboard_users' %}" class="btn btn-light btn-sm fw-semibold shadow-sm">
+            <a href="{% url 'core:dashboard_users' %}" class="btn btn-light btn-sm fw-semibold shadow-sm px-3 py-2">
                 <i class="bi bi-people me-1"></i> Users
             </a>
-            <a href="/admin/" target="_blank" class="btn btn-outline-light btn-sm fw-semibold">
+            <a href="/admin/" target="_blank" class="btn btn-outline-light btn-sm fw-semibold px-3 py-2">
                 <i class="bi bi-shield-lock me-1"></i> Django Admin <i class="bi bi-box-arrow-up-right small"></i>
             </a>
-            <a href="{% url 'core:home' %}?preview=1" class="btn btn-outline-light btn-sm fw-semibold">
+            <a href="{% url 'core:home' %}?preview=1" class="btn btn-outline-light btn-sm fw-semibold px-3 py-2">
                 <i class="bi bi-globe me-1"></i> Preview Site
             </a>
         </div>
@@ -42,12 +42,11 @@
 </div>
 
 <!-- Primary Metric KPI Cards -->
-<div class="row g-3 mb-4">
-    <!-- Pending Verifications -->
+<div class="row g-4 mb-4">
     <div class="col-sm-6 col-xl-3">
-        <div class="card stat-card-modern border-0 shadow-sm rounded-3 h-100 p-3 {% if stats.pending_properties %}stat-card-attention{% endif %}">
-            <div class="d-flex justify-content-between align-items-start">
-                <div>
+        <div class="card stat-card-modern kpi-card border-0 shadow-sm rounded-4 h-100 p-4 {% if stats.pending_properties %}stat-card-attention{% endif %}">
+            <div class="d-flex justify-content-between align-items-start gap-2">
+                <div class="min-w-0">
                     <span class="text-uppercase fw-semibold small text-muted">Awaiting Verification</span>
                     <h2 class="fw-bold mt-2 mb-1 {% if stats.pending_properties %}text-warning-emphasis{% else %}text-dark{% endif %}">
                         {{ stats.pending_properties }}
@@ -64,7 +63,7 @@
                     <i class="bi bi-hourglass-split"></i>
                 </div>
             </div>
-            <div class="mt-3 pt-2 border-top">
+            <div class="mt-3 pt-3 border-top">
                 <a href="{% url 'core:dashboard_properties' %}?status=PENDING" class="small text-decoration-none fw-semibold text-primary">
                     Review listings <i class="bi bi-arrow-right"></i>
                 </a>
@@ -72,11 +71,10 @@
         </div>
     </div>
 
-    <!-- Flagged Reports -->
     <div class="col-sm-6 col-xl-3">
-        <div class="card stat-card-modern border-0 shadow-sm rounded-3 h-100 p-3 {% if stats.pending_reports %}stat-card-danger{% endif %}">
-            <div class="d-flex justify-content-between align-items-start">
-                <div>
+        <div class="card stat-card-modern kpi-card border-0 shadow-sm rounded-4 h-100 p-4 {% if stats.pending_reports %}stat-card-danger{% endif %}">
+            <div class="d-flex justify-content-between align-items-start gap-2">
+                <div class="min-w-0">
                     <span class="text-uppercase fw-semibold small text-muted">Pending Reports</span>
                     <h2 class="fw-bold mt-2 mb-1 {% if stats.pending_reports %}text-danger{% else %}text-dark{% endif %}">
                         {{ stats.pending_reports }}
@@ -93,7 +91,7 @@
                     <i class="bi bi-shield-exclamation"></i>
                 </div>
             </div>
-            <div class="mt-3 pt-2 border-top">
+            <div class="mt-3 pt-3 border-top">
                 <a href="{% url 'core:dashboard_reports' %}?status=PENDING" class="small text-decoration-none fw-semibold text-danger">
                     Review reports <i class="bi bi-arrow-right"></i>
                 </a>
@@ -101,11 +99,10 @@
         </div>
     </div>
 
-    <!-- Verified & Active Listings -->
     <div class="col-sm-6 col-xl-3">
-        <div class="card stat-card-modern border-0 shadow-sm rounded-3 h-100 p-3">
-            <div class="d-flex justify-content-between align-items-start">
-                <div>
+        <div class="card stat-card-modern kpi-card border-0 shadow-sm rounded-4 h-100 p-4">
+            <div class="d-flex justify-content-between align-items-start gap-2">
+                <div class="min-w-0">
                     <span class="text-uppercase fw-semibold small text-muted">Verified Listings</span>
                     <h2 class="fw-bold mt-2 mb-1 text-success">{{ stats.verified_properties }}</h2>
                     <span class="small text-muted">
@@ -116,7 +113,7 @@
                     <i class="bi bi-patch-check-fill"></i>
                 </div>
             </div>
-            <div class="mt-3 pt-2 border-top">
+            <div class="mt-3 pt-3 border-top">
                 <a href="{% url 'core:dashboard_properties' %}?status=APPROVED" class="small text-decoration-none fw-semibold text-success">
                     View verified properties <i class="bi bi-arrow-right"></i>
                 </a>
@@ -124,11 +121,10 @@
         </div>
     </div>
 
-    <!-- Platform Users -->
     <div class="col-sm-6 col-xl-3">
-        <div class="card stat-card-modern border-0 shadow-sm rounded-3 h-100 p-3">
-            <div class="d-flex justify-content-between align-items-start">
-                <div>
+        <div class="card stat-card-modern kpi-card border-0 shadow-sm rounded-4 h-100 p-4">
+            <div class="d-flex justify-content-between align-items-start gap-2">
+                <div class="min-w-0">
                     <span class="text-uppercase fw-semibold small text-muted">Total Accounts</span>
                     <h2 class="fw-bold mt-2 mb-1 text-dark">{{ stats.total_users }}</h2>
                     <span class="small text-muted">
@@ -139,7 +135,7 @@
                     <i class="bi bi-people-fill"></i>
                 </div>
             </div>
-            <div class="mt-3 pt-2 border-top">
+            <div class="mt-3 pt-3 border-top">
                 <a href="{% url 'core:dashboard_users' %}" class="small text-decoration-none fw-semibold text-primary">
                     Manage users <i class="bi bi-arrow-right"></i>
                 </a>
@@ -148,57 +144,57 @@
     </div>
 </div>
 
-<!-- Secondary Metric Bar -->
-<div class="card border-0 shadow-sm rounded-3 mb-4 bg-white">
-    <div class="card-body py-3">
-        <div class="row text-center divide-cols gy-2">
+<!-- Secondary Metric Strip -->
+<div class="card border-0 rounded-4 mb-4 insight-strip">
+    <div class="card-body py-4 px-4">
+        <div class="row text-center divide-cols gy-3">
             <div class="col-6 col-md-3">
-                <div class="small text-muted">Total Properties</div>
-                <div class="fs-5 fw-bold text-dark">{{ stats.total_properties }}</div>
+                <div class="text-uppercase small text-muted fw-semibold">Total Properties</div>
+                <div class="fs-3 fw-bold text-dark">{{ stats.total_properties }}</div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="small text-muted">Available Now</div>
-                <div class="fs-5 fw-bold text-success">{{ stats.active_listings }}</div>
+                <div class="text-uppercase small text-muted fw-semibold">Available Now</div>
+                <div class="fs-3 fw-bold text-success">{{ stats.active_listings }}</div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="small text-muted">Rejected Listings</div>
-                <div class="fs-5 fw-bold text-secondary">{{ stats.rejected_properties }}</div>
+                <div class="text-uppercase small text-muted fw-semibold">Rejected Listings</div>
+                <div class="fs-3 fw-bold text-secondary">{{ stats.rejected_properties }}</div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="small text-muted">System Administrators</div>
-                <div class="fs-5 fw-bold text-warning-emphasis">{{ stats.total_admins }}</div>
+                <div class="text-uppercase small text-muted fw-semibold">System Administrators</div>
+                <div class="fs-3 fw-bold text-warning-emphasis">{{ stats.total_admins }}</div>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Section 1: Listings Awaiting Verification -->
-<div class="card border-0 shadow-sm rounded-3 mb-4">
-    <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
-        <div class="d-flex align-items-center gap-2">
-            <span class="badge bg-warning text-dark p-2 rounded-circle"><i class="bi bi-building-check"></i></span>
+<div class="card border-0 shadow-sm rounded-4 mb-4 admin-card">
+    <div class="card-header bg-white border-bottom py-4 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-warning text-dark p-2 rounded-3"><i class="bi bi-building-check fs-6"></i></span>
             <div>
                 <h5 class="fw-bold mb-0">Listings Awaiting Verification</h5>
                 <small class="text-muted">Review submitted properties before they go live on RentCheck</small>
             </div>
         </div>
-        <a href="{% url 'core:dashboard_properties' %}?status=PENDING" class="btn btn-outline-success btn-sm fw-semibold">
+        <a href="{% url 'core:dashboard_properties' %}?status=PENDING" class="btn btn-outline-success btn-sm fw-semibold px-3">
             View All Pending ({{ stats.pending_properties }})
         </a>
     </div>
     <div class="card-body p-0">
         {% if recent_pending %}
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
+                <table class="table table-hover align-middle mb-0 dashboard-table">
                     <thead class="table-light small text-uppercase text-muted">
                         <tr>
-                            <th style="width: 70px;">Photo</th>
+                            <th style="width: 80px;">Photo</th>
                             <th>Property</th>
                             <th>Landlord / Agent</th>
                             <th>Location</th>
                             <th>Rent / Month</th>
                             <th>Submitted</th>
-                            <th class="text-end pe-3">Actions</th>
+                            <th class="text-end pe-4">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -206,9 +202,9 @@
                             <tr>
                                 <td>
                                     {% if property.main_image %}
-                                        <img src="{{ property.main_image.image.url }}" alt="{{ property.title }}" class="rounded shadow-sm" style="width: 54px; height: 40px; object-fit: cover;">
+                                        <img src="{{ property.main_image.image.url }}" alt="{{ property.title }}" class="rounded-2 shadow-sm" style="width: 62px; height: 46px; object-fit: cover;">
                                     {% else %}
-                                        <div class="bg-light rounded d-flex align-items-center justify-content-center text-muted" style="width: 54px; height: 40px;">
+                                        <div class="bg-light rounded-2 d-flex align-items-center justify-content-center text-muted" style="width: 62px; height: 46px;">
                                             <i class="bi bi-image"></i>
                                         </div>
                                     {% endif %}
@@ -219,7 +215,7 @@
                                             {{ property.title }} <i class="bi bi-box-arrow-up-right small text-muted"></i>
                                         </a>
                                     </div>
-                                    <span class="badge bg-light text-secondary border small">{{ property.get_property_type_display }}</span>
+                                    <span class="badge bg-light text-secondary border small mt-1">{{ property.get_property_type_display }}</span>
                                 </td>
                                 <td>
                                     <div class="fw-medium text-dark">{{ property.owner.get_full_name|default:property.owner.username }}</div>
@@ -234,7 +230,7 @@
                                 <td>
                                     <small class="text-muted">{{ property.date_listed|date:"d M Y" }}</small>
                                 </td>
-                                <td class="text-end pe-3">
+                                <td class="text-end pe-4">
                                     <div class="d-inline-flex gap-1">
                                         <form method="post" action="{% url 'core:dashboard_property_action' property.pk 'approve' %}">
                                             {% csrf_token %}
@@ -298,30 +294,30 @@
 <div class="row g-4 mb-4">
     <!-- Section 2: Flagged Content & Reports -->
     <div class="col-lg-7">
-        <div class="card border-0 shadow-sm rounded-3 h-100">
-            <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="badge bg-danger text-white p-2 rounded-circle"><i class="bi bi-flag"></i></span>
+        <div class="card border-0 shadow-sm rounded-4 h-100 admin-card">
+            <div class="card-header bg-white border-bottom py-4 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-danger text-white p-2 rounded-3"><i class="bi bi-flag fs-6"></i></span>
                     <div>
                         <h5 class="fw-bold mb-0">Flagged Listings & Reports</h5>
                         <small class="text-muted">User complaints and potential violations</small>
                     </div>
                 </div>
-                <a href="{% url 'core:dashboard_reports' %}" class="btn btn-outline-danger btn-sm fw-semibold">
+                <a href="{% url 'core:dashboard_reports' %}" class="btn btn-outline-danger btn-sm fw-semibold px-3">
                     All Reports ({{ stats.total_reports }})
                 </a>
             </div>
             <div class="card-body p-0">
                 {% if recent_reports %}
                     <div class="table-responsive">
-                        <table class="table table-hover align-middle mb-0">
+                        <table class="table table-hover align-middle mb-0 dashboard-table">
                             <thead class="table-light small text-uppercase text-muted">
                                 <tr>
                                     <th>Property</th>
                                     <th>Reason</th>
                                     <th>Reporter</th>
                                     <th>Date</th>
-                                    <th class="text-end pe-3">Action</th>
+                                    <th class="text-end pe-4">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -348,7 +344,7 @@
                                         <td>
                                             <small class="text-muted">{{ report.date_reported|date:"d M" }}</small>
                                         </td>
-                                        <td class="text-end pe-3">
+                                        <td class="text-end pe-4">
                                             <div class="dropdown">
                                                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                                                     Action
@@ -398,24 +394,24 @@
 
     <!-- Section 3: Recent Registered Users -->
     <div class="col-lg-5">
-        <div class="card border-0 shadow-sm rounded-3 h-100">
-            <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
-                <div class="d-flex align-items-center gap-2">
-                    <span class="badge bg-primary text-white p-2 rounded-circle"><i class="bi bi-people"></i></span>
+        <div class="card border-0 shadow-sm rounded-4 h-100 admin-card">
+            <div class="card-header bg-white border-bottom py-4 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-primary text-white p-2 rounded-3"><i class="bi bi-people fs-6"></i></span>
                     <div>
                         <h5 class="fw-bold mb-0">Recent Users</h5>
                         <small class="text-muted">New registrations & roles</small>
                     </div>
                 </div>
-                <a href="{% url 'core:dashboard_users' %}" class="btn btn-outline-secondary btn-sm fw-semibold">
+                <a href="{% url 'core:dashboard_users' %}" class="btn btn-outline-secondary btn-sm fw-semibold px-3">
                     Manage ({{ stats.total_users }})
                 </a>
             </div>
             <div class="card-body p-0">
                 <div class="list-group list-group-flush">
                     {% for u in recent_users %}
-                        <div class="list-group-item d-flex justify-content-between align-items-center py-2 px-3">
-                            <div class="d-flex align-items-center gap-2">
+                        <div class="list-group-item d-flex justify-content-between align-items-center py-3 px-4">
+                            <div class="d-flex align-items-center gap-3">
                                 <div class="avatar-circle avatar-circle-sm {% if u.is_admin_role %}bg-warning text-dark{% else %}bg-light text-success{% endif %}">
                                     {% if u.is_admin_role %}
                                         <i class="bi bi-shield-fill small"></i>
@@ -451,4 +447,3 @@
 </div>
 
 {% endblock %}
-
