@@ -133,6 +133,128 @@ class Report(models.Model):
         return f"Report on {self.property} by {self.reporter}"
 
 
+class ApplicationQuestion(models.Model):
+    """A per-listing question the owner adds to their rental application form."""
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="application_questions")
+    question = models.CharField(max_length=255)
+    required = models.BooleanField(default=True)
+    order = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order", "id"]
+
+    def __str__(self):
+        return f"{self.question} ({self.property.title})"
+
+
+class Application(models.Model):
+    """A tenant's rental application for a listing, collected digitally."""
+
+    class Status(models.TextChoices):
+        PENDING = "PENDING", "Pending"
+        APPROVED = "APPROVED", "Approved"
+        REJECTED = "REJECTED", "Rejected"
+        WITHDRAWN = "WITHDRAWN", "Withdrawn"
+
+    class EmploymentStatus(models.TextChoices):
+        EMPLOYED = "EMPLOYED", "Employed (full-time)"
+        PART_TIME = "PART_TIME", "Employed (part-time)"
+        SELF_EMPLOYED = "SELF_EMPLOYED", "Self-employed"
+        STUDENT = "STUDENT", "Student"
+        UNEMPLOYED = "UNEMPLOYED", "Unemployed"
+        RETIRED = "RETIRED", "Retired"
+
+    tenant = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="applications"
+    )
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="applications")
+
+    full_name = models.CharField(max_length=150)
+    phone = models.CharField(max_length=20)
+    email = models.EmailField(blank=True)
+    current_address = models.CharField(max_length=255, blank=True)
+
+    employment_status = models.CharField(
+        max_length=20, choices=EmploymentStatus.choices, default=EmploymentStatus.EMPLOYED
+    )
+    employer = models.CharField(max_length=150, blank=True)
+    monthly_income = models.DecimalField(
+        max_digits=12, decimal_places=2, null=True, blank=True,
+        help_text="Gross monthly income in TZS",
+    )
+    move_in_date = models.DateField(null=True, blank=True)
+
+    rental_history = models.TextField(
+        blank=True, help_text="Past addresses / landlords, or any recent rental history."
+    )
+    reference_name = models.CharField(max_length=150, blank=True)
+    reference_phone = models.CharField(max_length=20, blank=True)
+    notes = models.TextField(blank=True)
+    document = models.FileField(upload_to="application_documents/", blank=True)
+
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+    decision_note = models.TextField(blank=True)
+    decision_date = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "rental application"
+
+    def __str__(self):
+        return f"Application by {self.full_name} for {self.property}"
+
+
+class ApplicationAnswer(models.Model):
+    """A tenant's answer to one customizable application question."""
+    application = models.ForeignKey(Application, on_delete=models.CASCADE, related_name="answers")
+    question = models.ForeignKey(ApplicationQuestion, on_delete=models.CASCADE, related_name="answers")
+    answer = models.TextField()
+
+    class Meta:
+        unique_together = ("application", "question")
+
+    def __str__(self):
+        return f"{self.question.question}: {self.answer}"
+
+
+class ApplicationScreening(models.Model):
+    """Owner-only screening scorecard for an application."""
+    application = models.OneToOneField(
+        Application, on_delete=models.CASCADE, related_name="screening"
+    )
+    identity_verified = models.BooleanField(default=False)
+    income_verified = models.BooleanField(default=False)
+    references_checked = models.BooleanField(default=False)
+    employment_verified = models.BooleanField(default=False)
+    background_checked = models.BooleanField(default=False)
+    score = models.PositiveSmallIntegerField(default=0, help_text="0–100")
+    notes = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-updated_at"]
+
+    def __str__(self):
+        return f"Screening for {self.application}"
+
+    @property
+    def suggested_score(self):
+        checks = [
+            self.identity_verified,
+            self.income_verified,
+            self.references_checked,
+            self.employment_verified,
+            self.background_checked,
+        ]
+        return int(sum(checks) * 100 / 5)
+
+    @property
+    def passed(self):
+        return self.score >= 60
+
+
 class Review(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reviews"
@@ -168,6 +290,8 @@ class Notification(models.Model):
     @property
     def icon_class(self):
         text = self.message.lower()
+        if "application" in text:
+            return "bi-file-earmark-person-fill"
         if "message" in text:
             return "bi-chat-left-text-fill"
         if "inquiry" in text:
@@ -187,7 +311,7 @@ class Notification(models.Model):
         text = self.message.lower()
         if any(w in text for w in ("message", "inquiry")):
             return "info"
-        if any(w in text for w in ("viewing", "booking")):
+        if any(w in text for w in ("viewing", "booking", "application")):
             return "gold"
         if "report" in text:
             return "danger"

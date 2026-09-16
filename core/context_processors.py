@@ -1,6 +1,6 @@
 from django.db.models import Q
 
-from engagement.models import Message, Notification, Report
+from engagement.models import Application, Message, Notification, Report
 from properties.models import Property
 
 
@@ -8,6 +8,7 @@ def notifications(request):
     data = {
         "unread_notifications_count": 0,
         "unread_message_count": 0,
+        "pending_applications_count": 0,
         "admin_pending_properties_count": 0,
         "admin_pending_reports_count": 0,
     }
@@ -20,6 +21,10 @@ def notifications(request):
         ).filter(
             Q(conversation__tenant=request.user) | Q(conversation__owner=request.user)
         ).count()
+        if request.user.is_owner_agent:
+            data["pending_applications_count"] = Application.objects.filter(
+                property__owner=request.user, status=Application.Status.PENDING
+            ).count()
         if request.user.is_admin_role:
             data["admin_pending_properties_count"] = Property.objects.filter(
                 verification_status=Property.VerificationStatus.PENDING

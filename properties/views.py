@@ -4,7 +4,9 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import Http404
-from engagement.models import Favorite
+from django.utils import timezone
+from engagement.models import Application, Favorite
+from engagement.utils import notify
 from .models import Property, PropertyImage
 from .forms import PropertyForm, PropertySearchForm
 
@@ -86,11 +88,15 @@ def property_detail(request, pk):
         request.user.is_authenticated
         and Favorite.objects.filter(tenant=request.user, property=property_obj).exists()
     )
+    user_application = None
+    if request.user.is_authenticated and not is_owner:
+        user_application = property_obj.applications.filter(tenant=request.user).first()
     share_url = property_obj.get_absolute_url()
     return render(request, 'properties/detail.html', {
         'property': property_obj,
         'is_owner': is_owner,
         'is_favorited': is_favorited,
+        'user_application': user_application,
         'share_url': share_url,
     })
 
@@ -180,5 +186,17 @@ def property_toggle_rented(request, pk):
         property_obj.is_rented = not property_obj.is_rented
         property_obj.save(update_fields=['is_rented'])
         status = 'rented' if property_obj.is_rented else 'available'
+        # Long-term rentals (non-BNB): close out the application pipeline so the
+        # next vacancy starts fresh. Pending applicants are told the listing is gone.
+        if property_obj.is_rented and not property_obj.is_bnb:
+            pending = property_obj.applications.filter(status=Application.Status.PENDING)
+            for app in pending:
+                notify(app.tenant,
+                       f"Your application for '{property_obj.title}' was closed — the listing has been rented.")
+            pending.update(
+                status=Application.Status.REJECTED,
+                decision_note="Listing has been rented; applications are closed for this vacancy.",
+                decision_date=timezone.now(),
+            )
         messages.success(request, f'Property marked as {status}.')
     return redirect('properties:my_properties')

@@ -12,11 +12,30 @@ from django.utils import timezone
 from core.decorators import owner_agent_required
 from properties.models import Property
 
-from .forms import (BookingForm, InquiryForm, InquiryResponseForm, MessageForm,
-                    ReportForm, ReviewForm, ViewingRequestForm)
-from .models import (Booking, Conversation, Favorite, Inquiry, Message,
-                     Notification, Report, Review, ViewingRequest)
+from .forms import (ApplicationForm, ApplicationScreeningForm, BookingForm,
+                    InquiryForm, InquiryResponseForm, MessageForm, ReportForm,
+                    ReviewForm, ViewingRequestForm)
+from .models import (Application, ApplicationAnswer, ApplicationQuestion,
+                     ApplicationScreening, Booking, Conversation, Favorite,
+                     Inquiry, Message, Notification, Report, Review, ViewingRequest)
 from .utils import notify
+
+
+DEFAULT_APPLICATION_QUESTIONS = (
+    ("How long do you intend to rent for?", True),
+    ("How many people will be living there?", True),
+    ("Do you have any pets?", False),
+)
+
+
+def ensure_application_questions(property_obj):
+    """Idempotently add the default application questions to a listing."""
+    for text, required in DEFAULT_APPLICATION_QUESTIONS:
+        ApplicationQuestion.objects.get_or_create(
+            property=property_obj,
+            question=text,
+            defaults={"required": required, "order": 0},
+        )
 
 
 def booked_dates_for_property(property_obj, days=180):
@@ -229,6 +248,192 @@ def update_booking_status(request, pk, new_status):
            booking.property.get_absolute_url())
     messages.success(request, f"Booking {new_status.lower()}.")
     return redirect("engagement:booking_list")
+
+
+@login_required
+def apply_to_property(request, pk):
+    property_obj = get_object_or_404(Property, pk=pk)
+    if property_obj.owner == request.user:
+        messages.error(request, "You cannot apply to your own listing.")
+        return redirect("properties:detail", pk=pk)
+    if property_obj.is_rented:
+        messages.error(request, "This listing is currently unavailable for applications.")
+        return redirect("properties:detail", pk=pk)
+    if not (property_obj.is_available and property_obj.is_verified):
+        messages.error(request, "This listing is not currently accepting applications.")
+        return redirect("properties:detail", pk=pk)
+
+    ensure_application_questions(property_obj)
+    questions = property_obj.application_questions.all()
+
+    active = Application.objects.filter(
+        tenant=request.user, property=property_obj, status=Application.Status.PENDING
+    )
+    if active.exists():
+        messages.info(request, "You already have a pending application for this listing.")
+        return redirect("engagement:application_detail", pk=active.first().pk)
+
+    answers_data = {}
+    if request.method == "POST":
+        form = ApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.tenant = request.user
+            application.property = property_obj
+            application.save()
+            for question in questions:
+                value = request.POST.get(f"question_{question.pk}", "").strip()
+                if value:
+                    ApplicationAnswer.objects.create(
+                        application=application, question=question, answer=value
+                    )
+            notify(
+                property_obj.owner,
+                f"New rental application from {application.full_name} for '{property_obj.title}'",
+                reverse("engagement:application_detail", args=[application.pk]),
+            )
+            messages.success(request, "Your application has been submitted to the owner/agent.")
+            return redirect("engagement:application_detail", pk=application.pk)
+        for question in questions:
+            value = request.POST.get(f"question_{question.pk}", "").strip()
+            if value:
+                answers_data[question.pk] = value
+    else:
+        form = ApplicationForm(initial={
+            "full_name": request.user.get_full_name() or request.user.username,
+            "email": request.user.email,
+            "phone": request.user.phone_number,
+        })
+    question_list = [
+        {"id": q.pk, "text": q.question, "required": q.required,
+         "value": answers_data.get(q.pk, "")}
+        for q in questions
+    ]
+    return render(request, "engagement/application_form.html", {
+        "form": form,
+        "property": property_obj,
+        "question_list": question_list,
+    })
+
+
+@login_required
+def application_list(request):
+    if request.user.is_owner_agent:
+        applications = Application.objects.filter(property__owner=request.user).select_related(
+            "property", "tenant"
+        )
+    else:
+        applications = Application.objects.filter(tenant=request.user).select_related("property")
+    pending_count = applications.filter(status=Application.Status.PENDING).count()
+    return render(request, "engagement/application_list.html", {
+        "applications": applications,
+        "pending_count": pending_count,
+    })
+
+
+@login_required
+def application_detail(request, pk):
+    application = get_object_or_404(
+        Application.objects.select_related("property", "property__owner", "tenant")
+        .prefetch_related("answers", "answers__question"),
+        pk=pk,
+    )
+    if request.user != application.tenant and request.user != application.property.owner:
+        messages.error(request, "You do not have access to that application.")
+        return redirect("core:home")
+    is_owner = request.user == application.property.owner
+    return render(request, "engagement/application_detail.html", {
+        "application": application,
+        "is_owner": is_owner,
+    })
+
+
+@owner_agent_required
+def update_application_status(request, pk, new_status):
+    application = get_object_or_404(Application, pk=pk, property__owner=request.user)
+    if new_status not in (Application.Status.APPROVED, Application.Status.REJECTED):
+        messages.error(request, "Invalid status.")
+        return redirect("engagement:application_list")
+    application.status = new_status
+    application.decision_date = timezone.now()
+    note = (request.POST.get("note") or "").strip()
+    if note:
+        application.decision_note = note
+    application.save()
+    verb = "approved" if new_status == Application.Status.APPROVED else "rejected"
+    notify(application.tenant, f"Your application for '{application.property.title}' was {verb}.",
+           reverse("engagement:application_detail", args=[application.pk]))
+    messages.success(request, f"Application {verb}.")
+    return redirect("engagement:application_detail", pk=pk)
+
+
+@owner_agent_required
+def manage_questions(request, pk):
+    property_obj = get_object_or_404(Property, pk=pk, owner=request.user)
+    ensure_application_questions(property_obj)
+    questions = property_obj.application_questions.all()
+    if request.method == "POST":
+        text = (request.POST.get("question") or "").strip()
+        required = request.POST.get("required") == "1"
+        if not text:
+            messages.error(request, "Question text cannot be empty.")
+        elif len(text) > 255:
+            messages.error(request, "Question is too long (max 255 characters).")
+        else:
+            ApplicationQuestion.objects.create(
+                property=property_obj, question=text, required=required
+            )
+            messages.success(request, "Application question added.")
+        return redirect("engagement:manage_questions", pk=pk)
+    return render(request, "engagement/question_manager.html", {
+        "property": property_obj,
+        "questions": questions,
+    })
+
+
+@owner_agent_required
+def delete_question(request, pk):
+    question = get_object_or_404(ApplicationQuestion, pk=pk)
+    if question.property.owner != request.user:
+        messages.error(request, "You do not have permission to change that question.")
+        return redirect("core:home")
+    property_pk = question.property.pk
+    question.delete()
+    messages.success(request, "Application question removed.")
+    return redirect("engagement:manage_questions", pk=property_pk)
+
+
+@owner_agent_required
+def toggle_question_required(request, pk):
+    question = get_object_or_404(ApplicationQuestion, pk=pk)
+    if question.property.owner != request.user:
+        messages.error(request, "You do not have permission to change that question.")
+        return redirect("core:home")
+    question.required = not question.required
+    question.save(update_fields=["required"])
+    return redirect("engagement:manage_questions", pk=question.property.pk)
+
+
+@owner_agent_required
+def run_screening(request, pk):
+    application = get_object_or_404(
+        Application.objects.select_related("property"), pk=pk, property__owner=request.user
+    )
+    screening = ApplicationScreening.objects.filter(application=application).first()
+    if request.method == "POST":
+        form = ApplicationScreeningForm(request.POST, instance=screening)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.application = application
+            instance.save()
+            messages.success(request, "Tenant screening saved.")
+            return redirect("engagement:application_detail", pk=pk)
+    else:
+        form = ApplicationScreeningForm(instance=screening)
+    return render(request, "engagement/screening_form.html", {
+        "form": form,
+        "application": application,
+    })
 
 
 @login_required

@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Apply to Rent — {{ property.title }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Rental Application</h2>
+    <a href="{% url 'properties:detail' property.pk %}" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left"></i> Back to listing
+    </a>
+</div>
+
+<div class="alert alert-info">
+    <i class="bi bi-info-circle-fill me-1"></i>
+    Applying to <strong>{{ property.title }}</strong> — {{ property.city }}, {{ property.region }}.
+    Your answers go straight to the owner/agent for review.
+</div>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+        <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+    {% endif %}
+
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-person-vcard me-1"></i> Personal details</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Full name *</label>
+                    {{ form.full_name }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Phone number *</label>
+                    {{ form.phone }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    {{ form.email }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Current address</label>
+                    {{ form.current_address }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-cash-coin me-1"></i> Employment &amp; income</h5>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Employment status *</label>
+                    {{ form.employment_status }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Employer</label>
+                    {{ form.employer }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Monthly income (TZS)</label>
+                    {{ form.monthly_income }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Desired move-in date</label>
+                    {{ form.move_in_date }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-clock-history me-1"></i> Rental history &amp; references</h5>
+            <div class="mb-3">
+                <label class="form-label">Rental history — previous addresses / landlords</label>
+                {{ form.rental_history }}
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Reference name</label>
+                    {{ form.reference_name }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Reference phone</label>
+                    {{ form.reference_phone }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% if question_list %}
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-ui-checks me-1"></i> Questions from the owner</h5>
+            {% for q in question_list %}
+                <div class="mb-3">
+                    <label class="form-label">{{ q.text }}{% if q.required %} <span class="text-danger">*</span>{% endif %}</label>
+                    <input type="text" name="question_{{ q.id }}" class="form-control"
+                           {% if q.required %}required{% endif %}
+                           value="{{ q.value }}">
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-paperclip me-1"></i> Documents &amp; notes</h5>
+            <div class="mb-3">
+                <label class="form-label">Supporting document (optional)</label>
+                {{ form.document }}
+                <div class="form-text">e.g. pay stub, employment letter, NIDA ID scan. Max 10 MB.</div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Notes</label>
+                {{ form.notes }}
+            </div>
+        </div>
+    </div>
+
+    <div class="d-grid gap-2 d-md-flex">
+        <button type="submit" class="btn btn-primary btn-lg px-4"><i class="bi bi-check2-circle"></i> Submit Application</button>
+        <a href="{% url 'properties:detail' property.pk %}" class="btn btn-lg btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+{% endblock %}

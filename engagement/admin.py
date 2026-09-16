@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from .models import Booking, Favorite, Inquiry, Notification, Report, Review, ViewingRequest
+from .models import (Application, ApplicationAnswer, ApplicationQuestion,
+                     ApplicationScreening, Booking, Favorite, Inquiry,
+                     Notification, Report, Review, ViewingRequest)
 
 
 @admin.register(Favorite)
@@ -54,3 +56,26 @@ class ReviewAdmin(admin.ModelAdmin):
 class NotificationAdmin(admin.ModelAdmin):
     list_display = ["user", "message", "is_read", "created_at"]
     list_filter = ["is_read"]
+
+
+@admin.register(ApplicationQuestion)
+class ApplicationQuestionAdmin(admin.ModelAdmin):
+    list_display = ["question", "property", "required", "order"]
+
+
+class ApplicationAnswerInline(admin.TabularInline):
+    model = ApplicationAnswer
+    extra = 0
+
+
+@admin.register(Application)
+class ApplicationAdmin(admin.ModelAdmin):
+    list_display = ["full_name", "property", "status", "monthly_income", "created_at"]
+    list_filter = ["status", "employment_status"]
+    search_fields = ["full_name", "phone", "email", "property__title"]
+    inlines = [ApplicationAnswerInline]
+
+
+@admin.register(ApplicationScreening)
+class ApplicationScreeningAdmin(admin.ModelAdmin):
+    list_display = ["application", "score", "passed", "updated_at"]

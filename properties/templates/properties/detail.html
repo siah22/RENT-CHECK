@@ -112,10 +112,16 @@
         {% if is_owner %}
             <div class="d-grid gap-2">
                 <a href="{% url 'properties:edit' property.pk %}" class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Edit Listing</a>
+                <a href="{% url 'engagement:manage_questions' property.pk %}" class="btn btn-outline-secondary"><i class="bi bi-ui-checks"></i> Application Questions</a>
                 <a href="{% url 'properties:delete' property.pk %}" class="btn btn-outline-danger"><i class="bi bi-trash3"></i> Delete Listing</a>
             </div>
         {% elif user.is_authenticated %}
             <div class="d-grid gap-2 mb-3">
+                {% if user_application %}
+                    <span class="badge {% if user_application.status == 'APPROVED' %}bg-success{% elif user_application.status == 'REJECTED' %}bg-danger{% else %}bg-warning text-dark{% endif %} fs-6 py-2">
+                        Your application is {{ user_application.get_status_display }}
+                    </span>
+                {% endif %}
                 <form method="post" action="{% url 'engagement:toggle_favorite' property.pk %}">
                     {% csrf_token %}
                     <button class="btn {% if is_favorited %}btn-danger{% else %}btn-outline-danger{% endif %} w-100" type="submit">
@@ -123,6 +129,9 @@
                         {% if is_favorited %}Remove Favorite{% else %}Save to Favorites{% endif %}
                     </button>
                 </form>
+                {% if not property.is_bnb and not property.is_rented %}
+                    <a class="btn btn-primary" href="{% url 'engagement:apply' property.pk %}"><i class="bi bi-file-earmark-person"></i> Apply to Rent</a>
+                {% endif %}
                 <a class="btn btn-success" href="{% url 'engagement:send_inquiry' property.pk %}"><i class="bi bi-chat-dots-fill"></i> Contact Owner / Agent</a>
                 <a class="btn btn-outline-success" href="{% url 'engagement:start_conversation' property.pk %}"><i class="bi bi-chat-left-text"></i> Message Owner</a>
                 {% if property.is_bnb %}

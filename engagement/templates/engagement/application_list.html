@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Applications — RentCheck Tanzania{% endblock %}
+{% block content %}
+<h2 class="mb-3"><i class="bi bi-file-earmark-person"></i> Rental Applications</h2>
+
+{% if pending_count %}
+<div class="alert alert-warning d-flex align-items-center">
+    <i class="bi bi-hourglass-split me-2"></i>
+    {% if user.is_owner_agent %}
+        You have <strong>{{ pending_count }}</strong> pending application{{ pending_count|pluralize }} awaiting review.
+    {% else %}
+        You have <strong>{{ pending_count }}</strong> pending application{{ pending_count|pluralize }}.
+    {% endif %}
+</div>
+{% endif %}
+
+<div class="table-responsive">
+<table class="table bg-white align-middle">
+    <thead>
+        <tr>
+            {% if user.is_owner_agent %}<th>Applicant</th>{% endif %}
+            <th>Property</th>
+            <th>Move-in</th>
+            <th>Monthly income</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for application in applications %}
+        <tr>
+            {% if user.is_owner_agent %}
+            <td>
+                <strong>{{ application.full_name }}</strong>
+                <br><small class="text-muted">@{{ application.tenant.username }} · {{ application.phone }}</small>
+            </td>
+            {% endif %}
+            <td><a href="{% url 'properties:detail' application.property.pk %}">{{ application.property.title }}</a></td>
+            <td>{% if application.move_in_date %}{{ application.move_in_date|date:"d M Y" }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+            <td>{% if application.monthly_income %}TZS {{ application.monthly_income|floatformat:0 }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+            <td>
+                {% if application.status == "APPROVED" %}<span class="badge bg-success">Approved</span>
+                {% elif application.status == "REJECTED" %}<span class="badge bg-danger">Rejected</span>
+                {% elif application.status == "WITHDRAWN" %}<span class="badge bg-secondary">Withdrawn</span>
+                {% else %}<span class="badge bg-warning text-dark">Pending</span>{% endif %}
+            </td>
+            <td class="d-flex flex-wrap gap-1">
+                <a href="{% url 'engagement:application_detail' application.pk %}" class="btn btn-sm btn-outline-success">
+                    {% if user.is_owner_agent %}Review{% else %}View{% endif %}
+                </a>
+                {% if user.is_owner_agent and application.status == 'PENDING' %}
+                    <form method="post" action="{% url 'engagement:update_application_status' application.pk 'APPROVED' %}">
+                        {% csrf_token %}<button class="btn btn-sm btn-success" type="submit">Approve</button>
+                    </form>
+                    <form method="post" action="{% url 'engagement:update_application_status' application.pk 'REJECTED' %}">
+                        {% csrf_token %}<button class="btn btn-sm btn-outline-danger" type="submit">Reject</button>
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="{% if user.is_owner_agent %}6{% else %}5{% endif %}" class="text-muted text-center py-4">
+                <i class="bi bi-file-earmark-x display-6 d-block mb-2"></i>
+                {% if user.is_owner_agent %}
+                    No applications yet. Share your listing so tenants can apply.
+                {% else %}
+                    You haven't applied to any properties yet.
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

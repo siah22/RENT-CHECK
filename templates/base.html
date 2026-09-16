@@ -93,11 +93,14 @@
                             </li>
                         {% endif %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle {% if vn == 'engagement:inquiry_list' or vn == 'engagement:viewing_list' or vn == 'engagement:booking_list' %}active{% endif %}"
+                            <a class="nav-link dropdown-toggle {% if vn == 'engagement:inquiry_list' or vn == 'engagement:viewing_list' or vn == 'engagement:booking_list' or vn == 'engagement:application_list' %}active{% endif %}"
                                href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-collection"></i> Activity
                             </a>
                             <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'engagement:application_list' %}"><i class="bi bi-file-earmark-person"></i> Applications
+                                    {% if pending_applications_count %}<span class="badge bg-warning text-dark ms-1">{{ pending_applications_count }}</span>{% endif %}
+                                </a></li>
                                 <li><a class="dropdown-item" href="{% url 'engagement:inquiry_list' %}"><i class="bi bi-chat-dots"></i> Inquiries</a></li>
                                 <li><a class="dropdown-item" href="{% url 'engagement:viewing_list' %}"><i class="bi bi-calendar-check"></i> Viewings</a></li>
                                 <li><a class="dropdown-item" href="{% url 'engagement:booking_list' %}"><i class="bi bi-calendar2-check"></i> Bookings</a></li>

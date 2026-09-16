@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Tenant Screening — {{ application.full_name }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Tenant Screening</h2>
+    <a href="{% url 'engagement:application_detail' application.pk %}" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left"></i> Back to application
+    </a>
+</div>
+
+<div class="alert alert-info">
+    <i class="bi bi-shield-check me-1"></i>
+    Screening <strong>{{ application.full_name }}</strong> for
+    <a href="{% url 'properties:detail' application.property.pk %}">{{ application.property.title }}</a>.
+    Tick the checks you have completed, then score the applicant out of 100. (Score of 60+ passes.)
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card shadow-sm mb-3">
+                <div class="card-body">
+                    <h6 class="card-title"><i class="bi bi-list-check"></i> Checks performed</h6>
+                    <div class="form-check mb-2">
+                        {{ form.identity_verified }}
+                        <label class="form-check-label" for="{{ form.identity_verified.id_for_label }}">ID / identity verified (e.g. NIDA)</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        {{ form.income_verified }}
+                        <label class="form-check-label" for="{{ form.income_verified.id_for_label }}">Income verified (payslips / statements)</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        {{ form.references_checked }}
+                        <label class="form-check-label" for="{{ form.references_checked.id_for_label }}">References contacted</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        {{ form.employment_verified }}
+                        <label class="form-check-label" for="{{ form.employment_verified.id_for_label }}">Employment verified</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        {{ form.background_checked }}
+                        <label class="form-check-label" for="{{ form.background_checked.id_for_label }}">Background / rental history checked</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-3">
+                <div class="card-body">
+                    <h6 class="card-title"><i class="bi bi-pencil-square"></i> Notes</h6>
+                    {{ form.notes }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card shadow-sm mb-3">
+                <div class="card-body text-center">
+                    <h6 class="card-title"><i class="bi bi-mortarboard"></i> Score</h6>
+                    <div class="fs-1 fw-bold mb-1">
+                        {{ form.score }}
+                    </div>
+                    <div class="form-text">Enter a score from 0–100.</div>
+                    {% if form.instance and form.instance.pk %}
+                        <div class="badge {% if form.instance.suggested_score >= 100 %}bg-success{% else %}bg-secondary{% endif %} fs-6 mt-2">
+                            Suggested: {{ form.instance.suggested_score }}/100 ({{ form.instance.suggested_score }}% of checks done)
+                        </div>
+                    {% endif %}
+                    <button type="submit" class="btn btn-primary w-100 mt-3"><i class="bi bi-save"></i> Save Screening</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -20,6 +20,16 @@ urlpatterns = [
     path("bookings/new/<int:pk>/", views.request_booking, name="request_booking"),
     path("bookings/<int:pk>/status/<str:new_status>/", views.update_booking_status, name="update_booking_status"),
 
+    path("applications/", views.application_list, name="application_list"),
+    path("applications/apply/<int:pk>/", views.apply_to_property, name="apply"),
+    path("applications/<int:pk>/", views.application_detail, name="application_detail"),
+    path("applications/<int:pk>/status/<str:new_status>/", views.update_application_status, name="update_application_status"),
+    path("applications/<int:pk>/screening/", views.run_screening, name="run_screening"),
+
+    path("questions/manage/<int:pk>/", views.manage_questions, name="manage_questions"),
+    path("questions/delete/<int:pk>/", views.delete_question, name="delete_question"),
+    path("questions/toggle/<int:pk>/", views.toggle_question_required, name="toggle_question_required"),
+
     path("reports/new/<int:pk>/", views.report_property, name="report_property"),
     path("reviews/new/<int:pk>/", views.add_review, name="add_review"),
 
