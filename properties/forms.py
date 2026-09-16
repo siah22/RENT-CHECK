@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 
 from .models import Amenity, Property
 
@@ -32,7 +33,7 @@ class PropertyForm(forms.ModelForm):
         model = Property
         fields = [
             "title", "description", "property_type", "region", "city", "address",
-            "price", "bedrooms", "bathrooms", "size_sqm", "amenities",
+            "price", "bedrooms", "bathrooms", "size_sqm", "amenities", "tenancy_rules",
         ]
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control"}),
@@ -46,9 +47,11 @@ class PropertyForm(forms.ModelForm):
             "bathrooms": forms.NumberInput(attrs={"class": "form-control"}),
             "size_sqm": forms.NumberInput(attrs={"class": "form-control"}),
             "amenities": forms.CheckboxSelectMultiple(),
+            "tenancy_rules": forms.Textarea(attrs={"class": "form-control", "rows": 8}),
         }
         help_texts = {
-            "price": "Monthly rent, or price per night for Airbnb / Short Stay listings.",
+            "price": _("Monthly rent, or price per night for Airbnb / Short Stay listings."),
+            "tenancy_rules": _("Rules tenants agree to when applying (deposit, notice period, house rules, etc.)."),
         }
 
     def __init__(self, *args, **kwargs):
@@ -61,23 +64,23 @@ class PropertyForm(forms.ModelForm):
 
 
 class PropertySearchForm(forms.Form):
-    q = forms.CharField(required=False, label="Keyword",
-                         widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Location, title..."}))
+    q = forms.CharField(required=False, label=_("Keyword"),
+                         widget=forms.TextInput(attrs={"class": "form-control", "placeholder": _("Location, title...")}))
     property_type = forms.ChoiceField(
         required=False,
-        choices=[("", "Any type")] + list(Property.PropertyType.choices),
+        choices=[("", _("Any type"))] + list(Property.PropertyType.choices),
         widget=forms.Select(attrs={"class": "form-select"}),
     )
     min_price = forms.DecimalField(required=False, widget=forms.NumberInput(
-        attrs={"class": "form-control", "placeholder": "Min price"}))
+        attrs={"class": "form-control", "placeholder": _("Min price")}))
     max_price = forms.DecimalField(required=False, widget=forms.NumberInput(
-        attrs={"class": "form-control", "placeholder": "Max price"}))
+        attrs={"class": "form-control", "placeholder": _("Max price")}))
     bedrooms = forms.IntegerField(required=False, widget=forms.NumberInput(
-        attrs={"class": "form-control", "placeholder": "Min bedrooms"}))
+        attrs={"class": "form-control", "placeholder": _("Min bedrooms")}))
     bathrooms = forms.IntegerField(required=False, widget=forms.NumberInput(
-        attrs={"class": "form-control", "placeholder": "Min bathrooms"}))
+        attrs={"class": "form-control", "placeholder": _("Min bathrooms")}))
     min_size = forms.DecimalField(required=False, widget=forms.NumberInput(
-        attrs={"class": "form-control", "placeholder": "Min size (sqm)"}))
+        attrs={"class": "form-control", "placeholder": _("Min size (sqm)")}))
     amenities = forms.ModelMultipleChoiceField(
         required=False, queryset=Amenity.objects.all(),
         widget=forms.CheckboxSelectMultiple(),
@@ -85,10 +88,10 @@ class PropertySearchForm(forms.Form):
     sort = forms.ChoiceField(
         required=False,
         choices=[
-            ("-date_listed", "Newest first"),
-            ("price", "Price: low to high"),
-            ("-price", "Price: high to low"),
-            ("-size_sqm", "Size: largest first"),
+            ("-date_listed", _("Newest first")),
+            ("price", _("Price: low to high")),
+            ("-price", _("Price: high to low")),
+            ("-size_sqm", _("Size: largest first")),
         ],
         widget=forms.Select(attrs={"class": "form-select"}),
     )

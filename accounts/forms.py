@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.utils.translation import gettext_lazy as _
 
 from .models import User
 
@@ -7,8 +8,8 @@ from .models import User
 class RegistrationForm(UserCreationForm):
     role = forms.ChoiceField(
         choices=[
-            (User.Role.TENANT, "Tenant — I'm looking for a property"),
-            (User.Role.OWNER_AGENT, "Owner / Agent — I list properties"),
+            (User.Role.TENANT, _("Tenant — I'm looking for a property")),
+            (User.Role.OWNER_AGENT, _("Owner / Agent — I list properties")),
         ]
     )
 

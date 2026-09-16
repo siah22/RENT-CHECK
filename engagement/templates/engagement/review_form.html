@@ -1,18 +1,19 @@
 {% extends "base.html" %}
-{% block title %}Review — {{ property.title }}{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Review" %} — {{ property.title }}{% endblock %}
 {% block content %}
-<h2>Review "{{ property.title }}"</h2>
+<h2>{% blocktrans with title=property.title %}Review "{{ title }}"{% endblocktrans %}</h2>
 <form method="post">
     {% csrf_token %}
     <div class="mb-3">
-        <label class="form-label">Rating</label>
+        <label class="form-label">{% trans "Rating" %}</label>
         {{ form.rating }}
     </div>
     <div class="mb-3">
-        <label class="form-label">Comment</label>
+        <label class="form-label">{% trans "Comment" %}</label>
         {{ form.comment }}
     </div>
-    <button type="submit" class="btn btn-success">Submit Review</button>
-    <a href="{% url 'properties:detail' property.pk %}" class="btn btn-link">Cancel</a>
+    <button type="submit" class="btn btn-success">{% trans "Submit Review" %}</button>
+    <a href="{% url 'properties:detail' property.pk %}" class="btn btn-link">{% trans "Cancel" %}</a>
 </form>
 {% endblock %}

@@ -1,0 +1,2259 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: RentCheck 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-16 10:51+0300\n"
+"PO-Revision-Date: 2026-09-16 10:00+0300\n"
+"Last-Translator: RentCheck Team\n"
+"Language-Team: Kiswahili <translations@rentcheck.example>\n"
+"Language: sw\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\PEPE\settings.py:140 .\templates\_language_switch.html:9
+msgid "English"
+msgstr "English"
+
+#: .\PEPE\settings.py:141 .\templates\_language_switch.html:7
+msgid "Kiswahili"
+msgstr "Kiswahili"
+
+#: .\accounts\forms.py:11
+msgid "Tenant — I'm looking for a property"
+msgstr "Mpangaji — Natafuta nyumba"
+
+#: .\accounts\forms.py:12
+msgid "Owner / Agent — I list properties"
+msgstr "Mmiliki / Wakala — Ninatangaza nyumba"
+
+#: .\accounts\models.py:16 .\accounts\templates\accounts\profile.html:25 .\core\templates\core\dashboard.html:435 .\core\templates\core\dashboard_users.html:112 .\engagement\templates\engagement\inquiry_list.html:10 .\engagement\templates\engagement\viewing_list.html:9
+msgid "Tenant"
+msgstr "Mpangaji"
+
+#: .\accounts\models.py:17 .\accounts\templates\accounts\profile.html:23 .\core\templates\core\dashboard_users.html:110
+msgid "Owner / Agent"
+msgstr "Mmiliki / Wakala"
+
+#: .\accounts\models.py:18 .\accounts\models.py:51 .\accounts\templates\accounts\profile.html:21 .\core\templates\core\dashboard_users.html:108
+msgid "Administrator"
+msgstr "Msimamizi"
+
+#: .\accounts\models.py:21 .\core\templates\core\dashboard_users.html:117
+msgid "Active"
+msgstr "Inatumika"
+
+#: .\accounts\models.py:22 .\accounts\templates\accounts\profile.html:30 .\core\templates\core\dashboard_users.html:119
+msgid "Suspended"
+msgstr "Imesimamishwa"
+
+#: .\accounts\templates\accounts\login.html:3
+msgid "Login — RentCheck Tanzania"
+msgstr "Ingia — RentCheck Tanzania"
+
+#: .\accounts\templates\accounts\login.html:13
+msgid "Welcome Back"
+msgstr "Karibu Tena"
+
+#: .\accounts\templates\accounts\login.html:14
+msgid "Sign in to your RentCheck account"
+msgstr "Ingia kwenye akaunti yako ya RentCheck"
+
+#: .\accounts\templates\accounts\login.html:19
+msgid "Username"
+msgstr "Jina la mtumiaji"
+
+#: .\accounts\templates\accounts\login.html:23
+msgid "Enter your username"
+msgstr "Weka jina lako la mtumiaji"
+
+#: .\accounts\templates\accounts\login.html:27
+msgid "Password"
+msgstr "Nenosiri"
+
+#: .\accounts\templates\accounts\login.html:31
+msgid "Enter your password"
+msgstr "Weka nenosiri lako"
+
+#: .\accounts\templates\accounts\login.html:32 .\accounts\templates\accounts\register.html:24 .\templates\registration\password_reset_confirm.html:27
+msgid "Show/Hide password"
+msgstr "Onyesha/Ficha nenosiri"
+
+#: .\accounts\templates\accounts\login.html:39
+msgid "Forgot password?"
+msgstr "Umesahau nenosiri?"
+
+#: .\accounts\templates\accounts\login.html:46 .\templates\registration\password_reset_complete.html:17
+msgid "Sign In"
+msgstr "Ingia"
+
+#: .\accounts\templates\accounts\login.html:50
+msgid "Don't have an account?"
+msgstr "Huna akaunti?"
+
+#: .\accounts\templates\accounts\login.html:51
+msgid "Sign up here"
+msgstr "Jisajili hapa"
+
+#: .\accounts\templates\accounts\profile.html:3
+msgid "My Profile — RentCheck Tanzania"
+msgstr "Wasifu Wangu — RentCheck Tanzania"
+
+#: .\accounts\templates\accounts\profile.html:28
+msgid "Active Account"
+msgstr "Akaunti Inatumika"
+
+#: .\accounts\templates\accounts\profile.html:38
+msgid "You have administrative privileges."
+msgstr "Una ruhusa za usimamizi."
+
+#: .\accounts\templates\accounts\profile.html:39 .\templates\base.html:139
+msgid "Admin Dashboard"
+msgstr "Dashibodi ya Msimamizi"
+
+#: .\accounts\templates\accounts\profile.html:56
+msgid "Save Changes"
+msgstr "Hifadhi Mabadiliko"
+
+#: .\accounts\templates\accounts\profile.html:60
+msgid "Back to Dashboard"
+msgstr "Rudi kwenye Dashibodi"
+
+#: .\accounts\templates\accounts\register.html:3
+msgid "Register — RentCheck Tanzania"
+msgstr "Jisajili — RentCheck Tanzania"
+
+#: .\accounts\templates\accounts\register.html:13
+msgid "Create an Account"
+msgstr "Unda Akaunti"
+
+#: .\accounts\templates\accounts\register.html:14
+msgid "Join RentCheck Tanzania to discover or list properties"
+msgstr "Jiunge na RentCheck Tanzania kugundua au kutangaza nyumba"
+
+#: .\accounts\templates\accounts\register.html:40
+msgid "Complete Registration"
+msgstr "Kamilisha Usajili"
+
+#: .\accounts\templates\accounts\register.html:44
+msgid "Already have an account?"
+msgstr "Tayari una akaunti?"
+
+#: .\accounts\templates\accounts\register.html:45
+msgid "Login here"
+msgstr "Ingia hapa"
+
+#: .\accounts\views.py:72
+msgid "Welcome to RentCheck Tanzania! Your account has been created."
+msgstr "Karibu kwenye RentCheck Tanzania! Akaunti yako imeundwa."
+
+#: .\accounts\views.py:85
+msgid "Profile updated successfully."
+msgstr "Wasifu umesasishwa kikamilifu."
+
+#: .\core\decorators.py:15
+msgid "You do not have permission to access that page."
+msgstr "Huna ruhusa ya kufikia ukurasa huo."
+
+#: .\core\decorators.py:32
+msgid "Administrator access required."
+msgstr "Ruhusa ya msimamizi inahitajika."
+
+#: .\core\templates\core\dashboard.html:3
+msgid "Admin Control Center — RentCheck Tanzania"
+msgstr "Kituo cha Udhibiti cha Msimamizi — RentCheck Tanzania"
+
+#: .\core\templates\core\dashboard.html:11
+msgid "Administrator Control Center"
+msgstr "Kituo cha Udhibiti cha Msimamizi"
+
+#: .\core\templates\core\dashboard.html:12
+msgid "Live System"
+msgstr "Mfumo Halisi"
+
+#: .\core\templates\core\dashboard.html:14
+#, python-format
+msgid "Hello, %(name)s"
+msgstr "Habari, %(name)s"
+
+#: .\core\templates\core\dashboard.html:16
+msgid "Manage Tanzania's verified rental listings, user accounts, and platform integrity from one centralized console."
+msgstr "Dhibiti matangazo ya ukodishaji yaliyothibitishwa ya Tanzania, akaunti za watumiaji, na uadilifu wa jukwaa kutoka kituo kimoja kikuu."
+
+#: .\core\templates\core\dashboard.html:21 .\templates\base.html:46
+msgid "Verify Listings"
+msgstr "Thibitisha Matangazo"
+
+#: .\core\templates\core\dashboard.html:27 .\core\templates\core\dashboard_reports.html:10 .\templates\base.html:54 .\templates\base.html:203
+msgid "Reports"
+msgstr "Ripoti"
+
+#: .\core\templates\core\dashboard.html:33 .\core\templates\core\dashboard_users.html:10 .\templates\base.html:62 .\templates\base.html:206
+msgid "Users"
+msgstr "Watumiaji"
+
+#: .\core\templates\core\dashboard.html:36 .\core\templates\core\dashboard_properties.html:20 .\core\templates\core\dashboard_reports.html:20 .\core\templates\core\dashboard_users.html:20 .\templates\base.html:67 .\templates\base.html:141
+msgid "Django Admin"
+msgstr "Msimamizi wa Django"
+
+#: .\core\templates\core\dashboard.html:39
+msgid "Preview Site"
+msgstr "Onyesha Tovuti"
+
+#: .\core\templates\core\dashboard.html:51
+msgid "Awaiting Verification"
+msgstr "Inasubiri Uthibitisho"
+
+#: .\core\templates\core\dashboard.html:57
+msgid "Requires admin review"
+msgstr "Inahitaji mapitio ya msimamizi"
+
+#: .\core\templates\core\dashboard.html:59
+msgid "All listings up to date"
+msgstr "Matangazo yote yamejulikana"
+
+#: .\core\templates\core\dashboard.html:69
+msgid "Review listings"
+msgstr "Pitia matangazo"
+
+#: .\core\templates\core\dashboard.html:79
+msgid "Pending Reports"
+msgstr "Ripoti Zinazosubiri"
+
+#: .\core\templates\core\dashboard.html:85
+msgid "Unresolved user flags"
+msgstr "Malalamiko ya watumiaji ambayo hayajatatuliwa"
+
+#: .\core\templates\core\dashboard.html:87
+msgid "Zero unresolved flags"
+msgstr "Hakuna malalamiko yasiyotatuliwa"
+
+#: .\core\templates\core\dashboard.html:97
+msgid "Review reports"
+msgstr "Pitia ripoti"
+
+#: .\core\templates\core\dashboard.html:107 .\core\templates\core\home.html:46
+msgid "Verified Listings"
+msgstr "Matangazo Yaliyothibitishwa"
+
+#: .\core\templates\core\dashboard.html:110
+#, python-format
+msgid "%(active)s active for rent"
+msgstr "%(active)s yanapatikana kwa kukodishwa"
+
+#: .\core\templates\core\dashboard.html:119
+msgid "View verified properties"
+msgstr "Tazama nyumba zilizothibitishwa"
+
+#: .\core\templates\core\dashboard.html:129
+msgid "Total Accounts"
+msgstr "Jumla ya Akaunti"
+
+#: .\core\templates\core\dashboard.html:132
+#, python-format
+msgid "%(tenants)s Tenants &middot; %(owners)s Landlords"
+msgstr "%(tenants)s Wapangaji &middot; %(owners)s Wamiliki"
+
+#: .\core\templates\core\dashboard.html:141
+msgid "Manage users"
+msgstr "Dhibiti watumiaji"
+
+#: .\core\templates\core\dashboard.html:153
+msgid "Total Properties"
+msgstr "Jumla ya Nyumba"
+
+#: .\core\templates\core\dashboard.html:157
+msgid "Available Now"
+msgstr "Inapatikana Sasa"
+
+#: .\core\templates\core\dashboard.html:161
+msgid "Rejected Listings"
+msgstr "Matangazo Yaliyokataliwa"
+
+#: .\core\templates\core\dashboard.html:165
+msgid "System Administrators"
+msgstr "Wakurugenzi wa Mfumo"
+
+#: .\core\templates\core\dashboard.html:178
+msgid "Listings Awaiting Verification"
+msgstr "Matangazo Yanayosubiri Uthibitisho"
+
+#: .\core\templates\core\dashboard.html:179
+msgid "Review submitted properties before they go live on RentCheck"
+msgstr "Pitia nyumba zilizowasilishwa kabla ya kuchapishwa kwenye RentCheck"
+
+#: .\core\templates\core\dashboard.html:183
+#, python-format
+msgid "View All Pending (%(count)s)"
+msgstr "Ona Zote Zinazosubiri (%(count)s)"
+
+#: .\core\templates\core\dashboard.html:192 .\core\templates\core\dashboard_properties.html:52
+msgid "Photo"
+msgstr "Picha"
+
+#: .\core\templates\core\dashboard.html:193 .\core\templates\core\dashboard.html:317 .\engagement\templates\engagement\application_list.html:23 .\engagement\templates\engagement\booking_list.html:10 .\engagement\templates\engagement\inquiry_list.html:10 .\engagement\templates\engagement\inquiry_list.html:29 .\engagement\templates\engagement\viewing_list.html:9
+msgid "Property"
+msgstr "Nyumba"
+
+#: .\core\templates\core\dashboard.html:194 .\core\templates\core\dashboard_properties.html:54
+msgid "Landlord / Agent"
+msgstr "Mwenye nyumba / Wakala"
+
+#: .\core\templates\core\dashboard.html:195 .\core\templates\core\dashboard_properties.html:55 .\core\templates\core\home.html:18 .\properties\templates\properties\detail.html:76
+msgid "Location"
+msgstr "Eneo"
+
+#: .\core\templates\core\dashboard.html:196
+msgid "Rent / Month"
+msgstr "Kodi / Mwezi"
+
+#: .\core\templates\core\dashboard.html:197
+msgid "Submitted"
+msgstr "Imepelekwa"
+
+#: .\core\templates\core\dashboard.html:198 .\core\templates\core\dashboard_properties.html:59 .\core\templates\core\dashboard_reports.html:62 .\core\templates\core\dashboard_users.html:72 .\properties\templates\properties\my_properties.html:12
+msgid "Actions"
+msgstr "Vitendo"
+
+#: .\core\templates\core\dashboard.html:239
+msgid "Approve and publish listing"
+msgstr "Idhinisha na uchapishe tangazo"
+
+#: .\core\templates\core\dashboard.html:240 .\core\templates\core\dashboard_properties.html:114 .\engagement\templates\engagement\application_list.html:54
+msgid "Approve"
+msgstr "Idhinisha"
+
+#: .\core\templates\core\dashboard.html:243
+msgid "Reject listing"
+msgstr "Kataa tangazo"
+
+#: .\core\templates\core\dashboard.html:244 .\core\templates\core\dashboard_properties.html:120 .\engagement\templates\engagement\application_list.html:57 .\engagement\templates\engagement\booking_list.html:37 .\engagement\templates\engagement\viewing_list.html:33
+msgid "Reject"
+msgstr "Kataa"
+
+#: .\core\templates\core\dashboard.html:256 .\core\templates\core\dashboard_properties.html:132
+#, python-format
+msgid "Reject Listing: %(title)s"
+msgstr "Kataa Tangazo: %(title)s"
+
+#: .\core\templates\core\dashboard.html:261
+msgid "Please provide a clear reason for rejecting this listing. The landlord will be notified with this feedback."
+msgstr "Tafadhali toa sababu ya wazi ya kukataa tangazo hili. Mwenye nyumba ataarifiwa kwa maoni haya."
+
+#: .\core\templates\core\dashboard.html:263 .\core\templates\core\dashboard_properties.html:139
+msgid "Rejection Reason"
+msgstr "Sababu ya Kukataa"
+
+#: .\core\templates\core\dashboard.html:264
+msgid "E.g. Inaccurate location, unclear property photos, or mismatched pricing."
+msgstr "Mf. Eneo lisilo sahihi, picha za nyumba zisizoeleweka, au bei zisizolingana."
+
+#: .\core\templates\core\dashboard.html:267 .\core\templates\core\dashboard_properties.html:143 .\engagement\templates\engagement\application_form.html:81 .\engagement\templates\engagement\booking_form.html:69 .\engagement\templates\engagement\inquiry_form.html:12 .\engagement\templates\engagement\inquiry_respond.html:13 .\engagement\templates\engagement\report_form.html:17 .\engagement\templates\engagement\review_form.html:17 .\engagement\templates\engagement\viewing_form.html:22 .\properties\templates\properties\property_confirm_delete.html:10 .\properties\templates\properties\property_form.html:82
+msgid "Cancel"
+msgstr "Ghairi"
+
+#: .\core\templates\core\dashboard.html:268 .\core\templates\core\dashboard_properties.html:144
+msgid "Confirm Rejection"
+msgstr "Thibitisha Kukataa"
+
+#: .\core\templates\core\dashboard.html:285
+msgid "All Listings are Verified"
+msgstr "Matangazo Yote Yamethibitishwa"
+
+#: .\core\templates\core\dashboard.html:286
+msgid "There are currently no new property listings awaiting verification."
+msgstr "Hivi sasa hakuna matangazo mapya ya nyumba yanayosubiri uthibitisho."
+
+#: .\core\templates\core\dashboard.html:288
+msgid "Browse All Listings"
+msgstr "Vinjari Matangazo Yote"
+
+#: .\core\templates\core\dashboard.html:303
+msgid "Flagged Listings & Reports"
+msgstr "Matangazo Yaliyoripotiwa na Ripoti"
+
+#: .\core\templates\core\dashboard.html:304
+msgid "User complaints and potential violations"
+msgstr "Malalamiko ya watumiaji na ukiukwaji unaowezekana"
+
+#: .\core\templates\core\dashboard.html:308
+#, python-format
+msgid "All Reports (%(count)s)"
+msgstr "Ripoti Zote (%(count)s)"
+
+#: .\core\templates\core\dashboard.html:318 .\core\templates\core\dashboard_reports.html:58 .\engagement\templates\engagement\report_form.html:9
+msgid "Reason"
+msgstr "Sababu"
+
+#: .\core\templates\core\dashboard.html:319 .\core\templates\core\dashboard_reports.html:57
+msgid "Reporter"
+msgstr "Mtoa Ripoti"
+
+#: .\core\templates\core\dashboard.html:320 .\engagement\templates\engagement\viewing_list.html:9
+msgid "Date"
+msgstr "Tarehe"
+
+#: .\core\templates\core\dashboard.html:321 .\core\templates\core\dashboard.html:351 .\core\templates\core\dashboard_reports.html:118 .\engagement\templates\engagement\application_list.html:27 .\engagement\templates\engagement\booking_list.html:12 .\engagement\templates\engagement\inquiry_list.html:10 .\engagement\templates\engagement\viewing_list.html:10
+msgid "Action"
+msgstr "Kitendo"
+
+#: .\core\templates\core\dashboard.html:358
+msgid "Mark Reviewed"
+msgstr "Weka Kama Imepitiwa"
+
+#: .\core\templates\core\dashboard.html:365
+msgid "Take Action"
+msgstr "Chukua Hatua"
+
+#: .\core\templates\core\dashboard.html:372
+msgid "Dismiss Report"
+msgstr "Tupa Ripoti"
+
+#: .\core\templates\core\dashboard.html:388
+msgid "No Pending Reports"
+msgstr "Hakuna Ripoti Zinazosubiri"
+
+#: .\core\templates\core\dashboard.html:389
+msgid "Platform listings are currently in good standing."
+msgstr "Matangazo ya jukwaa kwa sasa yako katika hali nzuri."
+
+#: .\core\templates\core\dashboard.html:403
+msgid "Recent Users"
+msgstr "Watumiaji wa Hivi Karibuni"
+
+#: .\core\templates\core\dashboard.html:404
+msgid "New registrations & roles"
+msgstr "Usajili mpya na majukumu"
+
+#: .\core\templates\core\dashboard.html:408
+#, python-format
+msgid "Manage (%(count)s)"
+msgstr "Dhibiti (%(count)s)"
+
+#: .\core\templates\core\dashboard.html:431 .\templates\base.html:133
+msgid "Admin"
+msgstr "Msimamizi"
+
+#: .\core\templates\core\dashboard.html:433
+msgid "Landlord"
+msgstr "Mwenye Nyumba"
+
+#: .\core\templates\core\dashboard.html:442
+msgid "No users found."
+msgstr "Hakuna watumiaji waliopatikana."
+
+#: .\core\templates\core\dashboard_properties.html:3
+msgid "Property Verification — Admin"
+msgstr "Uthibitisho wa Nyumba — Msimamizi"
+
+#: .\core\templates\core\dashboard_properties.html:9 .\core\templates\core\dashboard_properties.html:17 .\core\templates\core\dashboard_reports.html:9 .\core\templates\core\dashboard_reports.html:17 .\core\templates\core\dashboard_users.html:9 .\core\templates\core\dashboard_users.html:17 .\templates\base.html:41 .\templates\base.html:197
+msgid "Dashboard"
+msgstr "Dashibodi"
+
+#: .\core\templates\core\dashboard_properties.html:10
+msgid "Property Verification"
+msgstr "Uthibitisho wa Nyumba"
+
+#: .\core\templates\core\dashboard_properties.html:13
+msgid "Property Listing Verification"
+msgstr "Uthibitisho wa Matangazo ya Nyumba"
+
+#: .\core\templates\core\dashboard_properties.html:29 .\core\templates\core\dashboard_reports.html:29 .\properties\models.py:31
+msgid "Pending Review"
+msgstr "Inasubiri Mapitio"
+
+#: .\core\templates\core\dashboard_properties.html:33
+msgid "Approved & Live"
+msgstr "Imeidhinishwa na Inafanya Kazi"
+
+#: .\core\templates\core\dashboard_properties.html:37 .\core\templates\core\dashboard_properties.html:97 .\engagement\models.py:54 .\engagement\models.py:77 .\engagement\models.py:143 .\engagement\templates\engagement\application_detail.html:18 .\engagement\templates\engagement\application_list.html:44 .\engagement\templates\engagement\booking_list.html:26 .\engagement\templates\engagement\viewing_list.html:23 .\properties\models.py:33 .\properties\templates\properties\my_properties.html:23
+msgid "Rejected"
+msgstr "Imekataliwa"
+
+#: .\core\templates\core\dashboard_properties.html:41
+msgid "All Submissions"
+msgstr "Mawasilisho Yote"
+
+#: .\core\templates\core\dashboard_properties.html:53
+msgid "Title & Type"
+msgstr "Kichwa na Aina"
+
+#: .\core\templates\core\dashboard_properties.html:56
+msgid "Rent"
+msgstr "Kodi"
+
+#: .\core\templates\core\dashboard_properties.html:57 .\core\templates\core\dashboard_reports.html:60 .\core\templates\core\dashboard_users.html:70 .\engagement\templates\engagement\application_detail.html:147 .\engagement\templates\engagement\application_list.html:26 .\engagement\templates\engagement\booking_list.html:11 .\engagement\templates\engagement\inquiry_list.html:10 .\engagement\templates\engagement\inquiry_list.html:29 .\engagement\templates\engagement\viewing_list.html:9 .\properties\templates\properties\my_properties.html:12
+msgid "Status"
+msgstr "Hali"
+
+#: .\core\templates\core\dashboard_properties.html:58
+msgid "Date Listed"
+msgstr "Tarehe ya Kutangazwa"
+
+#: .\core\templates\core\dashboard_properties.html:95 .\engagement\models.py:142 .\engagement\templates\engagement\application_detail.html:17 .\engagement\templates\engagement\application_list.html:43 .\properties\models.py:32 .\properties\templates\properties\my_properties.html:22
+msgid "Approved"
+msgstr "Imeidhinishwa"
+
+#: .\core\templates\core\dashboard_properties.html:102 .\core\templates\core\dashboard_reports.html:92 .\engagement\models.py:52 .\engagement\models.py:75 .\engagement\models.py:115 .\engagement\models.py:141 .\engagement\templates\engagement\application_detail.html:20 .\engagement\templates\engagement\application_list.html:46 .\engagement\templates\engagement\booking_list.html:28 .\engagement\templates\engagement\viewing_list.html:24 .\properties\templates\properties\my_properties.html:24
+msgid "Pending"
+msgstr "Inasubiri"
+
+#: .\core\templates\core\dashboard_properties.html:137
+msgid "Please provide a clear reason for rejection. This feedback will be sent directly to the landlord."
+msgstr "Tafadhali toa sababu ya wazi ya kukataa. Maoni haya yatatumwa moja kwa moja kwa mwenye nyumba."
+
+#: .\core\templates\core\dashboard_properties.html:140
+msgid "E.g. Inaccurate address, blurry or incomplete photos, or unverifiable ownership."
+msgstr "Mf. Anwani isiyo sahihi, picha za ukungu au zisizokamilika, au umiliki usioweza kuthibitishwa."
+
+#: .\core\templates\core\dashboard_properties.html:158
+msgid "No Properties Found"
+msgstr "Hakuna Nyumba Zilizopatikana"
+
+#: .\core\templates\core\dashboard_properties.html:159
+msgid "No property listings matched the selected filter criteria."
+msgstr "Hakuna tangazo la nyumba lililolingana na vigezo vilivyochaguliwa vya kuchuja."
+
+#: .\core\templates\core\dashboard_reports.html:3
+msgid "Flagged Reports — Admin"
+msgstr "Ripoti Zilizotolewa — Msimamizi"
+
+#: .\core\templates\core\dashboard_reports.html:13
+msgid "Platform Reports & Flagged Listings"
+msgstr "Ripoti za Jukwaa na Matangazo Yaliyoripotiwa"
+
+#: .\core\templates\core\dashboard_reports.html:33 .\core\templates\core\dashboard_reports.html:94 .\engagement\models.py:116
+msgid "Reviewed"
+msgstr "Imepitiwa"
+
+#: .\core\templates\core\dashboard_reports.html:37 .\core\templates\core\dashboard_reports.html:96 .\engagement\models.py:117
+msgid "Actioned"
+msgstr "Hatua Imechukuliwa"
+
+#: .\core\templates\core\dashboard_reports.html:41 .\core\templates\core\dashboard_reports.html:98 .\engagement\models.py:118
+msgid "Dismissed"
+msgstr "Imetupiliwa Mbali"
+
+#: .\core\templates\core\dashboard_reports.html:45
+msgid "All Reports"
+msgstr "Ripoti Zote"
+
+#: .\core\templates\core\dashboard_reports.html:56
+msgid "Reported Property"
+msgstr "Nyumba Iliyoripotiwa"
+
+#: .\core\templates\core\dashboard_reports.html:59 .\properties\templates\properties\detail.html:56 .\properties\templates\properties\property_form.html:13
+msgid "Description"
+msgstr "Maelezo"
+
+#: .\core\templates\core\dashboard_reports.html:61
+msgid "Date Filed"
+msgstr "Tarehe ya Kupelekwa"
+
+#: .\core\templates\core\dashboard_reports.html:74
+#, python-format
+msgid "Landlord: %(name)s"
+msgstr "Mwenye Nyumba: %(name)s"
+
+#: .\core\templates\core\dashboard_reports.html:109
+msgid "Mark reviewed"
+msgstr "Weka kama imepitiwa"
+
+#: .\core\templates\core\dashboard_reports.html:117
+msgid "Mark actioned"
+msgstr "Weka kama hatua imechukuliwa"
+
+#: .\core\templates\core\dashboard_reports.html:125
+msgid "Dismiss report"
+msgstr "Tupa ripoti"
+
+#: .\core\templates\core\dashboard_reports.html:139
+msgid "No Reports Found"
+msgstr "Hakuna Ripoti Zilizopatikana"
+
+#: .\core\templates\core\dashboard_reports.html:140
+msgid "No reports matched the selected filter."
+msgstr "Hakuna ripoti iliyolingana na kichujio kilichochaguliwa."
+
+#: .\core\templates\core\dashboard_users.html:3
+msgid "Manage Users — Admin"
+msgstr "Dhibiti Watumiaji — Msimamizi"
+
+#: .\core\templates\core\dashboard_users.html:13
+msgid "Platform User Registry"
+msgstr "Sajili ya Watumiaji wa Jukwaa"
+
+#: .\core\templates\core\dashboard_users.html:33
+msgid "Search by username, name, or email..."
+msgstr "Tafuta kwa jina la mtumiaji, jina, au barua pepe..."
+
+#: .\core\templates\core\dashboard_users.html:38 .\core\templates\core\home.html:35 .\templates\base.html:216
+msgid "Search"
+msgstr "Tafuta"
+
+#: .\core\templates\core\dashboard_users.html:40
+msgid "Clear"
+msgstr "Futa"
+
+#: .\core\templates\core\dashboard_users.html:46
+#, python-format
+msgid "All (%(count)s)"
+msgstr "Zote (%(count)s)"
+
+#: .\core\templates\core\dashboard_users.html:49
+#, python-format
+msgid "Tenants (%(count)s)"
+msgstr "Wapangaji (%(count)s)"
+
+#: .\core\templates\core\dashboard_users.html:52
+#, python-format
+msgid "Owners/Agents (%(count)s)"
+msgstr "Wamiliki/Mawakala (%(count)s)"
+
+#: .\core\templates\core\dashboard_users.html:55
+#, python-format
+msgid "Admins (%(count)s)"
+msgstr "Wasimamizi (%(count)s)"
+
+#: .\core\templates\core\dashboard_users.html:67
+msgid "User"
+msgstr "Mtumiaji"
+
+#: .\core\templates\core\dashboard_users.html:68 .\engagement\templates\engagement\application_detail.html:42 .\engagement\templates\engagement\application_form.html:51
+msgid "Email"
+msgstr "Barua pepe"
+
+#: .\core\templates\core\dashboard_users.html:69
+msgid "Role"
+msgstr "Jukumu"
+
+#: .\core\templates\core\dashboard_users.html:71
+msgid "Date Joined"
+msgstr "Tarehe ya Kujiunga"
+
+#: .\core\templates\core\dashboard_users.html:91
+msgid "Superuser"
+msgstr "Msimamizi Mkuu"
+
+#: .\core\templates\core\dashboard_users.html:131
+msgid "Suspend"
+msgstr "Simamisha"
+
+#: .\core\templates\core\dashboard_users.html:133
+msgid "Reactivate"
+msgstr "Washa Tena"
+
+#: .\core\templates\core\dashboard_users.html:138
+msgid "Protected"
+msgstr "Imelindwa"
+
+#: .\core\templates\core\dashboard_users.html:148
+msgid "No Users Found"
+msgstr "Hakuna Watumiaji Waliopatikana"
+
+#: .\core\templates\core\dashboard_users.html:149
+msgid "No user accounts matched your search criteria."
+msgstr "Hakuna akaunti za watumiaji zilizolingana na vigezo vyako vya utafutaji."
+
+#: .\core\templates\core\home.html:4
+msgid "RentCheck Tanzania — Find Your Next Home"
+msgstr "RentCheck Tanzania — Pata Nyumba Yako Inayofuata"
+
+#: .\core\templates\core\home.html:9
+msgid "Find a Place"
+msgstr "Tafuta Mahali"
+
+#: .\core\templates\core\home.html:9
+msgid "You Can Trust"
+msgstr "Unaweza Kuamini"
+
+#: .\core\templates\core\home.html:10
+msgid "Discover verified rental properties across Tanzania with ease, safety and confidence."
+msgstr "Gundua nyumba za ukodishaji zilizothibitishwa kote Tanzania kwa urahisi, usalama na kujiamini."
+
+#: .\core\templates\core\home.html:19
+msgid "e.g. Dar es Salaam"
+msgstr "mf. Dar es Salaam"
+
+#: .\core\templates\core\home.html:22 .\properties\templates\properties\browse.html:14 .\properties\templates\properties\property_form.html:17
+msgid "Property Type"
+msgstr "Aina ya Nyumba"
+
+#: .\core\templates\core\home.html:24
+msgid "All Types"
+msgstr "Aina Zote"
+
+#: .\core\templates\core\home.html:31
+msgid "Max Price (TZS)"
+msgstr "Bei ya Juu Zaidi (TZS)"
+
+#: .\core\templates\core\home.html:32
+msgid "Any price"
+msgstr "Bei yoyote"
+
+#: .\core\templates\core\home.html:47
+msgid "Only trusted properties"
+msgstr "Nyumba za kuaminika tu"
+
+#: .\core\templates\core\home.html:53
+msgid "Easy Search"
+msgstr "Utafutaji Rahisi"
+
+#: .\core\templates\core\home.html:54
+msgid "Find what you need"
+msgstr "Pata unachokihitaji"
+
+#: .\core\templates\core\home.html:60
+msgid "Safe &amp; Secure"
+msgstr "Salama &amp; Imelindwa"
+
+#: .\core\templates\core\home.html:61
+msgid "Your data is protected"
+msgstr "Data yako imelindwa"
+
+#: .\core\templates\core\home.html:67
+msgid "Direct Contact"
+msgstr "Mawasiliano ya Moja kwa Moja"
+
+#: .\core\templates\core\home.html:68
+msgid "Talk to owners &amp; agents"
+msgstr "Zungumza na wamiliki &amp; mawakala"
+
+#: .\core\templates\core\home.html:75
+msgid "All Properties"
+msgstr "Nyumba Zote"
+
+#: .\core\templates\core\home.html:76
+#, python-format
+msgid "%(n)s verified listing on RentCheck"
+msgid_plural "%(n)s verified listings on RentCheck"
+msgstr[0] "%(n)s tangazo lililothibitishwa kwenye RentCheck"
+msgstr[1] "%(n)s matangazo yaliyothibitishwa kwenye RentCheck"
+
+#: .\core\templates\core\home.html:78
+msgid "Filter &amp; Sort"
+msgstr "Chuja &amp; Panga"
+
+#: .\core\templates\core\home.html:86
+msgid "No verified properties yet. Check back soon!"
+msgstr "Hakuna nyumba zilizothibitishwa bado. Rudia tena hivi karibuni!"
+
+#: .\core\templates\core\home.html:94 .\properties\templates\properties\browse.html:65
+msgid "Previous"
+msgstr "Iliyopita"
+
+#: .\core\templates\core\home.html:96
+#, python-format
+msgid "Page %(current)s of %(total)s"
+msgstr "Ukurasa %(current)s kati ya %(total)s"
+
+#: .\core\templates\core\home.html:98 .\properties\templates\properties\browse.html:69
+msgid "Next"
+msgstr "Inayofuata"
+
+#: .\core\views.py:134
+#, python-format
+msgid "Listing '%(title)s' verified and approved."
+msgstr "Tangazo '%(title)s' limethibitishwa na kuidhinishwa."
+
+#: .\core\views.py:140
+#, python-format
+msgid "Listing '%(title)s' rejected."
+msgstr "Tangazo '%(title)s' limekataliwa."
+
+#: .\core\views.py:144
+msgid "Unknown action."
+msgstr "Kitendo kisichojulikana."
+
+#: .\core\views.py:181
+msgid "Unknown status."
+msgstr "Hali isiyojulikana."
+
+#: .\core\views.py:186
+#, python-format
+msgid "Your report on '%(title)s' was marked as %(status)s."
+msgstr "Ripoti yako kuhusu '%(title)s' imewekwa kama %(status)s."
+
+#: .\core\views.py:188
+#, python-format
+msgid "Report updated to %(status)s."
+msgstr "Ripoti imesasishwa kuwa %(status)s."
+
+#: .\core\views.py:230
+msgid "Superuser accounts cannot be suspended."
+msgstr "Akaunti za msimamizi mkuu haziwezi kusimamishwa."
+
+#: .\core\views.py:241
+#, python-format
+msgid "User '%(username)s' is now %(status)s."
+msgstr "Mtumiaji '%(username)s' sasa ni %(status)s."
+
+#: .\engagement\forms.py:15
+msgid "Ask a question about this property..."
+msgstr "Uulize swali kuhusu nyumba hii..."
+
+#: .\engagement\forms.py:48
+msgid "Anything the host should know? (optional)"
+msgstr "Kuna chochote mwenye nyumba anapaswa kujua? (hiari)"
+
+#: .\engagement\forms.py:85
+msgid "Type a message..."
+msgstr "Andika ujumbe..."
+
+#: .\engagement\forms.py:95
+msgid "Full name as shown on your ID"
+msgstr "Jina kamili kama linavyoonekana kwenye kitambulisho chako"
+
+#: .\engagement\forms.py:100 .\engagement\templates\engagement\application_form.html:61
+msgid "Anything else the owner should know?"
+msgstr "Kuna chochote kingine mwenye nyumba anapaswa kujua?"
+
+#: .\engagement\forms.py:124
+msgid "Provide more details (optional)"
+msgstr "Toa maelezo zaidi (hiari)"
+
+#: .\engagement\forms.py:133
+msgid "star"
+msgstr "nyota"
+
+#: .\engagement\forms.py:133
+msgid "stars"
+msgstr "nyota"
+
+#: .\engagement\models.py:25
+msgid "Open"
+msgstr "Wazi"
+
+#: .\engagement\models.py:26
+msgid "Responded"
+msgstr "Imejibiwa"
+
+#: .\engagement\models.py:27
+msgid "Closed"
+msgstr "Imefungwa"
+
+#: .\engagement\models.py:53 .\engagement\templates\engagement\viewing_list.html:22
+msgid "Accepted"
+msgstr "Imekubaliwa"
+
+#: .\engagement\models.py:76 .\engagement\templates\engagement\booking_list.html:25
+msgid "Confirmed"
+msgstr "Imethibitishwa"
+
+#: .\engagement\models.py:78 .\engagement\templates\engagement\booking_list.html:27
+msgid "Cancelled"
+msgstr "Imeghairiwa"
+
+#: .\engagement\models.py:106
+msgid "Fake property"
+msgstr "Nyumba ya uwongo"
+
+#: .\engagement\models.py:107
+msgid "Incorrect information"
+msgstr "Taarifa zisizo sahihi"
+
+#: .\engagement\models.py:108
+msgid "Fake images"
+msgstr "Picha za uwongo"
+
+#: .\engagement\models.py:109
+msgid "Incorrect location"
+msgstr "Eneo lisilo sahihi"
+
+#: .\engagement\models.py:110
+msgid "Suspicious owner/agent"
+msgstr "Mmiliki/wakala wa kutiliwa shaka"
+
+#: .\engagement\models.py:111
+msgid "Property already rented"
+msgstr "Nyumba tayari imekodishwa"
+
+#: .\engagement\models.py:112
+msgid "Other"
+msgstr "Nyingine"
+
+#: .\engagement\models.py:144 .\engagement\templates\engagement\application_detail.html:19 .\engagement\templates\engagement\application_list.html:45
+msgid "Withdrawn"
+msgstr "Imeondolewa"
+
+#: .\engagement\models.py:159
+msgid "Applicant confirms they have read and agree to the tenancy rules."
+msgstr "Mwombaji anathibitisha kwamba amesoma na kukubaliana na kanuni za ukodishaji."
+
+#: .\engagement\models.py:185
+msgid "0–100"
+msgstr "0–100"
+
+#: .\engagement\models.py:305 .\engagement\templates\engagement\inquiry_list.html:27
+msgid "Sent"
+msgstr "Imetumwa"
+
+#: .\engagement\models.py:306
+msgid "Delivered"
+msgstr "Imefikishwa"
+
+#: .\engagement\models.py:307
+msgid "Read"
+msgstr "Imesomwa"
+
+#: .\engagement\templates\engagement\application_detail.html:3
+msgid "Application"
+msgstr "Maombi"
+
+#: .\engagement\templates\engagement\application_detail.html:6
+msgid "Application Details"
+msgstr "Maelezo ya Maombi"
+
+#: .\engagement\templates\engagement\application_detail.html:8
+msgid "All applications"
+msgstr "Maombi Yote"
+
+#: .\engagement\templates\engagement\application_detail.html:23
+msgid "Applying to"
+msgstr "Unaomba kwenye"
+
+#: .\engagement\templates\engagement\application_detail.html:24 .\engagement\templates\engagement\application_detail.html:56
+#, python-format
+msgid "Applied %(created)s"
+msgstr "Iliwasilishwa %(created)s"
+
+#: .\engagement\templates\engagement\application_detail.html:29 .\engagement\templates\engagement\screening_form.html:3 .\engagement\templates\engagement\screening_form.html:6
+msgid "Tenant Screening"
+msgstr "Ukaguzi wa Mpangaji"
+
+#: .\engagement\templates\engagement\application_detail.html:39
+msgid "Contact information"
+msgstr "Taarifa za mawasiliano"
+
+#: .\engagement\templates\engagement\application_detail.html:41
+msgid "Phone"
+msgstr "Simu"
+
+#: .\engagement\templates\engagement\application_detail.html:43 .\engagement\templates\engagement\application_form.html:55
+msgid "Current address"
+msgstr "Anwani ya sasa"
+
+#: .\engagement\templates\engagement\application_detail.html:50 .\engagement\templates\engagement\application_form.html:69
+msgid "Agreement"
+msgstr "Makubaliano"
+
+#: .\engagement\templates\engagement\application_detail.html:52
+msgid "Applicant agreed to the tenancy rules."
+msgstr "Mwombaji amekubaliana na kanuni za ukodishaji."
+
+#: .\engagement\templates\engagement\application_detail.html:54
+msgid "No agreement recorded."
+msgstr "Hakuna makubaliano yaliyorekodiwa."
+
+#: .\engagement\templates\engagement\application_detail.html:56
+msgid "Applicant:"
+msgstr "Mwombaji:"
+
+#: .\engagement\templates\engagement\application_detail.html:63 .\engagement\templates\engagement\application_form.html:59 .\engagement\templates\engagement\screening_form.html:51
+msgid "Notes"
+msgstr "Maelezo"
+
+#: .\engagement\templates\engagement\application_detail.html:74
+msgid "Tenancy rules agreed to"
+msgstr "Kanuni za ukodishaji zilizokubaliwa"
+
+#: .\engagement\templates\engagement\application_detail.html:78
+msgid "No rules were set."
+msgstr "Hakuna kanuni zilizowekwa."
+
+#: .\engagement\templates\engagement\application_detail.html:86
+msgid "Screening result"
+msgstr "Matokeo ya ukaguzi"
+
+#: .\engagement\templates\engagement\application_detail.html:88
+#, python-format
+msgid "Score %(score)s/100"
+msgstr "Alama %(score)s/100"
+
+#: .\engagement\templates\engagement\application_detail.html:92
+msgid "Identity verified"
+msgstr "Utambulisho umethibitishwa"
+
+#: .\engagement\templates\engagement\application_detail.html:93
+msgid "Income verified"
+msgstr "Kipato kimethibitishwa"
+
+#: .\engagement\templates\engagement\application_detail.html:94
+msgid "References checked"
+msgstr "Marejeleo yameangaliwa"
+
+#: .\engagement\templates\engagement\application_detail.html:95 .\engagement\templates\engagement\screening_form.html:40
+msgid "Employment verified"
+msgstr "Ajira imethibitishwa"
+
+#: .\engagement\templates\engagement\application_detail.html:96
+msgid "Background checked"
+msgstr "Wasifu umeangaliwa"
+
+#: .\engagement\templates\engagement\application_detail.html:99
+msgid "Edit screening"
+msgstr "Hariri ukaguzi"
+
+#: .\engagement\templates\engagement\application_detail.html:107 .\engagement\templates\engagement\application_detail.html:129
+msgid "Decision"
+msgstr "Uamuzi"
+
+#: .\engagement\templates\engagement\application_detail.html:111
+msgid "Private note (optional)"
+msgstr "Dokezo la faragha (hiari)"
+
+#: .\engagement\templates\engagement\application_detail.html:112
+msgid "e.g. Verified employment, offered lease..."
+msgstr "mf. Ajira imethibitishwa, mkataba wa kukodi umekabidhiwa..."
+
+#: .\engagement\templates\engagement\application_detail.html:114
+msgid "Approve Application"
+msgstr "Idhinisha Maombi"
+
+#: .\engagement\templates\engagement\application_detail.html:119
+msgid "Reason (shared with applicant)"
+msgstr "Sababu (inashirikishwa na mwombaji)"
+
+#: .\engagement\templates\engagement\application_detail.html:120
+msgid "e.g. Income below minimum requirement..."
+msgstr "mf. Kipato chini ya masharti ya chini..."
+
+#: .\engagement\templates\engagement\application_detail.html:122
+msgid "Reject Application"
+msgstr "Kataa Maombi"
+
+#: .\engagement\templates\engagement\application_detail.html:139
+msgid "Owner's decision"
+msgstr "Uamuzi wa mwenye nyumba"
+
+#: .\engagement\templates\engagement\application_detail.html:148
+#, python-format
+msgid "Your application is <strong>%(status)s</strong>. You'll be notified when the owner/agent makes a decision."
+msgstr "Maombi yako ni <strong>%(status)s</strong>. Utaarifiwa mwenye nyumba/wakala anapofanya uamuzi."
+
+#: .\engagement\templates\engagement\application_form.html:3 .\properties\templates\properties\detail.html:141
+msgid "Apply to Rent"
+msgstr "Omba Kukodisha"
+
+#: .\engagement\templates\engagement\application_form.html:6
+msgid "Rental Application"
+msgstr "Maombi ya Kukodisha"
+
+#: .\engagement\templates\engagement\application_form.html:8
+msgid "Back to listing"
+msgstr "Rudi kwenye tangazo"
+
+#: .\engagement\templates\engagement\application_form.html:14
+#, python-format
+msgid ""
+"Applying to <strong>%(property.title)s</strong> — %(property.city)s, %(property.region)s.\n"
+"    Your application goes straight to the owner/agent for review."
+msgstr ""
+"Unaomba kwa <strong>%(property.title)s</strong> — %(property.city)s, %(property.region)s.\n"
+"    Maombi yako yanaenda moja kwa moja kwa mwenye nyumba/wakala kwa ajili ya mapitio."
+
+#: .\engagement\templates\engagement\application_form.html:26 .\properties\templates\properties\detail.html:69 .\properties\templates\properties\property_form.html:55
+msgid "Tenancy Rules"
+msgstr "Kanuni za Ukodishaji"
+
+#: .\engagement\templates\engagement\application_form.html:27
+msgid "Please read the rules below before applying."
+msgstr "Tafadhali soma kanuni zifuatazo kabla ya kuomba."
+
+#: .\engagement\templates\engagement\application_form.html:33
+msgid "The owner has not set any specific rules."
+msgstr "Mwenye nyumba hajaweka kanuni zozote maalum."
+
+#: .\engagement\templates\engagement\application_form.html:40
+msgid "Your contact information"
+msgstr "Taarifa zako za mawasiliano"
+
+#: .\engagement\templates\engagement\application_form.html:43
+msgid "Full name"
+msgstr "Jina kamili"
+
+#: .\engagement\templates\engagement\application_form.html:47
+msgid "Phone number"
+msgstr "Nambari ya simu"
+
+#: .\engagement\templates\engagement\application_form.html:73
+#, python-format
+msgid "<strong>I have read and I agree to the tenancy rules</strong> for %(property.title)s. By submitting this application, I confirm the information I provided is accurate."
+msgstr "<strong>Nimesoma na ninakubaliana na kanuni za ukodishaji</strong> za %(property.title)s. Kwa kupeleka maombi haya, ninathibitisha kwamba taarifa nilizotoa ni sahihi."
+
+#: .\engagement\templates\engagement\application_form.html:80
+msgid "Submit application"
+msgstr "Tuma Maombi"
+
+#: .\engagement\templates\engagement\application_list.html:3
+msgid "Applications — RentCheck Tanzania"
+msgstr "Maombi — RentCheck Tanzania"
+
+#: .\engagement\templates\engagement\application_list.html:5
+msgid "Rental Applications"
+msgstr "Maombi ya Kukodisha"
+
+#: .\engagement\templates\engagement\application_list.html:11
+#, python-format
+msgid "You have <strong>%(pending_count)s</strong> pending application awaiting review."
+msgid_plural "You have <strong>%(pending_count)s</strong> pending applications awaiting review."
+msgstr[0] "Una <strong>%(pending_count)s</strong> ombi linalosubiri mapitio."
+msgstr[1] "Una <strong>%(pending_count)s</strong> maombi yanayosubiri mapitio."
+
+#: .\engagement\templates\engagement\application_list.html:13
+#, python-format
+msgid "You have <strong>%(pending_count)s</strong> pending application."
+msgid_plural "You have <strong>%(pending_count)s</strong> pending applications."
+msgstr[0] "Una <strong>%(pending_count)s</strong> ombi linalosubiri."
+msgstr[1] "Una <strong>%(pending_count)s</strong> maombi yanayosubiri."
+
+#: .\engagement\templates\engagement\application_list.html:22
+msgid "Applicant"
+msgstr "Mwombaji"
+
+#: .\engagement\templates\engagement\application_list.html:24
+msgid "Move-in"
+msgstr "Kuingia"
+
+#: .\engagement\templates\engagement\application_list.html:25
+msgid "Monthly income"
+msgstr "Kipato cha mwezi"
+
+#: .\engagement\templates\engagement\application_list.html:50 .\engagement\templates\engagement\review_form.html:3
+msgid "Review"
+msgstr "Pitia"
+
+#: .\engagement\templates\engagement\application_list.html:50
+msgid "View"
+msgstr "Tazama"
+
+#: .\engagement\templates\engagement\application_list.html:67
+msgid "No applications yet. Share your listing so tenants can apply."
+msgstr "Hakuna maombi bado. Shiriki tangazo lako ili wapangaji waweze kuomba."
+
+#: .\engagement\templates\engagement\application_list.html:69
+msgid "You haven't applied to any properties yet."
+msgstr "Hujatuma maombi kwa nyumba yoyote bado."
+
+#: .\engagement\templates\engagement\booking_form.html:5
+#, python-format
+msgid "Book \"%(title)s\""
+msgstr "Hifadhi \"%(title)s\""
+
+#: .\engagement\templates\engagement\booking_form.html:6
+msgid "night"
+msgstr "usiku"
+
+#: .\engagement\templates\engagement\booking_form.html:10 .\properties\templates\properties\my_properties.html:12
+msgid "Availability"
+msgstr "Upatikanaji"
+
+#: .\engagement\templates\engagement\booking_form.html:39
+msgid "red"
+msgstr "nyekundu"
+
+#: .\engagement\templates\engagement\booking_form.html:39
+msgid "booked"
+msgstr "imehifadhiwa"
+
+#: .\engagement\templates\engagement\booking_form.html:40
+msgid "grey"
+msgstr "kijivu"
+
+#: .\engagement\templates\engagement\booking_form.html:40
+msgid "past"
+msgstr "zilizopita"
+
+#: .\engagement\templates\engagement\booking_form.html:41
+msgid "unshaded = available"
+msgstr "isiyo na rangi = inapatikana"
+
+#: .\engagement\templates\engagement\booking_form.html:52 .\engagement\templates\engagement\booking_list.html:10
+msgid "Check-in"
+msgstr "Kuingia"
+
+#: .\engagement\templates\engagement\booking_form.html:56 .\engagement\templates\engagement\booking_list.html:10
+msgid "Check-out"
+msgstr "Kutoka"
+
+#: .\engagement\templates\engagement\booking_form.html:60 .\engagement\templates\engagement\booking_list.html:11
+msgid "Guests"
+msgstr "Wageni"
+
+#: .\engagement\templates\engagement\booking_form.html:64
+msgid "Message to host (optional)"
+msgstr "Ujumbe kwa mwenye nyumba (hiari)"
+
+#: .\engagement\templates\engagement\booking_form.html:68
+msgid "Submit Booking Request"
+msgstr "Tuma Ombi la Uhifadhi"
+
+#: .\engagement\templates\engagement\booking_list.html:5 .\templates\base.html:104
+msgid "Bookings"
+msgstr "Uhifadhi"
+
+#: .\engagement\templates\engagement\booking_list.html:10
+msgid "Guest"
+msgstr "Mgeni"
+
+#: .\engagement\templates\engagement\booking_list.html:11
+msgid "Total"
+msgstr "Jumla"
+
+#: .\engagement\templates\engagement\booking_list.html:34
+msgid "Confirm"
+msgstr "Thibitisha"
+
+#: .\engagement\templates\engagement\booking_list.html:44
+msgid "No bookings yet."
+msgstr "Hakuna uhifadhi bado."
+
+#: .\engagement\templates\engagement\conversation_detail.html:3 .\engagement\templates\engagement\conversation_list.html:6 .\templates\base.html:105 .\templates\base.html:228
+msgid "Messages"
+msgstr "Ujumbe"
+
+#: .\engagement\templates\engagement\conversation_detail.html:10
+#, python-format
+msgid "Chatting with %(name)s"
+msgstr "Unazungumza na %(name)s"
+
+#: .\engagement\templates\engagement\conversation_detail.html:11
+msgid "View listing"
+msgstr "Tazama tangazo"
+
+#: .\engagement\templates\engagement\conversation_detail.html:14
+msgid "All Messages"
+msgstr "Ujumbe Wote"
+
+#: .\engagement\templates\engagement\conversation_detail.html:23 .\engagement\templates\engagement\conversation_detail.html:44 .\engagement\templates\engagement\conversation_list.html:30 .\engagement\templates\engagement\notification_list.html:33
+#, python-format
+msgid "%(time)s ago"
+msgstr "%(time)s zilizopita"
+
+#: .\engagement\templates\engagement\conversation_detail.html:24
+msgid "Message status"
+msgstr "Hali ya ujumbe"
+
+#: .\engagement\templates\engagement\conversation_detail.html:50
+msgid "No messages yet — say hello!"
+msgstr "Hakuna ujumbe bado — sema salamu!"
+
+#: .\engagement\templates\engagement\conversation_detail.html:61
+msgid "Send"
+msgstr "Tuma"
+
+#: .\engagement\templates\engagement\conversation_list.html:3
+msgid "Messages — RentCheck Tanzania"
+msgstr "Ujumbe — RentCheck Tanzania"
+
+#: .\engagement\templates\engagement\conversation_list.html:25
+msgid "No messages yet"
+msgstr "Hakuna ujumbe bado"
+
+#: .\engagement\templates\engagement\conversation_list.html:35
+msgid "No conversations yet. Open a property and click <strong>Message Owner</strong> to start one."
+msgstr "Hakuna mazungumzo bado. Fungua nyumba na ubonyeze <strong>Tuma Ujumbe kwa Mwenye Nyumba</strong> kuanzisha mazungumzo."
+
+#: .\engagement\templates\engagement\favorite_list.html:6
+msgid "My Favorite Properties"
+msgstr "Nyumba Zangu za Vipendwa"
+
+#: .\engagement\templates\engagement\favorite_list.html:14
+msgid "You have no favorite properties yet. Browse listings and tap the heart icon to save one."
+msgstr "Huna nyumba za vipendwa bado. Vinjari matangazo na uguse aikoni ya moyo kuokoa nyumba."
+
+#: .\engagement\templates\engagement\inquiry_form.html:5
+#, python-format
+msgid "Contact owner/agent about \"%(title)s\""
+msgstr "Wasiliana na mwenye nyumba/wakala kuhusu \"%(title)s\""
+
+#: .\engagement\templates\engagement\inquiry_form.html:11
+msgid "Send Inquiry"
+msgstr "Tuma Swali"
+
+#: .\engagement\templates\engagement\inquiry_list.html:5
+msgid "My Inquiries"
+msgstr "Maswali Yangu"
+
+#: .\engagement\templates\engagement\inquiry_list.html:8
+msgid "Received"
+msgstr "Yaliyopokelewa"
+
+#: .\engagement\templates\engagement\inquiry_list.html:10 .\engagement\templates\engagement\inquiry_list.html:29 .\engagement\templates\engagement\viewing_list.html:9
+msgid "Message"
+msgstr "Ujumbe"
+
+#: .\engagement\templates\engagement\inquiry_list.html:18
+msgid "Respond"
+msgstr "Jibu"
+
+#: .\engagement\templates\engagement\inquiry_list.html:21
+msgid "No inquiries received yet."
+msgstr "Hakuna maswali yaliyopokelewa bado."
+
+#: .\engagement\templates\engagement\inquiry_list.html:29
+msgid "Response"
+msgstr "Jibu"
+
+#: .\engagement\templates\engagement\inquiry_list.html:39
+msgid "You haven't sent any inquiries yet."
+msgstr "Hujatuma maswali yoyote bado."
+
+#: .\engagement\templates\engagement\inquiry_respond.html:5
+#, python-format
+msgid "Respond to %(tenant)s's inquiry"
+msgstr "Jibu swali la %(tenant)s"
+
+#: .\engagement\templates\engagement\inquiry_respond.html:12
+msgid "Send Response"
+msgstr "Tuma Jibu"
+
+#: .\engagement\templates\engagement\notification_list.html:3
+msgid "Notifications — RentCheck Tanzania"
+msgstr "Arifa — RentCheck Tanzania"
+
+#: .\engagement\templates\engagement\notification_list.html:7 .\templates\base.html:119
+msgid "Notifications"
+msgstr "Arifa"
+
+#: .\engagement\templates\engagement\notification_list.html:8
+msgid "Updates about your listings, messages, and bookings"
+msgstr "Taarifa kuhusu matangazo yako, ujumbe, na uhifadhi"
+
+#: .\engagement\templates\engagement\notification_list.html:12
+#, python-format
+msgid "%(count)s unread"
+msgstr "%(count)s zisizosomwa"
+
+#: .\engagement\templates\engagement\notification_list.html:15
+#, python-format
+msgid "%(total)s total"
+msgstr "%(total)s kwa jumla"
+
+#: .\engagement\templates\engagement\notification_list.html:37
+msgid "Unread"
+msgstr "Isiyosomwa"
+
+#: .\engagement\templates\engagement\notification_list.html:40
+msgid "Delete this notification?"
+msgstr "Futa arifa hii?"
+
+#: .\engagement\templates\engagement\notification_list.html:42
+msgid "Delete notification"
+msgstr "Futa arifa"
+
+#: .\engagement\templates\engagement\notification_list.html:55
+msgid "All Caught Up"
+msgstr "Umekamilisha Yote"
+
+#: .\engagement\templates\engagement\notification_list.html:56
+msgid "You have no notifications right now. New activity on your listings, messages, and bookings will appear here."
+msgstr "Huna arifa sasa hivi. Shughuli mpya kwenye matangazo yako, ujumbe, na uhifadhi itaonekana hapa."
+
+#: .\engagement\templates\engagement\report_form.html:3
+msgid "Report Listing"
+msgstr "Ripoti Tangazo"
+
+#: .\engagement\templates\engagement\report_form.html:5
+#, python-format
+msgid "Report \"%(title)s\""
+msgstr "Ripoti \"%(title)s\""
+
+#: .\engagement\templates\engagement\report_form.html:13
+msgid "Additional details"
+msgstr "Maelezo ya ziada"
+
+#: .\engagement\templates\engagement\report_form.html:16
+msgid "Submit Report"
+msgstr "Tuma Ripoti"
+
+#: .\engagement\templates\engagement\review_form.html:5
+#, python-format
+msgid "Review \"%(title)s\""
+msgstr "Pitia \"%(title)s\""
+
+#: .\engagement\templates\engagement\review_form.html:9
+msgid "Rating"
+msgstr "Ukadiriaji"
+
+#: .\engagement\templates\engagement\review_form.html:13
+msgid "Comment"
+msgstr "Maoni"
+
+#: .\engagement\templates\engagement\review_form.html:16
+msgid "Submit Review"
+msgstr "Tuma Maoni"
+
+#: .\engagement\templates\engagement\screening_form.html:8
+msgid "Back to application"
+msgstr "Rudi kwenye maombi"
+
+#: .\engagement\templates\engagement\screening_form.html:14
+#, python-format
+msgid "Screening <strong>%(name)s</strong> for"
+msgstr "Ukaguzi wa <strong>%(name)s</strong> wa"
+
+#: .\engagement\templates\engagement\screening_form.html:16
+msgid "Tick the checks you have completed, then score the applicant out of 100. (Score of 60+ passes.)"
+msgstr "Tiki ukaguzi uliokamilisha, kisha mpatie mwombaji alama kati ya 100. (Alama za 60 au zaidi zinapita.)"
+
+#: .\engagement\templates\engagement\screening_form.html:25
+msgid "Checks performed"
+msgstr "Ukaguzi Uliofanywa"
+
+#: .\engagement\templates\engagement\screening_form.html:28
+msgid "ID / identity verified (e.g. NIDA)"
+msgstr "Kitambulisho / utambulisho umethibitishwa (mf. NIDA)"
+
+#: .\engagement\templates\engagement\screening_form.html:32
+msgid "Income verified (payslips / statements)"
+msgstr "Kipato kimethibitishwa (slip za mshahara / taarifa za benki)"
+
+#: .\engagement\templates\engagement\screening_form.html:36
+msgid "References contacted"
+msgstr "Marejeleo yameulizwa"
+
+#: .\engagement\templates\engagement\screening_form.html:44
+msgid "Background / rental history checked"
+msgstr "Wasifu / historia ya ukodishaji imeangaliwa"
+
+#: .\engagement\templates\engagement\screening_form.html:60
+msgid "Score"
+msgstr "Alama"
+
+#: .\engagement\templates\engagement\screening_form.html:64
+msgid "Enter a score from 0–100."
+msgstr "Weka alama kati ya 0–100."
+
+#: .\engagement\templates\engagement\screening_form.html:67
+#, python-format
+msgid "Suggested: %(score)s/100 (%(score)s%% of checks done)"
+msgstr "Pendekezo: %(score)s/100 (%(score)s%% ya ukaguzi uliofanywa)"
+
+#: .\engagement\templates\engagement\screening_form.html:70
+msgid "Save Screening"
+msgstr "Hifadhi Ukaguzi"
+
+#: .\engagement\templates\engagement\viewing_form.html:5
+#, python-format
+msgid "Request a viewing for \"%(title)s\""
+msgstr "Omba kutazama \"%(title)s\""
+
+#: .\engagement\templates\engagement\viewing_form.html:9
+msgid "Preferred Date"
+msgstr "Tarehe Uipendayo"
+
+#: .\engagement\templates\engagement\viewing_form.html:13
+msgid "Preferred Time"
+msgstr "Wakati Uipendao"
+
+#: .\engagement\templates\engagement\viewing_form.html:17
+msgid "Message (optional)"
+msgstr "Ujumbe (hiari)"
+
+#: .\engagement\templates\engagement\viewing_form.html:21
+msgid "Submit Request"
+msgstr "Tuma Ombi"
+
+#: .\engagement\templates\engagement\viewing_list.html:5
+msgid "Viewing Requests"
+msgstr "Maombi ya Kutazama"
+
+#: .\engagement\templates\engagement\viewing_list.html:9
+msgid "Time"
+msgstr "Wakati"
+
+#: .\engagement\templates\engagement\viewing_list.html:30
+msgid "Accept"
+msgstr "Kubali"
+
+#: .\engagement\templates\engagement\viewing_list.html:40
+msgid "No viewing requests."
+msgstr "Hakuna maombi ya kutazama."
+
+#: .\engagement\views.py:81
+msgid "Removed from favorites."
+msgstr "Imeondolewa kwenye vipendwa."
+
+#: .\engagement\views.py:83
+msgid "Added to favorites."
+msgstr "Imeongezwa kwenye vipendwa."
+
+#: .\engagement\views.py:108
+msgid "Your inquiry has been sent to the owner/agent."
+msgstr "Swali lako limetumwa kwa mwenye nyumba/wakala."
+
+#: .\engagement\views.py:134
+msgid "Response sent."
+msgstr "Jibu limetumwa."
+
+#: .\engagement\views.py:153
+msgid "Viewing request submitted."
+msgstr "Ombi la kutazama limetumwa."
+
+#: .\engagement\views.py:175 .\engagement\views.py:227 .\engagement\views.py:325
+msgid "Invalid status."
+msgstr "Hali batili."
+
+#: .\engagement\views.py:181
+#, python-format
+msgid "Viewing request %(status)s."
+msgstr "Ombi la kutazama %(status)s."
+
+#: .\engagement\views.py:189
+msgid "This Airbnb is currently booked and not accepting new reservations."
+msgstr "Airbnb hii kwa sasa imehifadhiwa na haikubali nafasi mpya."
+
+#: .\engagement\views.py:202
+msgid "Booking request submitted."
+msgstr "Ombi la uhifadhi limetumwa."
+
+#: .\engagement\views.py:233
+#, python-format
+msgid "Booking %(status)s."
+msgstr "Uhifadhi %(status)s."
+
+#: .\engagement\views.py:241
+msgid "You cannot apply to your own listing."
+msgstr "Huwezi kutuma maombi kwa tangazo lako mwenyewe."
+
+#: .\engagement\views.py:244
+msgid "This listing is currently unavailable for applications."
+msgstr "Tangazo hili kwa sasa halipokei maombi."
+
+#: .\engagement\views.py:247
+msgid "This listing is not currently accepting applications."
+msgstr "Tangazo hili kwa sasa halikubali maombi."
+
+#: .\engagement\views.py:254
+msgid "You already have a pending application for this listing."
+msgstr "Tayari una ombi linalosubiri kwa tangazo hili."
+
+#: .\engagement\views.py:260
+#, fuzzy
+#| msgid "Applicant confirms they have read and agree to the tenancy rules."
+msgid "You must read and agree to the tenancy rules before applying."
+msgstr "Lazima usome na ukubaliane na kanuni za ukodishaji kabla ya kuomba."
+
+#: .\engagement\views.py:276
+msgid "Your application has been submitted to the owner/agent."
+msgstr "Maombi yako yametumwa kwa mwenye nyumba/wakala."
+
+#: .\engagement\views.py:312
+msgid "You do not have access to that application."
+msgstr "Huna ufikiaji wa maombi hayo."
+
+#: .\engagement\views.py:336
+#, python-format
+msgid "Application %(verb)s."
+msgstr "Maombi %(verb)s."
+
+#: .\engagement\views.py:352
+msgid "Tenant screening saved."
+msgstr "Ukaguzi wa mpangaji umehifadhiwa."
+
+#: .\engagement\views.py:372
+msgid "Thank you, your report has been submitted for review."
+msgstr "Asante, ripoti yako imetumwa kwa ajili ya mapitio."
+
+#: .\engagement\views.py:390
+msgid "Your review has been posted."
+msgstr "Maoni yako yamechapishwa."
+
+#: .\engagement\views.py:413
+msgid "Notification deleted."
+msgstr "Arifa imefutwa."
+
+#: .\engagement\views.py:429
+msgid "You cannot message yourself about your own listing."
+msgstr "Huwezi kujitumia ujumbe kuhusu tangazo lako mwenyewe."
+
+#: .\engagement\views.py:446
+msgid "You do not have access to that conversation."
+msgstr "Huna ufikiaji wa mazungumzo hayo."
+
+#: .\engagement\views.py:465
+msgid "Message sent."
+msgstr "Ujumbe umetumwa."
+
+#: .\properties\forms.py:53
+msgid "Monthly rent, or price per night for Airbnb / Short Stay listings."
+msgstr "Kodi ya mwezi, au bei kwa usiku kwa matangazo ya Airbnb / Kukaa kwa Muda Mfupi."
+
+#: .\properties\forms.py:54
+msgid "Rules tenants agree to when applying (deposit, notice period, house rules, etc.)."
+msgstr "Kanuni ambazo wapangaji wanakubaliana nazo wanapoomba (amana, kipindi cha ilani, sheria za nyumba, n.k.)."
+
+#: .\properties\forms.py:67 .\properties\templates\properties\browse.html:11
+msgid "Keyword"
+msgstr "Neno la Ufunguo"
+
+#: .\properties\forms.py:68
+msgid "Location, title..."
+msgstr "Eneo, kichwa..."
+
+#: .\properties\forms.py:71
+msgid "Any type"
+msgstr "Aina yoyote"
+
+#: .\properties\forms.py:75
+msgid "Min price"
+msgstr "Bei ya chini"
+
+#: .\properties\forms.py:77
+msgid "Max price"
+msgstr "Bei ya juu"
+
+#: .\properties\forms.py:79
+msgid "Min bedrooms"
+msgstr "Vyumba vya kulala vya chini"
+
+#: .\properties\forms.py:81
+msgid "Min bathrooms"
+msgstr "Bafu la chini"
+
+#: .\properties\forms.py:83
+msgid "Min size (sqm)"
+msgstr "Ukubwa wa chini (sqm)"
+
+#: .\properties\forms.py:91
+msgid "Newest first"
+msgstr "Mpya kwanza"
+
+#: .\properties\forms.py:92
+msgid "Price: low to high"
+msgstr "Bei: chini kwenda juu"
+
+#: .\properties\forms.py:93
+msgid "Price: high to low"
+msgstr "Bei: juu kwenda chini"
+
+#: .\properties\forms.py:94
+msgid "Size: largest first"
+msgstr "Ukubwa: kubwa kwanza"
+
+#: .\properties\models.py:22
+msgid "Apartment"
+msgstr "Ghorofa"
+
+#: .\properties\models.py:23
+msgid "House"
+msgstr "Nyumba"
+
+#: .\properties\models.py:24
+msgid "Single Room"
+msgstr "Chumba Kimoja"
+
+#: .\properties\models.py:25
+msgid "Studio"
+msgstr "Studio"
+
+#: .\properties\models.py:26
+msgid "Office"
+msgstr "Ofisi"
+
+#: .\properties\models.py:27
+msgid "Hostel"
+msgstr "Hosteli"
+
+#: .\properties\models.py:28
+msgid "Airbnb / Short Stay"
+msgstr "Airbnb / Kukaa kwa Muda Mfupi"
+
+#: .\properties\models.py:52
+msgid "Approximate size in square metres"
+msgstr "Ukubwa wa kadirio katika mita za mraba"
+
+#: .\properties\models.py:65
+msgid "Rules tenants agree to when applying (deposit, notice period, house rules, etc.)"
+msgstr "Kanuni ambazo wapangaji wanakubaliana nazo wanapoomba (amana, kipindi cha ilani, sheria za nyumba, n.k.)"
+
+#: .\properties\templates\properties\_property_card.html:12
+msgid "Airbnb"
+msgstr "Airbnb"
+
+#: .\properties\templates\properties\_property_card.html:15 .\properties\templates\properties\detail.html:37
+msgid "Verified"
+msgstr "Imethibitishwa"
+
+#: .\properties\templates\properties\_property_card.html:18 .\properties\templates\properties\detail.html:42
+msgid "Booked"
+msgstr "Imehifadhiwa"
+
+#: .\properties\templates\properties\_property_card.html:24
+msgid "Toggle favorite"
+msgstr "Badilisha Kipenzi"
+
+#: .\properties\templates\properties\_property_card.html:33 .\properties\templates\properties\detail.html:46
+msgid "/ night"
+msgstr "/ usiku"
+
+#: .\properties\templates\properties\_property_card.html:33 .\properties\templates\properties\detail.html:46
+msgid "/ month"
+msgstr "/ mwezi"
+
+#: .\properties\templates\properties\_property_card.html:35
+#, python-format
+msgid "%(count)s bed"
+msgstr "%(count)s kitanda"
+
+#: .\properties\templates\properties\_property_card.html:36
+#, python-format
+msgid "%(count)s bath"
+msgstr "%(count)s bafu"
+
+#: .\properties\templates\properties\_property_card.html:37 .\properties\templates\properties\detail.html:52
+#, python-format
+msgid "%(size)s sqm"
+msgstr "%(size)s sqm"
+
+#: .\properties\templates\properties\_property_card.html:41
+msgid "View Details"
+msgstr "Tazama Maelezo"
+
+#: .\properties\templates\properties\browse.html:3
+msgid "Browse Properties — RentCheck Tanzania"
+msgstr "Vinjari Nyumba — RentCheck Tanzania"
+
+#: .\properties\templates\properties\browse.html:9
+msgid "Filter Properties"
+msgstr "Chuja Nyumba"
+
+#: .\properties\templates\properties\browse.html:17
+msgid "Price Range (TZS)"
+msgstr "Kiwango cha Bei (TZS)"
+
+#: .\properties\templates\properties\browse.html:23
+msgid "Bedrooms &amp; Bathrooms"
+msgstr "Vyumba vya Kulala &amp; Bafu"
+
+#: .\properties\templates\properties\browse.html:29
+msgid "Min Size (sqm)"
+msgstr "Ukubwa wa Chini (sqm)"
+
+#: .\properties\templates\properties\browse.html:32 .\properties\templates\properties\detail.html:59 .\properties\templates\properties\property_form.html:49
+msgid "Amenities"
+msgstr "Huduma"
+
+#: .\properties\templates\properties\browse.html:35
+msgid "Sort By"
+msgstr "Panga Kwa"
+
+#: .\properties\templates\properties\browse.html:39
+msgid "Apply Filters"
+msgstr "Tumia Vichujio"
+
+#: .\properties\templates\properties\browse.html:40
+msgid "Clear All"
+msgstr "Futa Yote"
+
+#: .\properties\templates\properties\browse.html:49
+#, python-format
+msgid "%(n)s property found"
+msgid_plural "%(n)s properties found"
+msgstr[0] "%(n)s nyumba imepatikana"
+msgstr[1] "%(n)s nyumba zimepatikana"
+
+#: .\properties\templates\properties\browse.html:57
+msgid "No properties match your search criteria."
+msgstr "Hakuna nyumba inayolingana na vigezo vyako vya utafutaji."
+
+#: .\properties\templates\properties\browse.html:67
+#, python-format
+msgid "Page %(number)s of %(total)s"
+msgstr "Ukurasa %(number)s kati ya %(total)s"
+
+#: .\properties\templates\properties\detail.html:3
+#, python-format
+msgid "%(property.title)s — RentCheck Tanzania"
+msgstr "%(property.title)s — RentCheck Tanzania"
+
+#: .\properties\templates\properties\detail.html:39
+msgid "Pending Verification"
+msgstr "Inasubiri Uthibitisho"
+
+#: .\properties\templates\properties\detail.html:50
+#, python-format
+msgid "%(count)s Bedrooms"
+msgstr "Vyumba vya Kulala vya %(count)s"
+
+#: .\properties\templates\properties\detail.html:51
+#, python-format
+msgid "%(count)s Bathrooms"
+msgstr "Bafu %(count)s"
+
+#: .\properties\templates\properties\detail.html:64
+msgid "No amenities listed."
+msgstr "Hakuna huduma zilizoorodheshwa."
+
+#: .\properties\templates\properties\detail.html:71
+msgid "Applicants agree to these rules when they apply."
+msgstr "Waombaji wanakubaliana na kanuni hizi wanapoomba."
+
+#: .\properties\templates\properties\detail.html:79
+#, python-format
+msgid "Map for %(property.title)s"
+msgstr "Ramani ya %(property.title)s"
+
+#: .\properties\templates\properties\detail.html:91
+msgid "View on Map"
+msgstr "Tazama kwenye Ramani"
+
+#: .\properties\templates\properties\detail.html:95
+msgid "Reviews"
+msgstr "Maoni"
+
+#: .\properties\templates\properties\detail.html:103
+msgid "No reviews yet."
+msgstr "Hakuna maoni bado."
+
+#: .\properties\templates\properties\detail.html:106
+msgid "Write a Review"
+msgstr "Andika Maoni"
+
+#: .\properties\templates\properties\detail.html:123
+msgid "Edit Listing"
+msgstr "Hariri Tangazo"
+
+#: .\properties\templates\properties\detail.html:124
+msgid "Delete Listing"
+msgstr "Futa Tangazo"
+
+#: .\properties\templates\properties\detail.html:130
+#, python-format
+msgid "Your application is %(status)s"
+msgstr "Maombi yako ni %(status)s"
+
+#: .\properties\templates\properties\detail.html:137
+msgid "Remove Favorite"
+msgstr "Ondoa Kipenzi"
+
+#: .\properties\templates\properties\detail.html:137
+msgid "Save to Favorites"
+msgstr "Hifadhi kwenye Vipendwa"
+
+#: .\properties\templates\properties\detail.html:143
+msgid "Contact Owner / Agent"
+msgstr "Wasiliana na Mwenye Nyumba / Wakala"
+
+#: .\properties\templates\properties\detail.html:144
+msgid "Message Owner"
+msgstr "Tuma Ujumbe kwa Mwenye Nyumba"
+
+#: .\properties\templates\properties\detail.html:147
+msgid "This Airbnb is currently booked"
+msgstr "Airbnb hii kwa sasa imehifadhiwa"
+
+#: .\properties\templates\properties\detail.html:148
+msgid "Booked &mdash; Unavailable"
+msgstr "Imehifadhiwa &mdash; Haipatikani"
+
+#: .\properties\templates\properties\detail.html:151
+msgid "Book Now"
+msgstr "Hifadhi Sasa"
+
+#: .\properties\templates\properties\detail.html:154
+msgid "Request a Viewing"
+msgstr "Omba Kutazama"
+
+#: .\properties\templates\properties\detail.html:156
+msgid "Report this Listing"
+msgstr "Ripoti Tangazo Hili"
+
+#: .\properties\templates\properties\detail.html:159
+msgid "Log in"
+msgstr "Ingia"
+
+#: .\properties\templates\properties\detail.html:159
+msgid "to contact the owner, save favorites, or"
+msgstr "kuwasiliana na mwenye nyumba, kuokoa vipendwa, au"
+
+#: .\properties\templates\properties\detail.html:159
+msgid "book this stay"
+msgstr "hifadhi kukaa huku"
+
+#: .\properties\templates\properties\detail.html:159
+msgid "request a viewing"
+msgstr "ombe kutazama"
+
+#: .\properties\templates\properties\detail.html:162
+msgid "Share this listing"
+msgstr "Shiriki tangazo hili"
+
+#: .\properties\templates\properties\detail.html:164
+msgid "Share on WhatsApp"
+msgstr "Shiriki kwenye WhatsApp"
+
+#: .\properties\templates\properties\detail.html:165
+msgid "Share on Facebook"
+msgstr "Shiriki kwenye Facebook"
+
+#: .\properties\templates\properties\detail.html:166
+msgid "Copy link"
+msgstr "Nakili kiungo"
+
+#: .\properties\templates\properties\my_properties.html:3
+msgid "My Properties — RentCheck Tanzania"
+msgstr "Nyumba Zangu — RentCheck Tanzania"
+
+#: .\properties\templates\properties\my_properties.html:6 .\templates\base.html:89
+msgid "My Properties"
+msgstr "Nyumba Zangu"
+
+#: .\properties\templates\properties\my_properties.html:7
+msgid "+ List a Property"
+msgstr "+ Tangaza Nyumba"
+
+#: .\properties\templates\properties\my_properties.html:12 .\properties\templates\properties\property_form.html:9
+msgid "Title"
+msgstr "Kichwa"
+
+#: .\properties\templates\properties\my_properties.html:12
+msgid "Type"
+msgstr "Aina"
+
+#: .\properties\templates\properties\my_properties.html:12
+msgid "Price"
+msgstr "Bei"
+
+#: .\properties\templates\properties\my_properties.html:26
+msgid "Rented"
+msgstr "Imekodishwa"
+
+#: .\properties\templates\properties\my_properties.html:26
+msgid "Available"
+msgstr "Inapatikana"
+
+#: .\properties\templates\properties\my_properties.html:28
+msgid "Edit"
+msgstr "Hariri"
+
+#: .\properties\templates\properties\my_properties.html:32
+msgid "Mark Available"
+msgstr "Weka Kama Inapatikana"
+
+#: .\properties\templates\properties\my_properties.html:32
+msgid "Mark Rented"
+msgstr "Weka Kama Imekodishwa"
+
+#: .\properties\templates\properties\my_properties.html:35
+msgid "Delete"
+msgstr "Futa"
+
+#: .\properties\templates\properties\my_properties.html:39
+msgid "You have not listed any properties yet."
+msgstr "Hujatangaza nyumba yoyote bado."
+
+#: .\properties\templates\properties\property_confirm_delete.html:3
+msgid "Delete Property"
+msgstr "Futa Nyumba"
+
+#: .\properties\templates\properties\property_confirm_delete.html:5
+#, python-format
+msgid "Delete \"%(property.title)s\"?"
+msgstr "Futa \"%(property.title)s\"?"
+
+#: .\properties\templates\properties\property_confirm_delete.html:6
+msgid "This action cannot be undone."
+msgstr "Kitendo hiki hakiwezi kutenguliwa."
+
+#: .\properties\templates\properties\property_confirm_delete.html:9
+msgid "Yes, delete"
+msgstr "Ndiyo, futa"
+
+#: .\properties\templates\properties\property_form.html:3
+#, python-format
+msgid "%(title)s — RentCheck Tanzania"
+msgstr "%(title)s — RentCheck Tanzania"
+
+#: .\properties\templates\properties\property_form.html:21
+msgid "Region"
+msgstr "Mkoa"
+
+#: .\properties\templates\properties\property_form.html:25
+msgid "City"
+msgstr "Mji"
+
+#: .\properties\templates\properties\property_form.html:29
+msgid "Address (optional)"
+msgstr "Anwani (hiari)"
+
+#: .\properties\templates\properties\property_form.html:33
+msgid "Monthly Rent (TZS)"
+msgstr "Kodi ya Mwezi (TZS)"
+
+#: .\properties\templates\properties\property_form.html:37
+msgid "Bedrooms"
+msgstr "Vyumba vya Kulala"
+
+#: .\properties\templates\properties\property_form.html:41
+msgid "Bathrooms"
+msgstr "Bafu"
+
+#: .\properties\templates\properties\property_form.html:45
+msgid "Size (sqm)"
+msgstr "Ukubwa (sqm)"
+
+#: .\properties\templates\properties\property_form.html:60
+msgid "Upload Images"
+msgstr "Pakia Picha"
+
+#: .\properties\templates\properties\property_form.html:62
+msgid "You can click \"Choose Files\" more than once — newly picked photos are added to the ones already queued below, they don't replace them."
+msgstr "Unaweza kubonyeza \"Chagua Faili\" zaidi ya mara moja — picha mpya zilizochaguliwa zinaongezwa kwenye zile zilizokuwa kwenye foleni hapo chini, hazibadilishi."
+
+#: .\properties\templates\properties\property_form.html:68
+msgid "Existing Images"
+msgstr "Picha Zilizopo"
+
+#: .\properties\templates\properties\property_form.html:73
+msgid "Remove"
+msgstr "Ondoa"
+
+#: .\properties\templates\properties\property_form.html:81
+msgid "Save Property"
+msgstr "Hifadhi Nyumba"
+
+#: .\properties\views.py:123
+msgid "Property created successfully!"
+msgstr "Nyumba imeundwa kikamilifu!"
+
+#: .\properties\views.py:126
+#, python-format
+msgid "An error occurred while creating the property: %(error)s"
+msgstr "Hitilafu ilitokea wakati wa kuunda nyumba: %(error)s"
+
+#: .\properties\views.py:128 .\properties\views.py:154
+msgid "Please correct the errors below."
+msgstr "Tafadhali sahihisha hitilafu zifuatazo."
+
+#: .\properties\views.py:151
+msgid "Property updated successfully!"
+msgstr "Nyumba imesasishwa kikamilifu!"
+
+#: .\properties\views.py:169
+msgid "Property deleted."
+msgstr "Nyumba imefutwa."
+
+#: .\properties\views.py:179
+msgid "Image removed."
+msgstr "Picha imeondolewa."
+
+#: .\properties\views.py:202
+#, python-format
+msgid "Property marked as %(status)s."
+msgstr "Nyumba imewekwa kama %(status)s."
+
+#: .\templates\base.html:7 .\templates\registration\password_reset_email.html:51
+msgid "RentCheck Tanzania"
+msgstr "RentCheck Tanzania"
+
+#: .\templates\base.html:75
+msgid "Browse Properties"
+msgstr "Vinjari Nyumba"
+
+#: .\templates\base.html:82 .\templates\base.html:220
+msgid "Favorites"
+msgstr "Vipendwa"
+
+#: .\templates\base.html:96
+msgid "Activity"
+msgstr "Shughuli"
+
+#: .\templates\base.html:99
+msgid "Applications"
+msgstr "Maombi"
+
+#: .\templates\base.html:102
+msgid "Inquiries"
+msgstr "Maswali"
+
+#: .\templates\base.html:103
+msgid "Viewings"
+msgstr "Kutazama Nyumba"
+
+#: .\templates\base.html:138
+msgid "Admin Portal"
+msgstr "Mlango wa Msimamizi"
+
+#: .\templates\base.html:140 .\templates\base.html:144
+msgid "My Profile"
+msgstr "Wasifu Wangu"
+
+#: .\templates\base.html:142
+msgid "Preview Public Site"
+msgstr "Onyesha Tovuti ya Umma"
+
+#: .\templates\base.html:150
+msgid "Logout"
+msgstr "Toka"
+
+#: .\templates\base.html:159
+msgid "Login"
+msgstr "Ingia"
+
+#: .\templates\base.html:160
+msgid "Sign Up"
+msgstr "Jisajili"
+
+#: .\templates\base.html:170
+msgid "Admin Preview:"
+msgstr "Onyesho la Msimamizi:"
+
+#: .\templates\base.html:170
+msgid "You are currently viewing the customer-facing home page."
+msgstr "Kwa sasa unaona ukurasa wa mbele unaowakabili wateja."
+
+#: .\templates\base.html:171
+msgid "Return to Admin Dashboard"
+msgstr "Rudi kwenye Dashibodi ya Msimamizi"
+
+#: .\templates\base.html:189
+msgid "RentCheck Tanzania — Centralized rental property discovery platform."
+msgstr "RentCheck Tanzania — Jukwaa kuu la kugundua nyumba za kukodi."
+
+#: .\templates\base.html:200 .\templates\base.html:224
+msgid "Listings"
+msgstr "Matangazo"
+
+#: .\templates\base.html:209 .\templates\base.html:232
+msgid "Profile"
+msgstr "Wasifu"
+
+#: .\templates\base.html:213
+msgid "Home"
+msgstr "Nyumbani"
+
+#: .\templates\registration\password_reset_complete.html:3
+msgid "Password Changed — RentCheck Tanzania"
+msgstr "Nenosiri Limebadilishwa — RentCheck Tanzania"
+
+#: .\templates\registration\password_reset_complete.html:12
+msgid "Password Changed"
+msgstr "Nenosiri Limebadilishwa"
+
+#: .\templates\registration\password_reset_complete.html:14
+msgid "Your password has been reset successfully. You can now sign in with your new password."
+msgstr "Nenosiri lako limewekwa upya kikamilifu. Sasa unaweza kuingia na nenosiri lako jipya."
+
+#: .\templates\registration\password_reset_confirm.html:3
+msgid "Choose a New Password — RentCheck Tanzania"
+msgstr "Chagua Nenosiri Jipya — RentCheck Tanzania"
+
+#: .\templates\registration\password_reset_confirm.html:13
+msgid "Set a New Password"
+msgstr "Weka Nenosiri Jipya"
+
+#: .\templates\registration\password_reset_confirm.html:14
+msgid "Choose a strong password you haven't used for this account before."
+msgstr "Chagua nenosiri imara ambalo hujatumia kwa akaunti hii hapo awali."
+
+#: .\templates\registration\password_reset_confirm.html:43
+msgid "Change Password"
+msgstr "Badilisha Nenosiri"
+
+#: .\templates\registration\password_reset_confirm.html:51
+msgid "Link Expired or Invalid"
+msgstr "Kiungo Kimekoma au Ni Batili"
+
+#: .\templates\registration\password_reset_confirm.html:53
+msgid "This password reset link is invalid, expired, or has already been used."
+msgstr "Kiungo hiki cha kuweka upya nenosiri ni batili, kimekoma, au tayari kimetumika."
+
+#: .\templates\registration\password_reset_confirm.html:56
+msgid "Request a New Link"
+msgstr "Omba Kiungo Kipya"
+
+#: .\templates\registration\password_reset_done.html:3
+msgid "Check Your Email — RentCheck Tanzania"
+msgstr "Angalia Barua Pepe Yako — RentCheck Tanzania"
+
+#: .\templates\registration\password_reset_done.html:12
+msgid "Check Your Email"
+msgstr "Angalia Barua Pepe Yako"
+
+#: .\templates\registration\password_reset_done.html:14
+msgid ""
+"If an account exists for the email you entered, a password reset link has been sent.\n"
+"                    The link expires after <strong>1 hour</strong>. Please also check your spam folder."
+msgstr ""
+"Ikiwa akaunti inapatikana kwa barua pepe uliyoingiza, kiungo cha kuweka upya nenosiri kimetumwa.\n"
+"                    Kiungo hicho kinamalizika baada ya <strong>saa 1</strong>. Pia tafadhali angalia folda yako ya barua taka (spam)."
+
+#: .\templates\registration\password_reset_done.html:18
+msgid "Back to Login"
+msgstr "Rudi kwenye Kuingia"
+
+#: .\templates\registration\password_reset_email.html:7
+msgid "Reset your password — RentCheck Tanzania"
+msgstr "Weka Upya Nenosiri Lako — RentCheck Tanzania"
+
+#: .\templates\registration\password_reset_email.html:17
+msgid "Reset your password"
+msgstr "Weka upya nenosiri lako"
+
+#: .\templates\registration\password_reset_email.html:23
+#, python-format
+msgid "Hello %(name)s,"
+msgstr "Habari %(name)s,"
+
+#: .\templates\registration\password_reset_email.html:26
+msgid ""
+"We received a request to reset the password for your RentCheck Tanzania account.\n"
+"                                Click the button below to choose a new password. This link is valid for\n"
+"                                <strong>1 hour</strong> and can only be used once."
+msgstr ""
+"Tumepokea ombi la kuweka upya nenosiri la akaunti yako ya RentCheck Tanzania.\n"
+"                                Bonyeza kitufe hapo chini kuchagua nenosiri jipya. Kiungo hiki ni halali kwa\n"
+"                                <strong>saa 1</strong> na kinaweza kutumika mara moja tu."
+
+#: .\templates\registration\password_reset_email.html:33
+msgid "Reset My Password"
+msgstr "Weka Upya Nenosiri Langu"
+
+#: .\templates\registration\password_reset_email.html:37
+msgid "If the button doesn't work, copy this link into your browser:"
+msgstr "Ikiwa kitufe hakifanyi kazi, nakili kiungo hiki kwenye kivinjari chako:"
+
+#: .\templates\registration\password_reset_email.html:44
+msgid "If you did not request this, you can safely ignore this email — your password will not be changed."
+msgstr "Ikiwa hukuomba hili, unaweza kupuuza barua pepe hii kwa usalama — nenosiri lako halitabadilishwa."
+
+#: .\templates\registration\password_reset_email.html:51
+msgid "Centralized rental property discovery platform"
+msgstr "Jukwaa kuu la kugundua nyumba za kukodi"
+
+#: .\templates\registration\password_reset_form.html:3
+msgid "Reset Password — RentCheck Tanzania"
+msgstr "Weka Upya Nenosiri — RentCheck Tanzania"
+
+#: .\templates\registration\password_reset_form.html:13
+msgid "Forgot Password?"
+msgstr "Umesahau Nenosiri?"
+
+#: .\templates\registration\password_reset_form.html:15
+msgid "Enter the email address linked to your account and we'll send you a secure link to reset your password."
+msgstr "Weka anwani ya barua pepe iliyounganishwa na akaunti yako na tutakutumia kiungo salama cha kuweka upya nenosiri lako."
+
+#: .\templates\registration\password_reset_form.html:21
+msgid "Email Address"
+msgstr "Anwani ya Barua Pepe"
+
+#: .\templates\registration\password_reset_form.html:33
+msgid "Send Reset Link"
+msgstr "Tuma Kiungo cha Kuweka Upya"
+
+#: .\templates\registration\password_reset_form.html:37
+msgid "Remembered your password?"
+msgstr "Umekumbuka nenosiri lako?"
+
+#: .\templates\registration\password_reset_form.html:38
+msgid "Back to login"
+msgstr "Rudi kwenye kuingia"

@@ -3,6 +3,7 @@ from django.core.paginator import Paginator
 from django.db import models
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 from accounts.models import User
 from engagement.models import Favorite, Report
@@ -130,17 +131,17 @@ def dashboard_property_action(request, pk, action):
     if action == "approve":
         property_obj.verification_status = Property.VerificationStatus.APPROVED
         property_obj.rejection_reason = ""
-        messages.success(request, f"Listing '{property_obj.title}' verified and approved.")
+        messages.success(request, _("Listing '%(title)s' verified and approved.") % {"title": property_obj.title})
         notify(property_obj.owner, f"Your listing '{property_obj.title}' has been verified and approved.",
                property_obj.get_absolute_url())
     elif action == "reject":
         property_obj.verification_status = Property.VerificationStatus.REJECTED
         property_obj.rejection_reason = request.POST.get("reason", "").strip() or "Listing details did not meet platform verification guidelines."
-        messages.success(request, f"Listing '{property_obj.title}' rejected.")
+        messages.success(request, _("Listing '%(title)s' rejected.") % {"title": property_obj.title})
         notify(property_obj.owner, f"Your listing '{property_obj.title}' was rejected during verification: {property_obj.rejection_reason}",
                property_obj.get_absolute_url())
     else:
-        messages.error(request, "Unknown action.")
+        messages.error(request, _("Unknown action."))
         return redirect("core:dashboard_properties")
     property_obj.save()
 
@@ -177,14 +178,14 @@ def dashboard_reports(request):
 def dashboard_report_action(request, pk, new_status):
     report = get_object_or_404(Report, pk=pk)
     if new_status not in Report.Status.values:
-        messages.error(request, "Unknown status.")
+        messages.error(request, _("Unknown status."))
         return redirect("core:dashboard_reports")
     report.status = new_status
     report.resolved_at = timezone.now()
     report.save()
-    notify(report.reporter, f"Your report on '{report.property.title}' was marked as {report.get_status_display().lower()}.",
+    notify(report.reporter, _("Your report on '%(title)s' was marked as %(status)s.") % {"title": report.property.title, "status": report.get_status_display().lower()},
            report.property.get_absolute_url())
-    messages.success(request, f"Report updated to {report.get_status_display()}.")
+    messages.success(request, _("Report updated to %(status)s.") % {"status": report.get_status_display()})
 
     next_url = request.POST.get("next") or request.GET.get("next")
     if next_url:
@@ -226,7 +227,7 @@ def dashboard_users(request):
 def dashboard_toggle_user_status(request, pk):
     user = get_object_or_404(User, pk=pk)
     if user.is_superuser:
-        messages.error(request, "Superuser accounts cannot be suspended.")
+        messages.error(request, _("Superuser accounts cannot be suspended."))
         next_url = request.POST.get("next") or request.GET.get("next")
         if next_url:
             return redirect(next_url)
@@ -237,7 +238,7 @@ def dashboard_toggle_user_status(request, pk):
     )
     user.is_active = user.account_status == User.Status.ACTIVE
     user.save()
-    messages.success(request, f"User '{user.username}' is now {user.get_account_status_display().lower()}.")
+    messages.success(request, _("User '%(username)s' is now %(status)s.") % {"username": user.username, "status": user.get_account_status_display().lower()})
 
     next_url = request.POST.get("next") or request.GET.get("next")
     if next_url:

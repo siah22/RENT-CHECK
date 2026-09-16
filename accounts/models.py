@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser, UserManager as DjangoUserManager
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class CustomUserManager(DjangoUserManager):
@@ -12,13 +13,13 @@ class CustomUserManager(DjangoUserManager):
 
 class User(AbstractUser):
     class Role(models.TextChoices):
-        TENANT = "TENANT", "Tenant"
-        OWNER_AGENT = "OWNER_AGENT", "Owner / Agent"
-        ADMIN = "ADMIN", "Administrator"
+        TENANT = "TENANT", _("Tenant")
+        OWNER_AGENT = "OWNER_AGENT", _("Owner / Agent")
+        ADMIN = "ADMIN", _("Administrator")
 
     class Status(models.TextChoices):
-        ACTIVE = "ACTIVE", "Active"
-        SUSPENDED = "SUSPENDED", "Suspended"
+        ACTIVE = "ACTIVE", _("Active")
+        SUSPENDED = "SUSPENDED", _("Suspended")
 
     role = models.CharField(max_length=20, choices=Role.choices, default=Role.TENANT)
     phone_number = models.CharField(max_length=20, blank=True)
@@ -47,7 +48,7 @@ class User(AbstractUser):
 
     def get_role_display(self):
         if self.is_admin_role:
-            return "Administrator"
+            return _("Administrator")
         try:
             return self.Role(self.role).label
         except (ValueError, KeyError):

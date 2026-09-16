@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
     'core',
     'accounts',
     'properties',
@@ -59,6 +61,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -127,12 +130,21 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+from django.utils.translation import gettext_lazy as _
+
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en"
+LANGUAGES = [
+    ("en", _("English")),
+    ("sw", _("Kiswahili")),
+]
 
-TIME_ZONE = 'UTC'
+LOCALE_PATHS = [BASE_DIR / "locale"]
+PREFIX_DEFAULT_LANGUAGE = False
+
+TIME_ZONE = "Africa/Dar_es_Salaam"
 
 USE_I18N = True
 
@@ -150,22 +162,12 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Cloudinary keeps uploaded property photos when CLOUDINARY_URL is set (production).
-# Cloudinary apps are intentionally NOT in INSTALLED_APPS: their AppConfig parses
-# CLOUDINARY_URL at startup and would crash the Render build on any bad value.
-# The storage backend is referenced lazily instead, so a bad/placeholder URL can
-# never break startup -- it just falls back to the local filesystem (MEDIA_ROOT).
-_cloudinary_url = env("CLOUDINARY_URL", default="")
-_use_cloudinary = (
-    bool(_cloudinary_url)
-    and _cloudinary_url.startswith("cloudinary://")
-    and "<" not in _cloudinary_url
-    and _cloudinary_url[len("cloudinary://"):].count("@") == 1
-)
+# Locally (no CLOUDINARY_URL), files are written to MEDIA_ROOT as usual.
 STORAGES = {
     "default": {
         "BACKEND": (
             "cloudinary_storage.storage.MediaCloudinaryStorage"
-            if _use_cloudinary
+            if env("CLOUDINARY_URL", default="")
             else "django.core.files.storage.FileSystemStorage"
         ),
     },
@@ -180,29 +182,9 @@ STORAGES = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Allow up to 10 MB image uploads (Cloudinary free tier supports 10 MB).
-DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
-FILE_UPLOAD_MAX_MEMORY_SIZE = DATA_UPLOAD_MAX_MEMORY_SIZE
-
 LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'core:home'
 LOGOUT_REDIRECT_URL = 'core:home'
-
-# Password reset — signed tokens expire after 1 hour (default is 72h).
-PASSWORD_RESET_TIMEOUT = 3600
-
-# Email — defaults to the console backend so password-reset emails can be
-# tested locally without an SMTP server. Production sets EMAIL_HOST etc.
-EMAIL_BACKEND = env("EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend")
-EMAIL_HOST = env("EMAIL_HOST", default="")
-EMAIL_PORT = env.int("EMAIL_PORT", default=587)
-EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
-EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
-DEFAULT_FROM_EMAIL = env(
-    "DEFAULT_FROM_EMAIL", default="RentCheck Tanzania <noreply@rentcheck.co.tz>"
-)
-SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 # Production security hardening (only kicks in once DEBUG=False, e.g. on Render).
 if not DEBUG:
@@ -216,4 +198,4 @@ if not DEBUG:
 # Session Timeout Configuration
 SESSION_COOKIE_AGE = 300         # Log out user after 5 minutes (300 seconds) of inactivity
 SESSION_SAVE_EVERY_REQUEST = True  # Reset timeout timer on every request/page load
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True # Expire session when the user closes their browser
+SESSSION_EXPIRE_AT_BROWSER_CLOSE = True # Expire session when the user closes their browser

@@ -1,14 +1,15 @@
 {% extends "base.html" %}
-{% block title %}My Properties — RentCheck Tanzania{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "My Properties — RentCheck Tanzania" %}{% endblock %}
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>My Properties</h2>
-    <a href="{% url 'properties:create' %}" class="btn btn-success">+ List a Property</a>
+    <h2>{% trans "My Properties" %}</h2>
+    <a href="{% url 'properties:create' %}" class="btn btn-success">{% trans "+ List a Property" %}</a>
 </div>
 <table class="table table-bordered bg-white align-middle">
     <thead>
         <tr>
-            <th>Title</th><th>Type</th><th>Price</th><th>Status</th><th>Availability</th><th>Actions</th>
+            <th>{% trans "Title" %}</th><th>{% trans "Type" %}</th><th>{% trans "Price" %}</th><th>{% trans "Status" %}</th><th>{% trans "Availability" %}</th><th>{% trans "Actions" %}</th>
         </tr>
     </thead>
     <tbody>
@@ -18,24 +19,24 @@
             <td>{{ property.get_property_type_display }}</td>
             <td>TZS {{ property.price|floatformat:0 }}</td>
             <td>
-                {% if property.verification_status == "APPROVED" %}<span class="badge bg-success">Approved</span>
-                {% elif property.verification_status == "REJECTED" %}<span class="badge bg-danger">Rejected</span>
-                {% else %}<span class="badge bg-warning text-dark">Pending</span>{% endif %}
+                {% if property.verification_status == "APPROVED" %}<span class="badge bg-success">{% trans "Approved" %}</span>
+                {% elif property.verification_status == "REJECTED" %}<span class="badge bg-danger">{% trans "Rejected" %}</span>
+                {% else %}<span class="badge bg-warning text-dark">{% trans "Pending" %}</span>{% endif %}
             </td>
-            <td>{% if property.is_rented %}<span class="badge bg-secondary">Rented</span>{% else %}<span class="badge bg-info text-dark">Available</span>{% endif %}</td>
+            <td>{% if property.is_rented %}<span class="badge bg-secondary">{% trans "Rented" %}</span>{% else %}<span class="badge bg-info text-dark">{% trans "Available" %}</span>{% endif %}</td>
             <td class="d-flex gap-1">
-                <a href="{% url 'properties:edit' property.pk %}" class="btn btn-sm btn-outline-success">Edit</a>
+                <a href="{% url 'properties:edit' property.pk %}" class="btn btn-sm btn-outline-success">{% trans "Edit" %}</a>
                 <form method="post" action="{% url 'properties:toggle_rented' property.pk %}">
                     {% csrf_token %}
                     <button class="btn btn-sm btn-outline-secondary" type="submit">
-                        {% if property.is_rented %}Mark Available{% else %}Mark Rented{% endif %}
+                        {% if property.is_rented %}{% trans "Mark Available" %}{% else %}{% trans "Mark Rented" %}{% endif %}
                     </button>
                 </form>
-                <a href="{% url 'properties:delete' property.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                <a href="{% url 'properties:delete' property.pk %}" class="btn btn-sm btn-outline-danger">{% trans "Delete" %}</a>
             </td>
         </tr>
         {% empty %}
-        <tr><td colspan="6" class="text-muted text-center">You have not listed any properties yet.</td></tr>
+        <tr><td colspan="6" class="text-muted text-center">{% trans "You have not listed any properties yet." %}</td></tr>
         {% endfor %}
     </tbody>
 </table>

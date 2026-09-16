@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% block title %}My Profile — RentCheck Tanzania{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "My Profile — RentCheck Tanzania" %}{% endblock %}
 {% block content %}
 <div class="row justify-content-center my-4">
     <div class="col-md-7 col-lg-6">
@@ -17,16 +18,16 @@
                         <h4 class="fw-bold mb-1">{{ user.get_full_name|default:user.username }}</h4>
                         <div class="d-flex flex-wrap gap-2 align-items-center">
                             {% if user.is_admin_role %}
-                                <span class="badge bg-warning text-dark"><i class="bi bi-shield-check me-1"></i>Administrator</span>
+                                <span class="badge bg-warning text-dark"><i class="bi bi-shield-check me-1"></i>{% trans "Administrator" %}</span>
                             {% elif user.is_owner_agent %}
-                                <span class="badge bg-info text-dark"><i class="bi bi-building me-1"></i>Owner / Agent</span>
+                                <span class="badge bg-info text-dark"><i class="bi bi-building me-1"></i>{% trans "Owner / Agent" %}</span>
                             {% else %}
-                                <span class="badge bg-primary"><i class="bi bi-person me-1"></i>Tenant</span>
+                                <span class="badge bg-primary"><i class="bi bi-person me-1"></i>{% trans "Tenant" %}</span>
                             {% endif %}
                             {% if user.account_status == "ACTIVE" %}
-                                <span class="badge bg-success-subtle text-success border border-success-subtle">Active Account</span>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle">{% trans "Active Account" %}</span>
                             {% else %}
-                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Suspended</span>
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle">{% trans "Suspended" %}</span>
                             {% endif %}
                         </div>
                     </div>
@@ -34,8 +35,8 @@
 
                 {% if user.is_admin_role %}
                     <div class="alert alert-warning d-flex justify-content-between align-items-center py-2 px-3 mb-4">
-                        <span class="small"><i class="bi bi-shield-lock-fill me-1"></i> You have administrative privileges.</span>
-                        <a href="{% url 'core:dashboard' %}" class="btn btn-sm btn-dark py-1">Admin Dashboard</a>
+                        <span class="small"><i class="bi bi-shield-lock-fill me-1"></i> {% trans "You have administrative privileges." %}</span>
+                        <a href="{% url 'core:dashboard' %}" class="btn btn-sm btn-dark py-1">{% trans "Admin Dashboard" %}</a>
                     </div>
                 {% endif %}
 
@@ -52,11 +53,11 @@
                     {% endfor %}
                     <div class="d-flex gap-2 mt-4">
                         <button type="submit" class="btn btn-success px-4 py-2 fw-semibold">
-                            <i class="bi bi-check-lg me-1"></i> Save Changes
+                            <i class="bi bi-check-lg me-1"></i> {% trans "Save Changes" %}
                         </button>
                         {% if user.is_admin_role %}
                             <a href="{% url 'core:dashboard' %}" class="btn btn-outline-secondary px-3 py-2">
-                                Back to Dashboard
+                                {% trans "Back to Dashboard" %}
                             </a>
                         {% endif %}
                     </div>
@@ -66,4 +67,3 @@
     </div>
 </div>
 {% endblock %}
-

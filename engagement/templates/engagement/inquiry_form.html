@@ -1,13 +1,14 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block title %}Contact Owner — {{ property.title }}{% endblock %}
 {% block content %}
-<h2>Contact owner/agent about "{{ property.title }}"</h2>
+<h2>{% blocktrans with title=property.title %}Contact owner/agent about "{{ title }}"{% endblocktrans %}</h2>
 <form method="post">
     {% csrf_token %}
     <div class="mb-3">
         {{ form.message }}
     </div>
-    <button type="submit" class="btn btn-success">Send Inquiry</button>
-    <a href="{% url 'properties:detail' property.pk %}" class="btn btn-link">Cancel</a>
+    <button type="submit" class="btn btn-success">{% trans "Send Inquiry" %}</button>
+    <a href="{% url 'properties:detail' property.pk %}" class="btn btn-link">{% trans "Cancel" %}</a>
 </form>
 {% endblock %}

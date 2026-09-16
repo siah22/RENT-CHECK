@@ -1,11 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Delete Property{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Delete Property" %}{% endblock %}
 {% block content %}
-<h2>Delete "{{ property.title }}"?</h2>
-<p class="text-danger">This action cannot be undone.</p>
+<h2>{% blocktrans %}Delete "{{ property.title }}"?{% endblocktrans %}</h2>
+<p class="text-danger">{% trans "This action cannot be undone." %}</p>
 <form method="post">
     {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Yes, delete</button>
-    <a href="{% url 'properties:my_properties' %}" class="btn btn-link">Cancel</a>
+    <button type="submit" class="btn btn-danger">{% trans "Yes, delete" %}</button>
+    <a href="{% url 'properties:my_properties' %}" class="btn btn-link">{% trans "Cancel" %}</a>
 </form>
 {% endblock %}

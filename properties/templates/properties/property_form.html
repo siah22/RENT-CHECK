@@ -1,70 +1,76 @@
 {% extends "base.html" %}
-{% block title %}{{ title }} — RentCheck Tanzania{% endblock %}
+{% load i18n %}
+{% block title %}{% blocktrans %}{{ title }} — RentCheck Tanzania{% endblocktrans %}{% endblock %}
 {% block content %}
 <h2>{{ title }}</h2>
 <form method="post" enctype="multipart/form-data" class="row g-3">
     {% csrf_token %}
     <div class="col-12">
-        <label class="form-label">Title</label>
+        <label class="form-label">{% trans "Title" %}</label>
         {{ form.title }}
     </div>
     <div class="col-12">
-        <label class="form-label">Description</label>
+        <label class="form-label">{% trans "Description" %}</label>
         {{ form.description }}
     </div>
     <div class="col-md-4">
-        <label class="form-label">Property Type</label>
+        <label class="form-label">{% trans "Property Type" %}</label>
         {{ form.property_type }}
     </div>
     <div class="col-md-4">
-        <label class="form-label">Region</label>
+        <label class="form-label">{% trans "Region" %}</label>
         {{ form.region }}
     </div>
     <div class="col-md-4">
-        <label class="form-label">City</label>
+        <label class="form-label">{% trans "City" %}</label>
         {{ form.city }}
     </div>
     <div class="col-12">
-        <label class="form-label">Address (optional)</label>
+        <label class="form-label">{% trans "Address (optional)" %}</label>
         {{ form.address }}
     </div>
     <div class="col-md-3">
-        <label class="form-label">Monthly Rent (TZS)</label>
+        <label class="form-label">{% trans "Monthly Rent (TZS)" %}</label>
         {{ form.price }}
     </div>
     <div class="col-md-3">
-        <label class="form-label">Bedrooms</label>
+        <label class="form-label">{% trans "Bedrooms" %}</label>
         {{ form.bedrooms }}
     </div>
     <div class="col-md-3">
-        <label class="form-label">Bathrooms</label>
+        <label class="form-label">{% trans "Bathrooms" %}</label>
         {{ form.bathrooms }}
     </div>
     <div class="col-md-3">
-        <label class="form-label">Size (sqm)</label>
+        <label class="form-label">{% trans "Size (sqm)" %}</label>
         {{ form.size_sqm }}
     </div>
     <div class="col-12">
-        <label class="form-label">Amenities</label>
+        <label class="form-label">{% trans "Amenities" %}</label>
         <div class="row">
             {{ form.amenities }}
         </div>
     </div>
     <div class="col-12">
-        <label class="form-label">Upload Images</label>
+        <label class="form-label">{% trans "Tenancy Rules" %}</label>
+        {{ form.tenancy_rules }}
+        <div class="form-text">{{ form.tenancy_rules.help_text }}</div>
+    </div>
+    <div class="col-12">
+        <label class="form-label">{% trans "Upload Images" %}</label>
         {{ form.images }}
-        <div class="form-text">You can click "Choose Files" more than once — newly picked photos are added to the ones already queued below, they don't replace them.</div>
+        <div class="form-text">{% blocktrans %}You can click "Choose Files" more than once — newly picked photos are added to the ones already queued below, they don't replace them.{% endblocktrans %}</div>
         <div id="image-queue-preview" class="d-flex flex-wrap gap-2 mt-2"></div>
     </div>
 
     {% if property and property.images.exists %}
         <div class="col-12">
-            <label class="form-label">Existing Images</label>
+            <label class="form-label">{% trans "Existing Images" %}</label>
             <div class="d-flex flex-wrap gap-2">
                 {% for image in property.images.all %}
                     <div class="position-relative">
                         <img src="{{ image.image.url }}" style="width:100px;height:80px;object-fit:cover;" class="rounded border">
-                        <a href="{% url 'properties:delete_image' image.pk %}" class="btn btn-sm btn-danger position-absolute top-0 end-0" title="Remove">&times;</a>
+                        <a href="{% url 'properties:delete_image' image.pk %}" class="btn btn-sm btn-danger position-absolute top-0 end-0" title="{% trans 'Remove' %}">&times;</a>
                     </div>
                 {% endfor %}
             </div>
@@ -72,8 +78,8 @@
     {% endif %}
 
     <div class="col-12">
-        <button type="submit" class="btn btn-success">Save Property</button>
-        <a href="{% url 'properties:my_properties' %}" class="btn btn-link">Cancel</a>
+        <button type="submit" class="btn btn-success">{% trans "Save Property" %}</button>
+        <a href="{% url 'properties:my_properties' %}" class="btn btn-link">{% trans "Cancel" %}</a>
     </div>
 </form>
 

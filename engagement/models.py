@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from properties.models import Property
 
@@ -21,9 +22,9 @@ class Favorite(models.Model):
 
 class Inquiry(models.Model):
     class Status(models.TextChoices):
-        OPEN = "OPEN", "Open"
-        RESPONDED = "RESPONDED", "Responded"
-        CLOSED = "CLOSED", "Closed"
+        OPEN = "OPEN", _("Open")
+        RESPONDED = "RESPONDED", _("Responded")
+        CLOSED = "CLOSED", _("Closed")
 
     tenant = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="sent_inquiries"
@@ -48,9 +49,9 @@ class Inquiry(models.Model):
 
 class ViewingRequest(models.Model):
     class Status(models.TextChoices):
-        PENDING = "PENDING", "Pending"
-        ACCEPTED = "ACCEPTED", "Accepted"
-        REJECTED = "REJECTED", "Rejected"
+        PENDING = "PENDING", _("Pending")
+        ACCEPTED = "ACCEPTED", _("Accepted")
+        REJECTED = "REJECTED", _("Rejected")
 
     tenant = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="viewing_requests"
@@ -71,10 +72,10 @@ class ViewingRequest(models.Model):
 
 class Booking(models.Model):
     class Status(models.TextChoices):
-        PENDING = "PENDING", "Pending"
-        CONFIRMED = "CONFIRMED", "Confirmed"
-        REJECTED = "REJECTED", "Rejected"
-        CANCELLED = "CANCELLED", "Cancelled"
+        PENDING = "PENDING", _("Pending")
+        CONFIRMED = "CONFIRMED", _("Confirmed")
+        REJECTED = "REJECTED", _("Rejected")
+        CANCELLED = "CANCELLED", _("Cancelled")
 
     tenant = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="bookings"
@@ -102,19 +103,19 @@ class Booking(models.Model):
 
 class Report(models.Model):
     class Reason(models.TextChoices):
-        FAKE_PROPERTY = "FAKE_PROPERTY", "Fake property"
-        INCORRECT_INFO = "INCORRECT_INFO", "Incorrect information"
-        FAKE_IMAGES = "FAKE_IMAGES", "Fake images"
-        INCORRECT_LOCATION = "INCORRECT_LOCATION", "Incorrect location"
-        SUSPICIOUS_OWNER = "SUSPICIOUS_OWNER", "Suspicious owner/agent"
-        ALREADY_RENTED = "ALREADY_RENTED", "Property already rented"
-        OTHER = "OTHER", "Other"
+        FAKE_PROPERTY = "FAKE_PROPERTY", _("Fake property")
+        INCORRECT_INFO = "INCORRECT_INFO", _("Incorrect information")
+        FAKE_IMAGES = "FAKE_IMAGES", _("Fake images")
+        INCORRECT_LOCATION = "INCORRECT_LOCATION", _("Incorrect location")
+        SUSPICIOUS_OWNER = "SUSPICIOUS_OWNER", _("Suspicious owner/agent")
+        ALREADY_RENTED = "ALREADY_RENTED", _("Property already rented")
+        OTHER = "OTHER", _("Other")
 
     class Status(models.TextChoices):
-        PENDING = "PENDING", "Pending"
-        REVIEWED = "REVIEWED", "Reviewed"
-        ACTIONED = "ACTIONED", "Actioned"
-        DISMISSED = "DISMISSED", "Dismissed"
+        PENDING = "PENDING", _("Pending")
+        REVIEWED = "REVIEWED", _("Reviewed")
+        ACTIONED = "ACTIONED", _("Actioned")
+        DISMISSED = "DISMISSED", _("Dismissed")
 
     reporter = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="reports_filed"
@@ -133,36 +134,14 @@ class Report(models.Model):
         return f"Report on {self.property} by {self.reporter}"
 
 
-class ApplicationQuestion(models.Model):
-    """A per-listing question the owner adds to their rental application form."""
-    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="application_questions")
-    question = models.CharField(max_length=255)
-    required = models.BooleanField(default=True)
-    order = models.PositiveSmallIntegerField(default=0)
-
-    class Meta:
-        ordering = ["order", "id"]
-
-    def __str__(self):
-        return f"{self.question} ({self.property.title})"
-
-
 class Application(models.Model):
-    """A tenant's rental application for a listing, collected digitally."""
+    """A tenant's rental application for a listing."""
 
     class Status(models.TextChoices):
-        PENDING = "PENDING", "Pending"
-        APPROVED = "APPROVED", "Approved"
-        REJECTED = "REJECTED", "Rejected"
-        WITHDRAWN = "WITHDRAWN", "Withdrawn"
-
-    class EmploymentStatus(models.TextChoices):
-        EMPLOYED = "EMPLOYED", "Employed (full-time)"
-        PART_TIME = "PART_TIME", "Employed (part-time)"
-        SELF_EMPLOYED = "SELF_EMPLOYED", "Self-employed"
-        STUDENT = "STUDENT", "Student"
-        UNEMPLOYED = "UNEMPLOYED", "Unemployed"
-        RETIRED = "RETIRED", "Retired"
+        PENDING = "PENDING", _("Pending")
+        APPROVED = "APPROVED", _("Approved")
+        REJECTED = "REJECTED", _("Rejected")
+        WITHDRAWN = "WITHDRAWN", _("Withdrawn")
 
     tenant = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="applications"
@@ -173,24 +152,12 @@ class Application(models.Model):
     phone = models.CharField(max_length=20)
     email = models.EmailField(blank=True)
     current_address = models.CharField(max_length=255, blank=True)
-
-    employment_status = models.CharField(
-        max_length=20, choices=EmploymentStatus.choices, default=EmploymentStatus.EMPLOYED
-    )
-    employer = models.CharField(max_length=150, blank=True)
-    monthly_income = models.DecimalField(
-        max_digits=12, decimal_places=2, null=True, blank=True,
-        help_text="Gross monthly income in TZS",
-    )
-    move_in_date = models.DateField(null=True, blank=True)
-
-    rental_history = models.TextField(
-        blank=True, help_text="Past addresses / landlords, or any recent rental history."
-    )
-    reference_name = models.CharField(max_length=150, blank=True)
-    reference_phone = models.CharField(max_length=20, blank=True)
     notes = models.TextField(blank=True)
-    document = models.FileField(upload_to="application_documents/", blank=True)
+
+    agreement_accepted = models.BooleanField(
+        default=False,
+        help_text=_("Applicant confirms they have read and agree to the tenancy rules."),
+    )
 
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
     decision_note = models.TextField(blank=True)
@@ -205,19 +172,6 @@ class Application(models.Model):
         return f"Application by {self.full_name} for {self.property}"
 
 
-class ApplicationAnswer(models.Model):
-    """A tenant's answer to one customizable application question."""
-    application = models.ForeignKey(Application, on_delete=models.CASCADE, related_name="answers")
-    question = models.ForeignKey(ApplicationQuestion, on_delete=models.CASCADE, related_name="answers")
-    answer = models.TextField()
-
-    class Meta:
-        unique_together = ("application", "question")
-
-    def __str__(self):
-        return f"{self.question.question}: {self.answer}"
-
-
 class ApplicationScreening(models.Model):
     """Owner-only screening scorecard for an application."""
     application = models.OneToOneField(
@@ -228,7 +182,7 @@ class ApplicationScreening(models.Model):
     references_checked = models.BooleanField(default=False)
     employment_verified = models.BooleanField(default=False)
     background_checked = models.BooleanField(default=False)
-    score = models.PositiveSmallIntegerField(default=0, help_text="0–100")
+    score = models.PositiveSmallIntegerField(default=0, help_text=_("0–100"))
     notes = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -348,9 +302,9 @@ class Conversation(models.Model):
 
 class Message(models.Model):
     class Status(models.TextChoices):
-        SENT = "SENT", "Sent"
-        DELIVERED = "DELIVERED", "Delivered"
-        READ = "READ", "Read"
+        SENT = "SENT", _("Sent")
+        DELIVERED = "DELIVERED", _("Delivered")
+        READ = "READ", _("Read")
 
     conversation = models.ForeignKey(
         Conversation, on_delete=models.CASCADE, related_name="messages"

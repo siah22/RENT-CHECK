@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 from core.decorators import owner_agent_required
 from properties.models import Property
@@ -15,27 +16,10 @@ from properties.models import Property
 from .forms import (ApplicationForm, ApplicationScreeningForm, BookingForm,
                     InquiryForm, InquiryResponseForm, MessageForm, ReportForm,
                     ReviewForm, ViewingRequestForm)
-from .models import (Application, ApplicationAnswer, ApplicationQuestion,
-                     ApplicationScreening, Booking, Conversation, Favorite,
-                     Inquiry, Message, Notification, Report, Review, ViewingRequest)
+from .models import (Application, ApplicationScreening, Booking, Conversation,
+                     Favorite, Inquiry, Message, Notification, Report, Review,
+                     ViewingRequest)
 from .utils import notify
-
-
-DEFAULT_APPLICATION_QUESTIONS = (
-    ("How long do you intend to rent for?", True),
-    ("How many people will be living there?", True),
-    ("Do you have any pets?", False),
-)
-
-
-def ensure_application_questions(property_obj):
-    """Idempotently add the default application questions to a listing."""
-    for text, required in DEFAULT_APPLICATION_QUESTIONS:
-        ApplicationQuestion.objects.get_or_create(
-            property=property_obj,
-            question=text,
-            defaults={"required": required, "order": 0},
-        )
 
 
 def booked_dates_for_property(property_obj, days=180):
@@ -94,9 +78,9 @@ def toggle_favorite(request, pk):
     favorite, created = Favorite.objects.get_or_create(tenant=request.user, property=property_obj)
     if not created:
         favorite.delete()
-        messages.info(request, "Removed from favorites.")
+        messages.info(request, _("Removed from favorites."))
     else:
-        messages.success(request, "Added to favorites.")
+        messages.success(request, _("Added to favorites."))
     return redirect(request.META.get("HTTP_REFERER", property_obj.get_absolute_url()))
 
 
@@ -121,7 +105,7 @@ def send_inquiry(request, pk):
             inquiry.property = property_obj
             inquiry.save()
             notify(property_obj.owner, f"New inquiry on '{property_obj.title}'", property_obj.get_absolute_url())
-            messages.success(request, "Your inquiry has been sent to the owner/agent.")
+            messages.success(request, _("Your inquiry has been sent to the owner/agent."))
             return redirect("properties:detail", pk=pk)
     else:
         form = InquiryForm()
@@ -147,7 +131,7 @@ def respond_inquiry(request, pk):
             inquiry.save()
             notify(inquiry.tenant, f"Your inquiry on '{inquiry.property.title}' received a response",
                    inquiry.property.get_absolute_url())
-            messages.success(request, "Response sent.")
+            messages.success(request, _("Response sent."))
             return redirect("engagement:inquiry_list")
     else:
         form = InquiryResponseForm(instance=inquiry)
@@ -166,7 +150,7 @@ def request_viewing(request, pk):
             viewing.save()
             notify(property_obj.owner, f"New viewing request for '{property_obj.title}'",
                    property_obj.get_absolute_url())
-            messages.success(request, "Viewing request submitted.")
+            messages.success(request, _("Viewing request submitted."))
             return redirect("properties:detail", pk=pk)
     else:
         form = ViewingRequestForm()
@@ -188,13 +172,13 @@ def viewing_list(request):
 def update_viewing_status(request, pk, new_status):
     viewing = get_object_or_404(ViewingRequest, pk=pk, property__owner=request.user)
     if new_status not in (ViewingRequest.Status.ACCEPTED, ViewingRequest.Status.REJECTED):
-        messages.error(request, "Invalid status.")
+        messages.error(request, _("Invalid status."))
         return redirect("engagement:viewing_list")
     viewing.status = new_status
     viewing.save()
     notify(viewing.tenant, f"Your viewing request for '{viewing.property.title}' was {new_status.lower()}",
            viewing.property.get_absolute_url())
-    messages.success(request, f"Viewing request {new_status.lower()}.")
+    messages.success(request, _("Viewing request %(status)s.") % {"status": new_status.lower()})
     return redirect("engagement:viewing_list")
 
 
@@ -202,7 +186,7 @@ def update_viewing_status(request, pk, new_status):
 def request_booking(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
     if property_obj.is_rented and property_obj.is_bnb:
-        messages.error(request, "This Airbnb is currently booked and not accepting new reservations.")
+        messages.error(request, _("This Airbnb is currently booked and not accepting new reservations."))
         return redirect("properties:detail", pk=pk)
     blocked = booked_dates_for_property(property_obj)
     calendar = build_calendar(blocked)
@@ -215,7 +199,7 @@ def request_booking(request, pk):
             booking.save()
             notify(property_obj.owner, f"New booking request for '{property_obj.title}'",
                    property_obj.get_absolute_url())
-            messages.success(request, "Booking request submitted.")
+            messages.success(request, _("Booking request submitted."))
             return redirect("properties:detail", pk=pk)
     else:
         form = BookingForm(property_obj=property_obj)
@@ -240,13 +224,13 @@ def booking_list(request):
 def update_booking_status(request, pk, new_status):
     booking = get_object_or_404(Booking, pk=pk, property__owner=request.user)
     if new_status not in (Booking.Status.CONFIRMED, Booking.Status.REJECTED):
-        messages.error(request, "Invalid status.")
+        messages.error(request, _("Invalid status."))
         return redirect("engagement:booking_list")
     booking.status = new_status
     booking.save()
     notify(booking.tenant, f"Your booking for '{booking.property.title}' was {new_status.lower()}",
            booking.property.get_absolute_url())
-    messages.success(request, f"Booking {new_status.lower()}.")
+    messages.success(request, _("Booking %(status)s.") % {"status": new_status.lower()})
     return redirect("engagement:booking_list")
 
 
@@ -254,65 +238,52 @@ def update_booking_status(request, pk, new_status):
 def apply_to_property(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
     if property_obj.owner == request.user:
-        messages.error(request, "You cannot apply to your own listing.")
+        messages.error(request, _("You cannot apply to your own listing."))
         return redirect("properties:detail", pk=pk)
     if property_obj.is_rented:
-        messages.error(request, "This listing is currently unavailable for applications.")
+        messages.error(request, _("This listing is currently unavailable for applications."))
         return redirect("properties:detail", pk=pk)
     if not (property_obj.is_available and property_obj.is_verified):
-        messages.error(request, "This listing is not currently accepting applications.")
+        messages.error(request, _("This listing is not currently accepting applications."))
         return redirect("properties:detail", pk=pk)
-
-    ensure_application_questions(property_obj)
-    questions = property_obj.application_questions.all()
 
     active = Application.objects.filter(
         tenant=request.user, property=property_obj, status=Application.Status.PENDING
     )
     if active.exists():
-        messages.info(request, "You already have a pending application for this listing.")
+        messages.info(request, _("You already have a pending application for this listing."))
         return redirect("engagement:application_detail", pk=active.first().pk)
 
-    answers_data = {}
     if request.method == "POST":
-        form = ApplicationForm(request.POST, request.FILES)
+        form = ApplicationForm(request.POST)
+        if request.POST.get("agreement_accepted") != "1":
+            messages.error(request, _("You must read and agree to the tenancy rules before applying."))
+            return render(request, "engagement/application_form.html", {
+                "form": form,
+                "property": property_obj,
+            })
         if form.is_valid():
             application = form.save(commit=False)
             application.tenant = request.user
             application.property = property_obj
+            application.agreement_accepted = True
             application.save()
-            for question in questions:
-                value = request.POST.get(f"question_{question.pk}", "").strip()
-                if value:
-                    ApplicationAnswer.objects.create(
-                        application=application, question=question, answer=value
-                    )
             notify(
                 property_obj.owner,
                 f"New rental application from {application.full_name} for '{property_obj.title}'",
                 reverse("engagement:application_detail", args=[application.pk]),
             )
-            messages.success(request, "Your application has been submitted to the owner/agent.")
+            messages.success(request, _("Your application has been submitted to the owner/agent."))
             return redirect("engagement:application_detail", pk=application.pk)
-        for question in questions:
-            value = request.POST.get(f"question_{question.pk}", "").strip()
-            if value:
-                answers_data[question.pk] = value
     else:
         form = ApplicationForm(initial={
             "full_name": request.user.get_full_name() or request.user.username,
             "email": request.user.email,
             "phone": request.user.phone_number,
         })
-    question_list = [
-        {"id": q.pk, "text": q.question, "required": q.required,
-         "value": answers_data.get(q.pk, "")}
-        for q in questions
-    ]
     return render(request, "engagement/application_form.html", {
         "form": form,
         "property": property_obj,
-        "question_list": question_list,
     })
 
 
@@ -334,12 +305,11 @@ def application_list(request):
 @login_required
 def application_detail(request, pk):
     application = get_object_or_404(
-        Application.objects.select_related("property", "property__owner", "tenant")
-        .prefetch_related("answers", "answers__question"),
+        Application.objects.select_related("property", "property__owner", "tenant"),
         pk=pk,
     )
     if request.user != application.tenant and request.user != application.property.owner:
-        messages.error(request, "You do not have access to that application.")
+        messages.error(request, _("You do not have access to that application."))
         return redirect("core:home")
     is_owner = request.user == application.property.owner
     return render(request, "engagement/application_detail.html", {
@@ -352,7 +322,7 @@ def application_detail(request, pk):
 def update_application_status(request, pk, new_status):
     application = get_object_or_404(Application, pk=pk, property__owner=request.user)
     if new_status not in (Application.Status.APPROVED, Application.Status.REJECTED):
-        messages.error(request, "Invalid status.")
+        messages.error(request, _("Invalid status."))
         return redirect("engagement:application_list")
     application.status = new_status
     application.decision_date = timezone.now()
@@ -363,55 +333,8 @@ def update_application_status(request, pk, new_status):
     verb = "approved" if new_status == Application.Status.APPROVED else "rejected"
     notify(application.tenant, f"Your application for '{application.property.title}' was {verb}.",
            reverse("engagement:application_detail", args=[application.pk]))
-    messages.success(request, f"Application {verb}.")
+    messages.success(request, _("Application %(verb)s.") % {"verb": verb})
     return redirect("engagement:application_detail", pk=pk)
-
-
-@owner_agent_required
-def manage_questions(request, pk):
-    property_obj = get_object_or_404(Property, pk=pk, owner=request.user)
-    ensure_application_questions(property_obj)
-    questions = property_obj.application_questions.all()
-    if request.method == "POST":
-        text = (request.POST.get("question") or "").strip()
-        required = request.POST.get("required") == "1"
-        if not text:
-            messages.error(request, "Question text cannot be empty.")
-        elif len(text) > 255:
-            messages.error(request, "Question is too long (max 255 characters).")
-        else:
-            ApplicationQuestion.objects.create(
-                property=property_obj, question=text, required=required
-            )
-            messages.success(request, "Application question added.")
-        return redirect("engagement:manage_questions", pk=pk)
-    return render(request, "engagement/question_manager.html", {
-        "property": property_obj,
-        "questions": questions,
-    })
-
-
-@owner_agent_required
-def delete_question(request, pk):
-    question = get_object_or_404(ApplicationQuestion, pk=pk)
-    if question.property.owner != request.user:
-        messages.error(request, "You do not have permission to change that question.")
-        return redirect("core:home")
-    property_pk = question.property.pk
-    question.delete()
-    messages.success(request, "Application question removed.")
-    return redirect("engagement:manage_questions", pk=property_pk)
-
-
-@owner_agent_required
-def toggle_question_required(request, pk):
-    question = get_object_or_404(ApplicationQuestion, pk=pk)
-    if question.property.owner != request.user:
-        messages.error(request, "You do not have permission to change that question.")
-        return redirect("core:home")
-    question.required = not question.required
-    question.save(update_fields=["required"])
-    return redirect("engagement:manage_questions", pk=question.property.pk)
 
 
 @owner_agent_required
@@ -426,7 +349,7 @@ def run_screening(request, pk):
             instance = form.save(commit=False)
             instance.application = application
             instance.save()
-            messages.success(request, "Tenant screening saved.")
+            messages.success(request, _("Tenant screening saved."))
             return redirect("engagement:application_detail", pk=pk)
     else:
         form = ApplicationScreeningForm(instance=screening)
@@ -446,7 +369,7 @@ def report_property(request, pk):
             report.reporter = request.user
             report.property = property_obj
             report.save()
-            messages.success(request, "Thank you, your report has been submitted for review.")
+            messages.success(request, _("Thank you, your report has been submitted for review."))
             return redirect("properties:detail", pk=pk)
     else:
         form = ReportForm()
@@ -464,7 +387,7 @@ def add_review(request, pk):
             review.user = request.user
             review.property = property_obj
             review.save()
-            messages.success(request, "Your review has been posted.")
+            messages.success(request, _("Your review has been posted."))
             return redirect("properties:detail", pk=pk)
     else:
         form = ReviewForm(instance=existing)
@@ -487,7 +410,7 @@ def notification_list(request):
 def notification_delete(request, pk):
     notification = get_object_or_404(Notification, pk=pk, user=request.user)
     notification.delete()
-    messages.success(request, "Notification deleted.")
+    messages.success(request, _("Notification deleted."))
     return redirect("engagement:notification_list")
 
 
@@ -503,7 +426,7 @@ def conversation_list(request):
 def start_conversation(request, pk):
     property_obj = get_object_or_404(Property, pk=pk)
     if property_obj.owner == request.user:
-        messages.info(request, "You cannot message yourself about your own listing.")
+        messages.info(request, _("You cannot message yourself about your own listing."))
         return redirect("properties:detail", pk=pk)
     conversation, _ = Conversation.objects.get_or_create(
         listing=property_obj,
@@ -520,7 +443,7 @@ def conversation_detail(request, pk):
         pk=pk,
     )
     if request.user not in (conversation.tenant, conversation.owner):
-        messages.error(request, "You do not have access to that conversation.")
+        messages.error(request, _("You do not have access to that conversation."))
         return redirect("core:home")
 
     other_user = conversation.other_user(request.user)
@@ -539,7 +462,7 @@ def conversation_detail(request, pk):
                 f"New message from {request.user.username} about '{conversation.listing.title}'",
                 reverse("engagement:conversation_detail", args=[conversation.pk]),
             )
-            messages.success(request, "Message sent.")
+            messages.success(request, _("Message sent."))
             return redirect("engagement:conversation_detail", pk=conversation.pk)
     else:
         form = MessageForm()

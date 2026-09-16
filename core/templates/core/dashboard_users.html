@@ -1,22 +1,23 @@
 {% extends "base.html" %}
-{% block title %}Manage Users — Admin{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Manage Users — Admin" %}{% endblock %}
 {% block content %}
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
     <div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-1 small">
-                <li class="breadcrumb-item"><a href="{% url 'core:dashboard' %}" class="text-decoration-none">Dashboard</a></li>
-                <li class="breadcrumb-item active">Users</li>
+                <li class="breadcrumb-item"><a href="{% url 'core:dashboard' %}" class="text-decoration-none">{% trans "Dashboard" %}</a></li>
+                <li class="breadcrumb-item active">{% trans "Users" %}</li>
             </ol>
         </nav>
-        <h3 class="fw-bold mb-0">Platform User Registry</h3>
+        <h3 class="fw-bold mb-0">{% trans "Platform User Registry" %}</h3>
     </div>
     <div class="d-flex gap-2">
         <a href="{% url 'core:dashboard' %}" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+            <i class="bi bi-speedometer2 me-1"></i> {% trans "Dashboard" %}
         </a>
         <a href="/admin/accounts/user/" target="_blank" class="btn btn-outline-dark btn-sm">
-            <i class="bi bi-database me-1"></i> Django Admin
+            <i class="bi bi-database me-1"></i> {% trans "Django Admin" %}
         </a>
     </div>
 </div>
@@ -29,29 +30,29 @@
                 <form method="get" class="d-flex gap-2">
                     <div class="input-group">
                         <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
-                        <input type="text" name="q" value="{{ search_q }}" class="form-control border-start-0" placeholder="Search by username, name, or email...">
+                        <input type="text" name="q" value="{{ search_q }}" class="form-control border-start-0" placeholder="{% trans 'Search by username, name, or email...' %}">
                     </div>
                     {% if role_filter %}
                         <input type="hidden" name="role" value="{{ role_filter }}">
                     {% endif %}
-                    <button class="btn btn-success btn-sm px-3 fw-semibold" type="submit">Search</button>
+                    <button class="btn btn-success btn-sm px-3 fw-semibold" type="submit">{% trans "Search" %}</button>
                     {% if search_q %}
-                        <a href="?role={{ role_filter }}" class="btn btn-outline-secondary btn-sm">Clear</a>
+                        <a href="?role={{ role_filter }}" class="btn btn-outline-secondary btn-sm">{% trans "Clear" %}</a>
                     {% endif %}
                 </form>
             </div>
             <div class="col-md-6 d-flex flex-wrap justify-content-md-end gap-1">
                 <a href="?q={{ search_q }}&role=" class="btn btn-sm {% if not role_filter %}btn-dark fw-bold{% else %}btn-outline-secondary{% endif %}">
-                    All ({{ role_counts.ALL }})
+                    {% blocktrans with count=role_counts.ALL %}All ({{ count }}){% endblocktrans %}
                 </a>
                 <a href="?q={{ search_q }}&role=TENANT" class="btn btn-sm {% if role_filter == 'TENANT' %}btn-primary fw-bold{% else %}btn-outline-secondary{% endif %}">
-                    Tenants ({{ role_counts.TENANT }})
+                    {% blocktrans with count=role_counts.TENANT %}Tenants ({{ count }}){% endblocktrans %}
                 </a>
                 <a href="?q={{ search_q }}&role=OWNER_AGENT" class="btn btn-sm {% if role_filter == 'OWNER_AGENT' %}btn-info text-dark fw-bold{% else %}btn-outline-secondary{% endif %}">
-                    Owners/Agents ({{ role_counts.OWNER_AGENT }})
+                    {% blocktrans with count=role_counts.OWNER_AGENT %}Owners/Agents ({{ count }}){% endblocktrans %}
                 </a>
                 <a href="?q={{ search_q }}&role=ADMIN" class="btn btn-sm {% if role_filter == 'ADMIN' %}btn-warning text-dark fw-bold{% else %}btn-outline-secondary{% endif %}">
-                    Admins ({{ role_counts.ADMIN }})
+                    {% blocktrans with count=role_counts.ADMIN %}Admins ({{ count }}){% endblocktrans %}
                 </a>
             </div>
         </div>
@@ -63,12 +64,12 @@
         <table class="table table-hover align-middle mb-0">
             <thead class="table-light small text-uppercase text-muted">
                 <tr>
-                    <th>User</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Date Joined</th>
-                    <th class="text-end pe-3">Actions</th>
+                    <th>{% trans "User" %}</th>
+                    <th>{% trans "Email" %}</th>
+                    <th>{% trans "Role" %}</th>
+                    <th>{% trans "Status" %}</th>
+                    <th>{% trans "Date Joined" %}</th>
+                    <th class="text-end pe-3">{% trans "Actions" %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -87,7 +88,7 @@
                                 <div class="fw-semibold text-dark">
                                     {{ u.username }}
                                     {% if u.is_superuser %}
-                                        <span class="badge bg-dark text-warning small ms-1">Superuser</span>
+                                        <span class="badge bg-dark text-warning small ms-1">{% trans "Superuser" %}</span>
                                     {% endif %}
                                 </div>
                                 {% if u.get_full_name %}
@@ -104,18 +105,18 @@
                     </td>
                     <td>
                         {% if u.is_admin_role %}
-                            <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-shield-check me-1"></i>Administrator</span>
+                            <span class="badge bg-warning text-dark px-2 py-1"><i class="bi bi-shield-check me-1"></i>{% trans "Administrator" %}</span>
                         {% elif u.is_owner_agent %}
-                            <span class="badge bg-info-subtle text-info border border-info-subtle px-2 py-1"><i class="bi bi-building me-1"></i>Owner / Agent</span>
+                            <span class="badge bg-info-subtle text-info border border-info-subtle px-2 py-1"><i class="bi bi-building me-1"></i>{% trans "Owner / Agent" %}</span>
                         {% else %}
-                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1"><i class="bi bi-person me-1"></i>Tenant</span>
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-1"><i class="bi bi-person me-1"></i>{% trans "Tenant" %}</span>
                         {% endif %}
                     </td>
                     <td>
                         {% if u.account_status == "ACTIVE" %}
-                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1"><i class="bi bi-check-circle-fill me-1"></i>Active</span>
+                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1"><i class="bi bi-check-circle-fill me-1"></i>{% trans "Active" %}</span>
                         {% else %}
-                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1"><i class="bi bi-slash-circle-fill me-1"></i>Suspended</span>
+                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1"><i class="bi bi-slash-circle-fill me-1"></i>{% trans "Suspended" %}</span>
                         {% endif %}
                     </td>
                     <td>
@@ -127,14 +128,14 @@
                                 {% csrf_token %}
                                 <button class="btn btn-sm {% if u.account_status == 'ACTIVE' %}btn-outline-danger{% else %}btn-outline-success{% endif %}" type="submit">
                                     {% if u.account_status == "ACTIVE" %}
-                                        <i class="bi bi-pause-circle me-1"></i>Suspend
+                                        <i class="bi bi-pause-circle me-1"></i>{% trans "Suspend" %}
                                     {% else %}
-                                        <i class="bi bi-play-circle me-1"></i>Reactivate
+                                        <i class="bi bi-play-circle me-1"></i>{% trans "Reactivate" %}
                                     {% endif %}
                                 </button>
                             </form>
                         {% else %}
-                            <span class="badge bg-light text-muted border small">Protected</span>
+                            <span class="badge bg-light text-muted border small">{% trans "Protected" %}</span>
                         {% endif %}
                     </td>
                 </tr>
@@ -144,8 +145,8 @@
                         <div class="avatar-circle mx-auto bg-light text-muted mb-3" style="width: 50px; height: 50px;">
                             <i class="bi bi-people fs-4"></i>
                         </div>
-                        <h6 class="fw-bold mb-1">No Users Found</h6>
-                        <p class="text-muted small mb-0">No user accounts matched your search criteria.</p>
+                        <h6 class="fw-bold mb-1">{% trans "No Users Found" %}</h6>
+                        <p class="text-muted small mb-0">{% trans "No user accounts matched your search criteria." %}</p>
                     </td>
                 </tr>
             {% endfor %}
@@ -154,4 +155,3 @@
     </div>
 </div>
 {% endblock %}
-

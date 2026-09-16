@@ -1,10 +1,11 @@
 {% extends "base.html" %}
-{% block title %}Application — {{ application.property.title }}{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Application" %} — {{ application.property.title }}{% endblock %}
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Application Details</h2>
+    <h2>{% trans "Application Details" %}</h2>
     <a href="{% url 'engagement:application_list' %}" class="btn btn-outline-secondary btn-sm">
-        <i class="bi bi-arrow-left"></i> All applications
+        <i class="bi bi-arrow-left"></i> {% trans "All applications" %}
     </a>
 </div>
 
@@ -13,19 +14,19 @@
         <span class="avatar-circle">{{ application.full_name|slice:":2"|upper }}</span>
         <div class="flex-grow-1">
             <h5 class="mb-0">{{ application.full_name }}
-                {% if application.status == "APPROVED" %}<span class="badge bg-success ms-1">Approved</span>
-                {% elif application.status == "REJECTED" %}<span class="badge bg-danger ms-1">Rejected</span>
-                {% elif application.status == "WITHDRAWN" %}<span class="badge bg-secondary ms-1">Withdrawn</span>
-                {% else %}<span class="badge bg-warning text-dark ms-1">Pending</span>{% endif %}
+                {% if application.status == "APPROVED" %}<span class="badge bg-success ms-1">{% trans "Approved" %}</span>
+                {% elif application.status == "REJECTED" %}<span class="badge bg-danger ms-1">{% trans "Rejected" %}</span>
+                {% elif application.status == "WITHDRAWN" %}<span class="badge bg-secondary ms-1">{% trans "Withdrawn" %}</span>
+                {% else %}<span class="badge bg-warning text-dark ms-1">{% trans "Pending" %}</span>{% endif %}
             </h5>
             <small class="text-muted">
-                Applying to <a href="{% url 'properties:detail' application.property.pk %}">{{ application.property.title }}</a>
-                · Applied {{ application.created_at|date:"d M Y, H:i" }}
+                {% trans "Applying to" %} <a href="{% url 'properties:detail' application.property.pk %}">{{ application.property.title }}</a>
+                · {% blocktrans with created=application.created_at|date:"d M Y, H:i" %}Applied {{ created }}{% endblocktrans %}
             </small>
         </div>
         {% if is_owner and application.status == "PENDING" %}
             <a href="{% url 'engagement:run_screening' application.pk %}" class="btn btn-outline-primary">
-                <i class="bi bi-shield-check"></i> Tenant Screening
+                <i class="bi bi-shield-check"></i> {% trans "Tenant Screening" %}
             </a>
         {% endif %}
     </div>
@@ -35,70 +36,32 @@
     <div class="col-md-7">
         <div class="card shadow-sm mb-3">
             <div class="card-body">
-                <h6 class="card-title"><i class="bi bi-person-vcard"></i> Personal details</h6>
+                <h6 class="card-title"><i class="bi bi-person-vcard"></i> {% trans "Contact information" %}</h6>
                 <table class="table table-sm table-borderless mb-0">
-                    <tr><th class="w-25 text-muted">Phone</th><td>{{ application.phone }}</td></tr>
-                    <tr><th class="text-muted">Email</th><td>{{ application.email|default:"—" }}</td></tr>
-                    <tr><th class="text-muted">Current address</th><td>{{ application.current_address|default:"—" }}</td></tr>
+                    <tr><th class="w-25 text-muted">{% trans "Phone" %}</th><td>{{ application.phone }}</td></tr>
+                    <tr><th class="text-muted">{% trans "Email" %}</th><td>{{ application.email|default:"—" }}</td></tr>
+                    <tr><th class="text-muted">{% trans "Current address" %}</th><td>{{ application.current_address|default:"—" }}</td></tr>
                 </table>
             </div>
         </div>
 
         <div class="card shadow-sm mb-3">
             <div class="card-body">
-                <h6 class="card-title"><i class="bi bi-cash-coin"></i> Employment &amp; income</h6>
-                <table class="table table-sm table-borderless mb-0">
-                    <tr><th class="w-25 text-muted">Status</th><td>{{ application.get_employment_status_display }}</td></tr>
-                    <tr><th class="text-muted">Employer</th><td>{{ application.employer|default:"—" }}</td></tr>
-                    <tr><th class="text-muted">Monthly income</th><td>{% if application.monthly_income %}TZS {{ application.monthly_income|floatformat:0 }}{% else %}—{% endif %}</td></tr>
-                    <tr><th class="text-muted">Move-in date</th><td>{{ application.move_in_date|date:"d M Y"|default:"—" }}</td></tr>
-                </table>
+                <h6 class="card-title"><i class="bi bi-check2-square"></i> {% trans "Agreement" %}</h6>
+                {% if application.agreement_accepted %}
+                    <p class="mb-1 text-success"><i class="bi bi-check-circle-fill"></i> {% trans "Applicant agreed to the tenancy rules." %}</p>
+                {% else %}
+                    <p class="mb-1 text-warning"><i class="bi bi-exclamation-triangle-fill"></i> {% trans "No agreement recorded." %}</p>
+                {% endif %}
+                <small class="text-muted">{% trans "Applicant:" %} {{ application.full_name }} · {% blocktrans with created=application.created_at|date:"d M Y, H:i" %}Applied {{ created }}{% endblocktrans %}</small>
             </div>
         </div>
-
-        <div class="card shadow-sm mb-3">
-            <div class="card-body">
-                <h6 class="card-title"><i class="bi bi-clock-history"></i> Rental history &amp; references</h6>
-                <div class="text-muted small mb-2">Rental history</div>
-                <p>{{ application.rental_history|default:"Not provided"|linebreaksbr }}</p>
-                <table class="table table-sm table-borderless mb-0">
-                    <tr><th class="w-25 text-muted">Reference</th><td>{{ application.reference_name|default:"—" }} {% if application.reference_phone %}({{ application.reference_phone }}){% endif %}</td></tr>
-                </table>
-            </div>
-        </div>
-
-        {% if application.answers.exists %}
-        <div class="card shadow-sm mb-3">
-            <div class="card-body">
-                <h6 class="card-title"><i class="bi bi-ui-checks"></i> Owner questions</h6>
-                <table class="table table-sm table-borderless mb-0">
-                    {% for answer in application.answers.all %}
-                        <tr>
-                            <th class="w-50 text-muted fw-normal">{{ answer.question.question }}</th>
-                            <td>{{ answer.answer }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
-        {% endif %}
 
         {% if application.notes %}
         <div class="card shadow-sm mb-3">
             <div class="card-body">
-                <h6 class="card-title"><i class="bi bi-chat-right-text"></i> Notes</h6>
+                <h6 class="card-title"><i class="bi bi-chat-right-text"></i> {% trans "Notes" %}</h6>
                 <p class="mb-0">{{ application.notes|linebreaksbr }}</p>
-            </div>
-        </div>
-        {% endif %}
-
-        {% if application.document %}
-        <div class="card shadow-sm mb-3">
-            <div class="card-body">
-                <h6 class="card-title"><i class="bi bi-paperclip"></i> Supporting document</h6>
-                <a href="{{ application.document.url }}" target="_blank" class="btn btn-sm btn-outline-secondary" download>
-                    <i class="bi bi-file-earmark-arrow-down"></i> {{ application.document.name|cut:"application_documents/" }}
-                </a>
             </div>
         </div>
         {% endif %}
@@ -106,23 +69,34 @@
 
     <div class="col-md-5">
         {% if is_owner %}
+            <div class="card shadow-sm mb-3">
+                <div class="card-body">
+                    <h6 class="card-title"><i class="bi bi-file-earmark-text"></i> {% trans "Tenancy rules agreed to" %}</h6>
+                    {% if application.property.tenancy_rules %}
+                        <div class="small text-muted" style="white-space: pre-line;">{{ application.property.tenancy_rules }}</div>
+                    {% else %}
+                        <p class="mb-0 text-muted small">{% trans "No rules were set." %}</p>
+                    {% endif %}
+                </div>
+            </div>
+
             {% if application.screening %}
             <div class="card shadow-sm mb-3">
                 <div class="card-body">
-                    <h6 class="card-title"><i class="bi bi-shield-check"></i> Screening result
+                    <h6 class="card-title"><i class="bi bi-shield-check"></i> {% trans "Screening result" %}
                         <span class="badge {% if application.screening.passed %}bg-success{% else %}bg-danger{% endif %} ms-1">
-                            Score {{ application.screening.score }}/100
+                            {% blocktrans with score=application.screening.score %}Score {{ score }}/100{% endblocktrans %}
                         </span>
                     </h6>
                     <ul class="list-unstyled small mb-2">
-                        <li>{% if application.screening.identity_verified %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle text-muted"></i>{% endif %} Identity verified</li>
-                        <li>{% if application.screening.income_verified %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle text-muted"></i>{% endif %} Income verified</li>
-                        <li>{% if application.screening.references_checked %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle text-muted"></i>{% endif %} References checked</li>
-                        <li>{% if application.screening.employment_verified %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle text-muted"></i>{% endif %} Employment verified</li>
-                        <li>{% if application.screening.background_checked %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle text-muted"></i>{% endif %} Background checked</li>
+                        <li>{% if application.screening.identity_verified %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle text-muted"></i>{% endif %} {% trans "Identity verified" %}</li>
+                        <li>{% if application.screening.income_verified %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle text-muted"></i>{% endif %} {% trans "Income verified" %}</li>
+                        <li>{% if application.screening.references_checked %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle text-muted"></i>{% endif %} {% trans "References checked" %}</li>
+                        <li>{% if application.screening.employment_verified %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle text-muted"></i>{% endif %} {% trans "Employment verified" %}</li>
+                        <li>{% if application.screening.background_checked %}<i class="bi bi-check-circle-fill text-success"></i>{% else %}<i class="bi bi-x-circle text-muted"></i>{% endif %} {% trans "Background checked" %}</li>
                     </ul>
                     {% if application.screening.notes %}<p class="small mb-2 text-muted">{{ application.screening.notes }}</p>{% endif %}
-                    <a href="{% url 'engagement:run_screening' application.pk %}" class="btn btn-sm btn-outline-primary">Edit screening</a>
+                    <a href="{% url 'engagement:run_screening' application.pk %}" class="btn btn-sm btn-outline-primary">{% trans "Edit screening" %}</a>
                 </div>
             </div>
             {% endif %}
@@ -130,29 +104,29 @@
             {% if application.status == "PENDING" %}
             <div class="card shadow-sm mb-3 border-primary">
                 <div class="card-body">
-                    <h6 class="card-title text-primary"><i class="bi bi-clipboard-check"></i> Decision</h6>
+                    <h6 class="card-title text-primary"><i class="bi bi-clipboard-check"></i> {% trans "Decision" %}</h6>
                     <form method="post" action="{% url 'engagement:update_application_status' application.pk 'APPROVED' %}">
                         {% csrf_token %}
                         <div class="mb-2">
-                            <label class="form-label small text-muted">Private note (optional)</label>
-                            <textarea name="note" class="form-control" rows="2" placeholder="e.g. Verified employment, offered lease..."></textarea>
+                            <label class="form-label small text-muted">{% trans "Private note (optional)" %}</label>
+                            <textarea name="note" class="form-control" rows="2" placeholder="{% trans 'e.g. Verified employment, offered lease...' %}"></textarea>
                         </div>
-                        <button class="btn btn-success w-100 mb-2" type="submit"><i class="bi bi-check-lg"></i> Approve Application</button>
+                        <button class="btn btn-success w-100 mb-2" type="submit"><i class="bi bi-check-lg"></i> {% trans "Approve Application" %}</button>
                     </form>
                     <form method="post" action="{% url 'engagement:update_application_status' application.pk 'REJECTED' %}">
                         {% csrf_token %}
                         <div class="mb-2">
-                            <label class="form-label small text-muted">Reason (shared with applicant)</label>
-                            <textarea name="note" class="form-control" rows="2" placeholder="e.g. Income below minimum requirement..."></textarea>
+                            <label class="form-label small text-muted">{% trans "Reason (shared with applicant)" %}</label>
+                            <textarea name="note" class="form-control" rows="2" placeholder="{% trans 'e.g. Income below minimum requirement...' %}"></textarea>
                         </div>
-                        <button class="btn btn-outline-danger w-100" type="submit"><i class="bi bi-x-lg"></i> Reject Application</button>
+                        <button class="btn btn-outline-danger w-100" type="submit"><i class="bi bi-x-lg"></i> {% trans "Reject Application" %}</button>
                     </form>
                 </div>
             </div>
             {% elif application.decision_note %}
             <div class="card shadow-sm mb-3">
                 <div class="card-body">
-                    <h6 class="card-title"><i class="bi bi-journal-text"></i> Decision</h6>
+                    <h6 class="card-title"><i class="bi bi-journal-text"></i> {% trans "Decision" %}</h6>
                     <p class="mb-1">{{ application.decision_note|linebreaksbr }}</p>
                     <small class="text-muted">{{ application.decision_date|date:"d M Y, H:i" }}</small>
                 </div>
@@ -162,7 +136,7 @@
             {% if application.decision_note %}
             <div class="card shadow-sm mb-3">
                 <div class="card-body">
-                    <h6 class="card-title"><i class="bi bi-journal-text"></i> Owner's decision</h6>
+                    <h6 class="card-title"><i class="bi bi-journal-text"></i> {% trans "Owner's decision" %}</h6>
                     <p class="mb-1">{{ application.decision_note|linebreaksbr }}</p>
                     <small class="text-muted">{{ application.decision_date|date:"d M Y, H:i" }}</small>
                 </div>
@@ -170,8 +144,8 @@
             {% else %}
             <div class="card shadow-sm mb-3">
                 <div class="card-body">
-                    <h6 class="card-title"><i class="bi bi-hourglass-split"></i> Status</h6>
-                    <p class="mb-0">Your application is <strong>{{ application.get_status_display|lower }}</strong>. You'll be notified when the owner/agent makes a decision.</p>
+                    <h6 class="card-title"><i class="bi bi-hourglass-split"></i> {% trans "Status" %}</h6>
+                    <p class="mb-0">{% blocktrans with status=application.get_status_display|lower %}Your application is <strong>{{ status }}</strong>. You'll be notified when the owner/agent makes a decision.{% endblocktrans %}</p>
                 </div>
             </div>
             {% endif %}

@@ -1,42 +1,43 @@
 {% extends "base.html" %}
-{% block title %}Browse Properties — RentCheck Tanzania{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Browse Properties — RentCheck Tanzania" %}{% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-3 mb-4">
         <div class="card shadow-sm filter-sidebar">
             <div class="card-body">
-                <h5 class="card-title mb-3"><i class="bi bi-sliders"></i> Filter Properties</h5>
+                <h5 class="card-title mb-3"><i class="bi bi-sliders"></i> {% trans "Filter Properties" %}</h5>
                 <form method="get">
-                    <h6>Keyword</h6>
+                    <h6>{% trans "Keyword" %}</h6>
                     {{ form.q }}
 
-                    <h6>Property Type</h6>
+                    <h6>{% trans "Property Type" %}</h6>
                     {{ form.property_type }}
 
-                    <h6>Price Range (TZS)</h6>
+                    <h6>{% trans "Price Range (TZS)" %}</h6>
                     <div class="row g-2">
                         <div class="col-6">{{ form.min_price }}</div>
                         <div class="col-6">{{ form.max_price }}</div>
                     </div>
 
-                    <h6>Bedrooms &amp; Bathrooms</h6>
+                    <h6>{% trans "Bedrooms &amp; Bathrooms" %}</h6>
                     <div class="row g-2">
                         <div class="col-6">{{ form.bedrooms }}</div>
                         <div class="col-6">{{ form.bathrooms }}</div>
                     </div>
 
-                    <h6>Min Size (sqm)</h6>
+                    <h6>{% trans "Min Size (sqm)" %}</h6>
                     {{ form.min_size }}
 
-                    <h6>Amenities</h6>
+                    <h6>{% trans "Amenities" %}</h6>
                     {{ form.amenities }}
 
-                    <h6>Sort By</h6>
+                    <h6>{% trans "Sort By" %}</h6>
                     {{ form.sort }}
 
                     <div class="d-grid gap-2 mt-3">
-                        <button class="btn btn-success" type="submit"><i class="bi bi-funnel-fill"></i> Apply Filters</button>
-                        <a href="{% url 'properties:browse' %}" class="btn btn-outline-success">Clear All</a>
+                        <button class="btn btn-success" type="submit"><i class="bi bi-funnel-fill"></i> {% trans "Apply Filters" %}</button>
+                        <a href="{% url 'properties:browse' %}" class="btn btn-outline-success">{% trans "Clear All" %}</a>
                     </div>
                 </form>
             </div>
@@ -45,7 +46,7 @@
 
     <div class="col-md-9">
         <div class="section-heading">
-            <h4 class="mb-0">{{ page_obj.paginator.count }} propert{{ page_obj.paginator.count|pluralize:"y,ies" }} found</h4>
+            <h4 class="mb-0">{% blocktrans count n=page_obj.paginator.count %}{{ n }} property found{% plural %}{{ n }} properties found{% endblocktrans %}</h4>
         </div>
         <div class="row">
             {% for property in page_obj %}
@@ -53,7 +54,7 @@
                     {% include "properties/_property_card.html" %}
                 </div>
             {% empty %}
-                <p class="text-muted">No properties match your search criteria.</p>
+                <p class="text-muted">{% trans "No properties match your search criteria." %}</p>
             {% endfor %}
         </div>
 
@@ -61,11 +62,11 @@
         <nav>
             <ul class="pagination">
                 {% if page_obj.has_previous %}
-                    <li class="page-item"><a class="page-link" href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a></li>
                 {% endif %}
-                <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+                <li class="page-item disabled"><span class="page-link">{% blocktrans with number=page_obj.number total=page_obj.paginator.num_pages %}Page {{ number }} of {{ total }}{% endblocktrans %}</span></li>
                 {% if page_obj.has_next %}
-                    <li class="page-item"><a class="page-link" href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a></li>
+                    <li class="page-item"><a class="page-link" href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.next_page_number }}">{% trans "Next" %}</a></li>
                 {% endif %}
             </ul>
         </nav>

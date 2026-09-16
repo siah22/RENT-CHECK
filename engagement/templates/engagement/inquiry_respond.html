@@ -1,14 +1,15 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block title %}Respond to Inquiry{% endblock %}
 {% block content %}
-<h2>Respond to {{ inquiry.tenant.username }}'s inquiry</h2>
+<h2>{% blocktrans with tenant=inquiry.tenant.username %}Respond to {{ tenant }}'s inquiry{% endblocktrans %}</h2>
 <p class="border p-3 bg-white">{{ inquiry.message }}</p>
 <form method="post">
     {% csrf_token %}
     <div class="mb-3">
         {{ form.response }}
     </div>
-    <button type="submit" class="btn btn-success">Send Response</button>
-    <a href="{% url 'engagement:inquiry_list' %}" class="btn btn-link">Cancel</a>
+    <button type="submit" class="btn btn-success">{% trans "Send Response" %}</button>
+    <a href="{% url 'engagement:inquiry_list' %}" class="btn btn-link">{% trans "Cancel" %}</a>
 </form>
 {% endblock %}

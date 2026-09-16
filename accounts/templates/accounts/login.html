@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Login — RentCheck Tanzania{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Login — RentCheck Tanzania" %}{% endblock %}
 {% block content %}
 <div class="row justify-content-center my-4">
     <div class="col-md-5 col-lg-4">
@@ -9,49 +10,48 @@
                     <div class="avatar-circle mx-auto mb-2" style="width: 50px; height: 50px; font-size: 1.25rem;">
                         <i class="bi bi-person-fill"></i>
                     </div>
-                    <h3 class="fw-bold mb-1">Welcome Back</h3>
-                    <p class="text-muted small">Sign in to your RentCheck account</p>
+                    <h3 class="fw-bold mb-1">{% trans "Welcome Back" %}</h3>
+                    <p class="text-muted small">{% trans "Sign in to your RentCheck account" %}</p>
                 </div>
                 <form method="post" novalidate>
                     {% csrf_token %}
                     <div class="mb-3">
-                        <label class="form-label fw-semibold" for="id_username">Username</label>
+                        <label class="form-label fw-semibold" for="id_username">{% trans "Username" %}</label>
                         {{ form.username.errors }}
                         <div class="input-group">
                             <span class="input-group-text bg-light"><i class="bi bi-person text-muted"></i></span>
-                            <input type="text" name="username" id="id_username" class="form-control" required autofocus placeholder="Enter your username">
+                            <input type="text" name="username" id="id_username" class="form-control" required autofocus placeholder="{% trans 'Enter your username' %}">
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold" for="id_password">Password</label>
+                        <label class="form-label fw-semibold" for="id_password">{% trans "Password" %}</label>
                         {{ form.password.errors }}
                         <div class="input-group">
                             <span class="input-group-text bg-light"><i class="bi bi-lock text-muted"></i></span>
-                            <input type="password" name="password" id="id_password" class="form-control" required autocomplete="current-password" placeholder="Enter your password">
-                            <button class="btn btn-outline-secondary toggle-password-btn" type="button" data-target="id_password" aria-label="Toggle password visibility" title="Show/Hide password" tabindex="-1">
+                            <input type="password" name="password" id="id_password" class="form-control" required autocomplete="current-password" placeholder="{% trans 'Enter your password' %}">
+                            <button class="btn btn-outline-secondary toggle-password-btn" type="button" data-target="id_password" aria-label="Toggle password visibility" title="{% trans 'Show/Hide password' %}" tabindex="-1">
                                 <i class="bi bi-eye"></i>
                             </button>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end mb-3">
                         <a href="{% url 'accounts:password_reset' %}" class="small text-decoration-none fw-semibold">
-                            Forgot password?
+                            {% trans "Forgot password?" %}
                         </a>
                     </div>
                     {% if form.non_field_errors %}
                         <div class="alert alert-danger py-2 small">{{ form.non_field_errors }}</div>
                     {% endif %}
                     <button type="submit" class="btn btn-success w-100 py-2 fw-semibold mt-2">
-                        <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+                        <i class="bi bi-box-arrow-in-right me-1"></i> {% trans "Sign In" %}
                     </button>
                 </form>
                 <div class="text-center mt-3 pt-3 border-top small">
-                    <span class="text-muted">Don't have an account?</span>
-                    <a href="{% url 'accounts:register' %}" class="fw-semibold text-decoration-none ms-1">Sign up here</a>
+                    <span class="text-muted">{% trans "Don't have an account?" %}</span>
+                    <a href="{% url 'accounts:register' %}" class="fw-semibold text-decoration-none ms-1">{% trans "Sign up here" %}</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
-

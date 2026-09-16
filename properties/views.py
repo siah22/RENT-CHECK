@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.translation import gettext as _
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -119,12 +120,12 @@ def property_create(request):
                         image=image_file,
                     )
 
-                messages.success(request, 'Property created successfully!')
+                messages.success(request, _('Property created successfully!'))
                 return redirect('properties:detail', pk=property_obj.pk)
             except Exception as e:
-                messages.error(request, f'An error occurred while creating the property: {str(e)}')
+                messages.error(request, _('An error occurred while creating the property: %(error)s') % {'error': str(e)})
         else:
-            messages.error(request, 'Please correct the errors below.')
+            messages.error(request, _('Please correct the errors below.'))
     else:
         form = PropertyForm()
 
@@ -147,10 +148,10 @@ def property_edit(request, pk):
             images = request.FILES.getlist('images')
             for image_file in images:
                 PropertyImage.objects.create(property=property_obj, image=image_file)
-            messages.success(request, 'Property updated successfully!')
+            messages.success(request, _('Property updated successfully!'))
             return redirect('properties:detail', pk=property_obj.pk)
         else:
-            messages.error(request, 'Please correct the errors below.')
+            messages.error(request, _('Please correct the errors below.'))
     else:
         form = PropertyForm(instance=property_obj)
     return render(request, 'properties/property_form.html', {
@@ -165,7 +166,7 @@ def property_delete(request, pk):
     property_obj = get_object_or_404(Property, pk=pk, owner=request.user)
     if request.method == 'POST':
         property_obj.delete()
-        messages.success(request, 'Property deleted.')
+        messages.success(request, _('Property deleted.'))
         return redirect('properties:my_properties')
     return render(request, 'properties/property_confirm_delete.html', {'property': property_obj})
 
@@ -175,7 +176,7 @@ def property_delete_image(request, pk):
     image = get_object_or_404(PropertyImage, pk=pk, property__owner=request.user)
     property_pk = image.property.pk
     image.delete()
-    messages.success(request, 'Image removed.')
+    messages.success(request, _('Image removed.'))
     return redirect('properties:edit', pk=property_pk)
 
 
@@ -198,5 +199,5 @@ def property_toggle_rented(request, pk):
                 decision_note="Listing has been rented; applications are closed for this vacancy.",
                 decision_date=timezone.now(),
             )
-        messages.success(request, f'Property marked as {status}.')
+        messages.success(request, _('Property marked as %(status)s.') % {'status': status})
     return redirect('properties:my_properties')

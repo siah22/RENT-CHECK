@@ -1,5 +1,6 @@
 from django import forms
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 from .models import (Application, ApplicationScreening, Booking, Inquiry,
                      Report, Review, ViewingRequest)
@@ -11,7 +12,7 @@ class InquiryForm(forms.ModelForm):
         fields = ["message"]
         widgets = {
             "message": forms.Textarea(attrs={"class": "form-control", "rows": 4,
-                                              "placeholder": "Ask a question about this property..."}),
+                                              "placeholder": _("Ask a question about this property...")}),
         }
 
 
@@ -44,7 +45,7 @@ class BookingForm(forms.ModelForm):
             "check_out": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
             "guests": forms.NumberInput(attrs={"class": "form-control", "min": 1}),
             "message": forms.Textarea(attrs={"class": "form-control", "rows": 3,
-                                              "placeholder": "Anything the host should know? (optional)"}),
+                                              "placeholder": _("Anything the host should know? (optional)")}),
         }
 
     def __init__(self, *args, property_obj=None, **kwargs):
@@ -81,7 +82,7 @@ class MessageForm(forms.Form):
         widget=forms.Textarea(attrs={
             "class": "form-control",
             "rows": 2,
-            "placeholder": "Type a message...",
+            "placeholder": _("Type a message..."),
         }),
     )
 
@@ -89,27 +90,14 @@ class MessageForm(forms.Form):
 class ApplicationForm(forms.ModelForm):
     class Meta:
         model = Application
-        fields = [
-            "full_name", "phone", "email", "current_address",
-            "employment_status", "employer", "monthly_income", "move_in_date",
-            "rental_history", "reference_name", "reference_phone", "notes", "document",
-        ]
+        fields = ["full_name", "phone", "email", "current_address", "notes"]
         widgets = {
-            "full_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Full name as shown on your ID"}),
+            "full_name": forms.TextInput(attrs={"class": "form-control", "placeholder": _("Full name as shown on your ID")}),
             "phone": forms.TextInput(attrs={"class": "form-control", "placeholder": "e.g. +255 7XX XXX XXX"}),
             "email": forms.EmailInput(attrs={"class": "form-control"}),
             "current_address": forms.TextInput(attrs={"class": "form-control"}),
-            "employment_status": forms.Select(attrs={"class": "form-select"}),
-            "employer": forms.TextInput(attrs={"class": "form-control", "placeholder": "Company / business name (if applicable)"}),
-            "monthly_income": forms.NumberInput(attrs={"class": "form-control", "min": 0, "step": "1000", "placeholder": "e.g. 1500000"}),
-            "move_in_date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
-            "rental_history": forms.Textarea(attrs={"class": "form-control", "rows": 3,
-                                                    "placeholder": "Where have you rented before? Add landlord names / addresses if available."}),
-            "reference_name": forms.TextInput(attrs={"class": "form-control"}),
-            "reference_phone": forms.TextInput(attrs={"class": "form-control"}),
             "notes": forms.Textarea(attrs={"class": "form-control", "rows": 3,
-                                          "placeholder": "Anything else the owner should know?"}),
-            "document": forms.FileInput(attrs={"class": "form-control"}),
+                                          "placeholder": _("Anything else the owner should know?")}),
         }
 
 
@@ -133,7 +121,7 @@ class ReportForm(forms.ModelForm):
         widgets = {
             "reason": forms.Select(attrs={"class": "form-select"}),
             "description": forms.Textarea(attrs={"class": "form-control", "rows": 3,
-                                                   "placeholder": "Provide more details (optional)"}),
+                                                   "placeholder": _("Provide more details (optional)")}),
         }
 
 
@@ -142,7 +130,7 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ["rating", "comment"]
         widgets = {
-            "rating": forms.Select(choices=[(i, f"{i} star{'s' if i > 1 else ''}") for i in range(1, 6)],
+            "rating": forms.Select(choices=[(i, f"{i} {_('star') if i == 1 else _('stars')}") for i in range(1, 6)],
                                     attrs={"class": "form-select"}),
             "comment": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
         }

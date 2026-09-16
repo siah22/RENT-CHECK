@@ -26,10 +26,6 @@ urlpatterns = [
     path("applications/<int:pk>/status/<str:new_status>/", views.update_application_status, name="update_application_status"),
     path("applications/<int:pk>/screening/", views.run_screening, name="run_screening"),
 
-    path("questions/manage/<int:pk>/", views.manage_questions, name="manage_questions"),
-    path("questions/delete/<int:pk>/", views.delete_question, name="delete_question"),
-    path("questions/toggle/<int:pk>/", views.toggle_question_required, name="toggle_question_required"),
-
     path("reports/new/<int:pk>/", views.report_property, name="report_property"),
     path("reviews/new/<int:pk>/", views.add_review, name="add_review"),
 

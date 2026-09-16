@@ -1,22 +1,23 @@
 {% extends "base.html" %}
-{% block title %}Flagged Reports — Admin{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Flagged Reports — Admin" %}{% endblock %}
 {% block content %}
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
     <div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-1 small">
-                <li class="breadcrumb-item"><a href="{% url 'core:dashboard' %}" class="text-decoration-none">Dashboard</a></li>
-                <li class="breadcrumb-item active">Reports</li>
+                <li class="breadcrumb-item"><a href="{% url 'core:dashboard' %}" class="text-decoration-none">{% trans "Dashboard" %}</a></li>
+                <li class="breadcrumb-item active">{% trans "Reports" %}</li>
             </ol>
         </nav>
-        <h3 class="fw-bold mb-0">Platform Reports & Flagged Listings</h3>
+        <h3 class="fw-bold mb-0">{% trans "Platform Reports & Flagged Listings" %}</h3>
     </div>
     <div class="d-flex gap-2">
         <a href="{% url 'core:dashboard' %}" class="btn btn-outline-secondary btn-sm">
-            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+            <i class="bi bi-speedometer2 me-1"></i> {% trans "Dashboard" %}
         </a>
         <a href="/admin/engagement/report/" target="_blank" class="btn btn-outline-dark btn-sm">
-            <i class="bi bi-database me-1"></i> Django Admin
+            <i class="bi bi-database me-1"></i> {% trans "Django Admin" %}
         </a>
     </div>
 </div>
@@ -25,23 +26,23 @@
 <div class="card border-0 shadow-sm rounded-3 mb-4">
     <div class="card-body p-2 d-flex flex-wrap gap-2">
         <a href="?status=PENDING" class="btn btn-sm {% if current_status == 'PENDING' %}btn-danger text-white fw-bold{% else %}btn-outline-secondary{% endif %}">
-            <i class="bi bi-shield-exclamation me-1"></i>Pending Review
+            <i class="bi bi-shield-exclamation me-1"></i>{% trans "Pending Review" %}
             <span class="badge {% if current_status == 'PENDING' %}bg-white text-danger{% else %}bg-secondary{% endif %} ms-1">{{ status_counts.PENDING }}</span>
         </a>
         <a href="?status=REVIEWED" class="btn btn-sm {% if current_status == 'REVIEWED' %}btn-info text-white fw-bold{% else %}btn-outline-secondary{% endif %}">
-            <i class="bi bi-eye me-1"></i>Reviewed
+            <i class="bi bi-eye me-1"></i>{% trans "Reviewed" %}
             <span class="badge {% if current_status == 'REVIEWED' %}bg-white text-dark{% else %}bg-secondary{% endif %} ms-1">{{ status_counts.REVIEWED }}</span>
         </a>
         <a href="?status=ACTIONED" class="btn btn-sm {% if current_status == 'ACTIONED' %}btn-warning text-dark fw-bold{% else %}btn-outline-secondary{% endif %}">
-            <i class="bi bi-check2-circle me-1"></i>Actioned
+            <i class="bi bi-check2-circle me-1"></i>{% trans "Actioned" %}
             <span class="badge {% if current_status == 'ACTIONED' %}bg-dark text-warning{% else %}bg-secondary{% endif %} ms-1">{{ status_counts.ACTIONED }}</span>
         </a>
         <a href="?status=DISMISSED" class="btn btn-sm {% if current_status == 'DISMISSED' %}btn-secondary fw-bold{% else %}btn-outline-secondary{% endif %}">
-            <i class="bi bi-slash-circle me-1"></i>Dismissed
+            <i class="bi bi-slash-circle me-1"></i>{% trans "Dismissed" %}
             <span class="badge bg-light text-dark ms-1">{{ status_counts.DISMISSED }}</span>
         </a>
         <a href="?status=" class="btn btn-sm {% if not current_status %}btn-dark fw-bold{% else %}btn-outline-secondary{% endif %}">
-            <i class="bi bi-collection me-1"></i>All Reports
+            <i class="bi bi-collection me-1"></i>{% trans "All Reports" %}
             <span class="badge bg-secondary ms-1">{{ status_counts.ALL }}</span>
         </a>
     </div>
@@ -52,13 +53,13 @@
         <table class="table table-hover align-middle mb-0">
             <thead class="table-light small text-uppercase text-muted">
                 <tr>
-                    <th>Reported Property</th>
-                    <th>Reporter</th>
-                    <th>Reason</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Date Filed</th>
-                    <th class="text-end pe-3">Actions</th>
+                    <th>{% trans "Reported Property" %}</th>
+                    <th>{% trans "Reporter" %}</th>
+                    <th>{% trans "Reason" %}</th>
+                    <th>{% trans "Description" %}</th>
+                    <th>{% trans "Status" %}</th>
+                    <th>{% trans "Date Filed" %}</th>
+                    <th class="text-end pe-3">{% trans "Actions" %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -70,7 +71,7 @@
                                 {{ report.property.title }} <i class="bi bi-box-arrow-up-right small text-muted"></i>
                             </a>
                         </div>
-                        <small class="text-muted">Landlord: {{ report.property.owner.username }}</small>
+                        <small class="text-muted">{% blocktrans with name=report.property.owner.username %}Landlord: {{ name }}{% endblocktrans %}</small>
                     </td>
                     <td>
                         <div class="fw-medium text-dark">{{ report.reporter.username }}</div>
@@ -88,13 +89,13 @@
                     </td>
                     <td>
                         {% if report.status == "PENDING" %}
-                            <span class="badge bg-danger text-white"><i class="bi bi-hourglass me-1"></i>Pending</span>
+                            <span class="badge bg-danger text-white"><i class="bi bi-hourglass me-1"></i>{% trans "Pending" %}</span>
                         {% elif report.status == "REVIEWED" %}
-                            <span class="badge bg-info text-dark"><i class="bi bi-eye me-1"></i>Reviewed</span>
+                            <span class="badge bg-info text-dark"><i class="bi bi-eye me-1"></i>{% trans "Reviewed" %}</span>
                         {% elif report.status == "ACTIONED" %}
-                            <span class="badge bg-success"><i class="bi bi-check-lg me-1"></i>Actioned</span>
+                            <span class="badge bg-success"><i class="bi bi-check-lg me-1"></i>{% trans "Actioned" %}</span>
                         {% else %}
-                            <span class="badge bg-secondary"><i class="bi bi-slash-circle me-1"></i>Dismissed</span>
+                            <span class="badge bg-secondary"><i class="bi bi-slash-circle me-1"></i>{% trans "Dismissed" %}</span>
                         {% endif %}
                     </td>
                     <td>
@@ -105,7 +106,7 @@
                             {% if report.status != "REVIEWED" %}
                                 <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'REVIEWED' %}">
                                     {% csrf_token %}
-                                    <button class="btn btn-sm btn-outline-info" type="submit" title="Mark reviewed">
+                                    <button class="btn btn-sm btn-outline-info" type="submit" title="{% trans 'Mark reviewed' %}">
                                         <i class="bi bi-eye"></i>
                                     </button>
                                 </form>
@@ -113,15 +114,15 @@
                             {% if report.status != "ACTIONED" %}
                                 <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'ACTIONED' %}">
                                     {% csrf_token %}
-                                    <button class="btn btn-sm btn-danger fw-semibold" type="submit" title="Mark actioned">
-                                        <i class="bi bi-shield-x me-1"></i>Action
+                                    <button class="btn btn-sm btn-danger fw-semibold" type="submit" title="{% trans 'Mark actioned' %}">
+                                        <i class="bi bi-shield-x me-1"></i>{% trans "Action" %}
                                     </button>
                                 </form>
                             {% endif %}
                             {% if report.status != "DISMISSED" %}
                                 <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'DISMISSED' %}">
                                     {% csrf_token %}
-                                    <button class="btn btn-sm btn-outline-secondary" type="submit" title="Dismiss report">
+                                    <button class="btn btn-sm btn-outline-secondary" type="submit" title="{% trans 'Dismiss report' %}">
                                         <i class="bi bi-x-lg"></i>
                                     </button>
                                 </form>
@@ -135,8 +136,8 @@
                         <div class="avatar-circle mx-auto bg-light text-muted mb-3" style="width: 50px; height: 50px;">
                             <i class="bi bi-shield-check fs-4"></i>
                         </div>
-                        <h6 class="fw-bold mb-1">No Reports Found</h6>
-                        <p class="text-muted small mb-0">No reports matched the selected filter.</p>
+                        <h6 class="fw-bold mb-1">{% trans "No Reports Found" %}</h6>
+                        <p class="text-muted small mb-0">{% trans "No reports matched the selected filter." %}</p>
                     </td>
                 </tr>
             {% endfor %}
@@ -145,4 +146,3 @@
     </div>
 </div>
 {% endblock %}
-

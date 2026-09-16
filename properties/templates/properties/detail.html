@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% block title %}{{ property.title }} — RentCheck Tanzania{% endblock %}
+{% load i18n %}
+{% block title %}{% blocktrans %}{{ property.title }} — RentCheck Tanzania{% endblocktrans %}{% endblock %}
 {% block content %}
 <div class="row">
     <div class="col-md-8">
@@ -33,41 +34,49 @@
         <div class="d-flex align-items-center gap-2 flex-wrap">
             <h2 class="mb-0">{{ property.title }}</h2>
             {% if property.is_verified %}
-                <span class="badge badge-verified"><i class="bi bi-patch-check-fill"></i> Verified</span>
+                <span class="badge badge-verified"><i class="bi bi-patch-check-fill"></i> {% trans "Verified" %}</span>
             {% else %}
-                <span class="badge bg-warning text-dark">Pending Verification</span>
+                <span class="badge bg-warning text-dark">{% trans "Pending Verification" %}</span>
             {% endif %}
             {% if property.is_rented and property.is_bnb %}
-                <span class="badge bg-danger text-white"><i class="bi bi-calendar2-x-fill me-1"></i>Booked</span>
+                <span class="badge bg-danger text-white"><i class="bi bi-calendar2-x-fill me-1"></i>{% trans "Booked" %}</span>
             {% endif %}
         </div>
         <p class="text-muted mt-1"><i class="bi bi-geo-alt-fill"></i> {{ property.address }}{% if property.address %}, {% endif %}{{ property.city }}, {{ property.region }}</p>
-        <h4 class="price-tag fw-bold">TZS {{ property.price|floatformat:0 }} {% if property.is_bnb %}/ night{% else %}/ month{% endif %}</h4>
+        <h4 class="price-tag fw-bold">TZS {{ property.price|floatformat:0 }} {% if property.is_bnb %}{% trans "/ night" %}{% else %}{% trans "/ month" %}{% endif %}</h4>
 
         <ul class="list-inline">
             <li class="list-inline-item badge bg-light text-dark border"><i class="bi bi-house-door"></i> {{ property.get_property_type_display }}</li>
-            <li class="list-inline-item badge bg-light text-dark border"><i class="bi bi-door-closed-fill"></i> {{ property.bedrooms }} Bedrooms</li>
-            <li class="list-inline-item badge bg-light text-dark border"><i class="bi bi-droplet-fill"></i> {{ property.bathrooms }} Bathrooms</li>
-            {% if property.size_sqm %}<li class="list-inline-item badge bg-light text-dark border"><i class="bi bi-rulers"></i> {{ property.size_sqm }} sqm</li>{% endif %}
+            <li class="list-inline-item badge bg-light text-dark border"><i class="bi bi-door-closed-fill"></i> {% blocktrans with count=property.bedrooms %}{{ count }} Bedrooms{% endblocktrans %}</li>
+            <li class="list-inline-item badge bg-light text-dark border"><i class="bi bi-droplet-fill"></i> {% blocktrans with count=property.bathrooms %}{{ count }} Bathrooms{% endblocktrans %}</li>
+            {% if property.size_sqm %}<li class="list-inline-item badge bg-light text-dark border"><i class="bi bi-rulers"></i> {% blocktrans with size=property.size_sqm %}{{ size }} sqm{% endblocktrans %}</li>{% endif %}
             {% if property.average_rating %}<li class="list-inline-item badge bg-light text-dark border"><i class="bi bi-star-fill text-warning"></i> {{ property.average_rating }}</li>{% endif %}
         </ul>
 
-        <h5 class="mt-3">Description</h5>
+        <h5 class="mt-3">{% trans "Description" %}</h5>
         <p>{{ property.description|linebreaks }}</p>
 
-        <h5>Amenities</h5>
+        <h5>{% trans "Amenities" %}</h5>
         <div class="mb-3 d-flex flex-wrap gap-2">
             {% for amenity in property.amenities.all %}
                 <span class="amenity-chip"><i class="bi bi-check-circle-fill"></i> {{ amenity.name }}</span>
             {% empty %}
-                <span class="text-muted">No amenities listed.</span>
+                <span class="text-muted">{% trans "No amenities listed." %}</span>
             {% endfor %}
         </div>
 
-        <h5>Location</h5>
+        {% if property.tenancy_rules %}
+        <h5>{% trans "Tenancy Rules" %}</h5>
+        <div class="alert alert-light border mb-3">
+            <small class="text-muted d-block mb-1"><i class="bi bi-file-earmark-text"></i> {% trans "Applicants agree to these rules when they apply." %}</small>
+            <div style="white-space: pre-line;">{{ property.tenancy_rules }}</div>
+        </div>
+        {% endif %}
+
+        <h5>{% trans "Location" %}</h5>
         <div class="map-embed mb-2">
             <iframe
-                title="Map for {{ property.title }}"
+                title="{% blocktrans %}Map for {{ property.title }}{% endblocktrans %}"
                 src="https://maps.google.com/maps?q={{ property.address|default:property.city|urlencode }}+{{ property.city|urlencode }}+{{ property.region|urlencode }}&z=15&output=embed"
                 width="100%" height="300" style="border:0; border-radius:0.65rem;"
                 loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -79,11 +88,11 @@
             </div>
             <a class="btn btn-sm btn-outline-success"
                href="https://www.google.com/maps/search/?api=1&query={{ property.address|default:property.city|urlencode }}+{{ property.city|urlencode }}+{{ property.region|urlencode }}"
-               target="_blank" rel="noopener">View on Map <i class="bi bi-box-arrow-up-right"></i></a>
+               target="_blank" rel="noopener">{% trans "View on Map" %} <i class="bi bi-box-arrow-up-right"></i></a>
         </div>
 
         <hr>
-        <h5>Reviews</h5>
+        <h5>{% trans "Reviews" %}</h5>
         {% for review in property.reviews.all %}
             <div class="border-bottom py-2">
                 <strong>{{ review.user.username }}</strong> — {{ review.rating }}★
@@ -91,10 +100,10 @@
                 <small class="text-muted">{{ review.date|date:"d M Y" }}</small>
             </div>
         {% empty %}
-            <p class="text-muted">No reviews yet.</p>
+            <p class="text-muted">{% trans "No reviews yet." %}</p>
         {% endfor %}
         {% if user.is_authenticated %}
-            <a class="btn btn-sm btn-outline-secondary mt-2" href="{% url 'engagement:add_review' property.pk %}">Write a Review</a>
+            <a class="btn btn-sm btn-outline-secondary mt-2" href="{% url 'engagement:add_review' property.pk %}">{% trans "Write a Review" %}</a>
         {% endif %}
     </div>
 
@@ -111,51 +120,50 @@
 
         {% if is_owner %}
             <div class="d-grid gap-2">
-                <a href="{% url 'properties:edit' property.pk %}" class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> Edit Listing</a>
-                <a href="{% url 'engagement:manage_questions' property.pk %}" class="btn btn-outline-secondary"><i class="bi bi-ui-checks"></i> Application Questions</a>
-                <a href="{% url 'properties:delete' property.pk %}" class="btn btn-outline-danger"><i class="bi bi-trash3"></i> Delete Listing</a>
+                <a href="{% url 'properties:edit' property.pk %}" class="btn btn-outline-success"><i class="bi bi-pencil-square"></i> {% trans "Edit Listing" %}</a>
+                <a href="{% url 'properties:delete' property.pk %}" class="btn btn-outline-danger"><i class="bi bi-trash3"></i> {% trans "Delete Listing" %}</a>
             </div>
         {% elif user.is_authenticated %}
             <div class="d-grid gap-2 mb-3">
                 {% if user_application %}
                     <span class="badge {% if user_application.status == 'APPROVED' %}bg-success{% elif user_application.status == 'REJECTED' %}bg-danger{% else %}bg-warning text-dark{% endif %} fs-6 py-2">
-                        Your application is {{ user_application.get_status_display }}
+                        {% blocktrans with status=user_application.get_status_display %}Your application is {{ status }}{% endblocktrans %}
                     </span>
                 {% endif %}
                 <form method="post" action="{% url 'engagement:toggle_favorite' property.pk %}">
                     {% csrf_token %}
                     <button class="btn {% if is_favorited %}btn-danger{% else %}btn-outline-danger{% endif %} w-100" type="submit">
                         <i class="bi {% if is_favorited %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
-                        {% if is_favorited %}Remove Favorite{% else %}Save to Favorites{% endif %}
+                        {% if is_favorited %}{% trans "Remove Favorite" %}{% else %}{% trans "Save to Favorites" %}{% endif %}
                     </button>
                 </form>
                 {% if not property.is_bnb and not property.is_rented %}
-                    <a class="btn btn-primary" href="{% url 'engagement:apply' property.pk %}"><i class="bi bi-file-earmark-person"></i> Apply to Rent</a>
+                    <a class="btn btn-primary" href="{% url 'engagement:apply' property.pk %}"><i class="bi bi-file-earmark-person"></i> {% trans "Apply to Rent" %}</a>
                 {% endif %}
-                <a class="btn btn-success" href="{% url 'engagement:send_inquiry' property.pk %}"><i class="bi bi-chat-dots-fill"></i> Contact Owner / Agent</a>
-                <a class="btn btn-outline-success" href="{% url 'engagement:start_conversation' property.pk %}"><i class="bi bi-chat-left-text"></i> Message Owner</a>
+                <a class="btn btn-success" href="{% url 'engagement:send_inquiry' property.pk %}"><i class="bi bi-chat-dots-fill"></i> {% trans "Contact Owner / Agent" %}</a>
+                <a class="btn btn-outline-success" href="{% url 'engagement:start_conversation' property.pk %}"><i class="bi bi-chat-left-text"></i> {% trans "Message Owner" %}</a>
                 {% if property.is_bnb %}
                     {% if property.is_rented %}
-                        <button class="btn btn-secondary w-100" type="button" disabled title="This Airbnb is currently booked">
-                            <i class="bi bi-calendar2-x me-1"></i> Booked &mdash; Unavailable
+                        <button class="btn btn-secondary w-100" type="button" disabled title="{% trans 'This Airbnb is currently booked' %}">
+                            <i class="bi bi-calendar2-x me-1"></i> {% trans "Booked &mdash; Unavailable" %}
                         </button>
                     {% else %}
-                        <a class="btn btn-gold" href="{% url 'engagement:request_booking' property.pk %}"><i class="bi bi-calendar2-check"></i> Book Now</a>
+                        <a class="btn btn-gold" href="{% url 'engagement:request_booking' property.pk %}"><i class="bi bi-calendar2-check"></i> {% trans "Book Now" %}</a>
                     {% endif %}
                 {% else %}
-                    <a class="btn btn-outline-success" href="{% url 'engagement:request_viewing' property.pk %}"><i class="bi bi-calendar-check"></i> Request a Viewing</a>
+                    <a class="btn btn-outline-success" href="{% url 'engagement:request_viewing' property.pk %}"><i class="bi bi-calendar-check"></i> {% trans "Request a Viewing" %}</a>
                 {% endif %}
-                <a class="btn btn-outline-secondary" href="{% url 'engagement:report_property' property.pk %}"><i class="bi bi-flag-fill"></i> Report this Listing</a>
+                <a class="btn btn-outline-secondary" href="{% url 'engagement:report_property' property.pk %}"><i class="bi bi-flag-fill"></i> {% trans "Report this Listing" %}</a>
             </div>
         {% else %}
-            <p><a href="{% url 'accounts:login' %}?next={{ request.path }}">Log in</a> to contact the owner, save favorites, or {% if property.is_bnb and not property.is_rented %}book this stay{% else %}request a viewing{% endif %}.</p>
+            <p><a href="{% url 'accounts:login' %}?next={{ request.path }}">{% trans "Log in" %}</a> {% trans "to contact the owner, save favorites, or" %} {% if property.is_bnb and not property.is_rented %}{% trans "book this stay" %}{% else %}{% trans "request a viewing" %}{% endif %}.</p>
         {% endif %}
 
-        <h6 class="mt-3">Share this listing</h6>
+        <h6 class="mt-3">{% trans "Share this listing" %}</h6>
         <div class="share-row">
-            <a href="https://wa.me/?text={{ share_url|urlencode }}" target="_blank" rel="noopener" title="Share on WhatsApp"><i class="bi bi-whatsapp"></i></a>
-            <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url|urlencode }}" target="_blank" rel="noopener" title="Share on Facebook"><i class="bi bi-facebook"></i></a>
-            <a href="#" onclick="navigator.clipboard.writeText('{{ share_url }}'); this.querySelector('i').className='bi bi-check2'; return false;" title="Copy link"><i class="bi bi-link-45deg"></i></a>
+            <a href="https://wa.me/?text={{ share_url|urlencode }}" target="_blank" rel="noopener" title="{% trans 'Share on WhatsApp' %}"><i class="bi bi-whatsapp"></i></a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url|urlencode }}" target="_blank" rel="noopener" title="{% trans 'Share on Facebook' %}"><i class="bi bi-facebook"></i></a>
+            <a href="#" onclick="navigator.clipboard.writeText('{{ share_url }}'); this.querySelector('i').className='bi bi-check2'; return false;" title="{% trans 'Copy link' %}"><i class="bi bi-link-45deg"></i></a>
         </div>
     </div>
 </div>

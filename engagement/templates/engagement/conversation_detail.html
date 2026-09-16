@@ -1,16 +1,17 @@
 ﻿{% extends "base.html" %}
-{% block title %}Messages — {{ conversation.listing.title }}{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Messages" %} — {{ conversation.listing.title }}{% endblock %}
 {% block content %}
 <div class="card shadow-sm">
     <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
         <div>
             <div class="fw-semibold"><i class="bi bi-chat-left-text"></i> {{ conversation.listing.title }}</div>
             <small class="text-muted">
-                Chatting with {{ other_user.get_full_name|default:other_user.username }}
-                &middot; <a href="{% url 'properties:detail' conversation.listing.pk %}">View listing</a>
+                {% blocktrans with name=other_user.get_full_name|default:other_user.username %}Chatting with {{ name }}{% endblocktrans %}
+                &middot; <a href="{% url 'properties:detail' conversation.listing.pk %}">{% trans "View listing" %}</a>
             </small>
         </div>
-        <a href="{% url 'engagement:conversation_list' %}" class="btn btn-sm btn-outline-secondary">All Messages</a>
+        <a href="{% url 'engagement:conversation_list' %}" class="btn btn-sm btn-outline-secondary">{% trans "All Messages" %}</a>
     </div>
     <div class="card-body chat-window" style="max-height:460px; overflow-y:auto;" id="chatWindow">
         {% for message in conversation.messages.all %}
@@ -19,8 +20,8 @@
                     <div class="chat-bubble chat-bubble-out">
                         <div class="chat-body">{{ message.body|linebreaksbr }}</div>
                         <div class="chat-meta">
-                            <span class="chat-time">{{ message.created_at|timesince }} ago</span>
-                            <span class="msg-ticks" title="Message status">
+                            <span class="chat-time">{% blocktrans with time=message.created_at|timesince %}{{ time }} ago{% endblocktrans %}</span>
+                            <span class="msg-ticks" title="{% trans 'Message status' %}">
                                 <span class="msg-tick-label">
                                     {{ message.get_status_display }}
                                 </span>
@@ -40,13 +41,13 @@
                     <div class="chat-bubble chat-bubble-in">
                         <div class="chat-body">{{ message.body|linebreaksbr }}</div>
                         <div class="chat-meta">
-                            <span class="chat-time">{{ message.created_at|timesince }} ago</span>
+                            <span class="chat-time">{% blocktrans with time=message.created_at|timesince %}{{ time }} ago{% endblocktrans %}</span>
                         </div>
                     </div>
                 </div>
             {% endif %}
         {% empty %}
-            <p class="text-muted text-center my-4">No messages yet &mdash; say hello!</p>
+            <p class="text-muted text-center my-4">{% trans "No messages yet — say hello!" %}</p>
         {% endfor %}
     </div>
     <div class="card-footer">
@@ -57,7 +58,7 @@
             {% endif %}
             <div class="input-group">
                 {{ form.body }}
-                <button class="btn btn-success" type="submit"><i class="bi bi-send"></i> Send</button>
+                <button class="btn btn-success" type="submit"><i class="bi bi-send"></i> {% trans "Send" %}</button>
             </div>
         </form>
     </div>

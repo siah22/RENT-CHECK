@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}RentCheck Tanzania — Find Your Next Home{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "RentCheck Tanzania — Find Your Next Home" %}{% endblock %}
 {% block content %}
 <div class="hero-wrapper">
     <div class="hero p-5" style="--hero-photo: url('{% static 'images/hero-house.jpg' %}');">
         <div>
-            <h1 class="display-5 fw-bold">Find a Place <span class="hero-accent">You Can Trust</span></h1>
-            <p class="lead">Discover verified rental properties across Tanzania with ease, safety and confidence.</p>
+            <h1 class="display-5 fw-bold">{% trans "Find a Place" %} <span class="hero-accent">{% trans "You Can Trust" %}</span></h1>
+            <p class="lead">{% trans "Discover verified rental properties across Tanzania with ease, safety and confidence." %}</p>
         </div>
     </div>
 
@@ -14,24 +15,24 @@
         <div class="hero-search-card">
             <form method="get" action="{% url 'properties:browse' %}" class="row g-2 align-items-end">
                 <div class="col-md-4">
-                    <label class="form-label small text-muted mb-1"><i class="bi bi-geo-alt-fill"></i> Location</label>
-                    <input type="text" name="q" class="form-control" placeholder="e.g. Dar es Salaam">
+                    <label class="form-label small text-muted mb-1"><i class="bi bi-geo-alt-fill"></i> {% trans "Location" %}</label>
+                    <input type="text" name="q" class="form-control" placeholder="{% trans 'e.g. Dar es Salaam' %}">
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label small text-muted mb-1"><i class="bi bi-house-door-fill"></i> Property Type</label>
+                    <label class="form-label small text-muted mb-1"><i class="bi bi-house-door-fill"></i> {% trans "Property Type" %}</label>
                     <select name="property_type" class="form-select">
-                        <option value="">All Types</option>
+                        <option value="">{% trans "All Types" %}</option>
                         {% for value, label in property_types %}
                             <option value="{{ value }}">{{ label }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label small text-muted mb-1"><i class="bi bi-cash-coin"></i> Max Price (TZS)</label>
-                    <input type="number" name="max_price" class="form-control" placeholder="Any price">
+                    <label class="form-label small text-muted mb-1"><i class="bi bi-cash-coin"></i> {% trans "Max Price (TZS)" %}</label>
+                    <input type="number" name="max_price" class="form-control" placeholder="{% trans 'Any price' %}">
                 </div>
                 <div class="col-md-2">
-                    <button class="btn btn-success w-100" type="submit"><i class="bi bi-search"></i> Search</button>
+                    <button class="btn btn-success w-100" type="submit"><i class="bi bi-search"></i> {% trans "Search" %}</button>
                 </div>
             </form>
         </div>
@@ -42,39 +43,39 @@
     <div class="trust-item">
         <span class="trust-icon"><i class="bi bi-patch-check-fill"></i></span>
         <div>
-            <h6>Verified Listings</h6>
-            <small>Only trusted properties</small>
+            <h6>{% trans "Verified Listings" %}</h6>
+            <small>{% trans "Only trusted properties" %}</small>
         </div>
     </div>
     <div class="trust-item">
         <span class="trust-icon"><i class="bi bi-search"></i></span>
         <div>
-            <h6>Easy Search</h6>
-            <small>Find what you need</small>
+            <h6>{% trans "Easy Search" %}</h6>
+            <small>{% trans "Find what you need" %}</small>
         </div>
     </div>
     <div class="trust-item">
         <span class="trust-icon"><i class="bi bi-shield-check"></i></span>
         <div>
-            <h6>Safe &amp; Secure</h6>
-            <small>Your data is protected</small>
+            <h6>{% trans "Safe &amp; Secure" %}</h6>
+            <small>{% trans "Your data is protected" %}</small>
         </div>
     </div>
     <div class="trust-item">
         <span class="trust-icon"><i class="bi bi-chat-dots-fill"></i></span>
         <div>
-            <h6>Direct Contact</h6>
-            <small>Talk to owners &amp; agents</small>
+            <h6>{% trans "Direct Contact" %}</h6>
+            <small>{% trans "Talk to owners &amp; agents" %}</small>
         </div>
     </div>
 </div>
 
 <div class="section-heading">
     <div>
-        <h2 class="mb-0">All Properties</h2>
-        <small class="text-muted">{{ page_obj.paginator.count }} verified listing{{ page_obj.paginator.count|pluralize }} on RentCheck</small>
+        <h2 class="mb-0">{% trans "All Properties" %}</h2>
+        <small class="text-muted">{% blocktrans count n=page_obj.paginator.count %}{{ n }} verified listing on RentCheck{% plural %}{{ n }} verified listings on RentCheck{% endblocktrans %}</small>
     </div>
-    <a href="{% url 'properties:browse' %}">Filter &amp; Sort <i class="bi bi-sliders"></i></a>
+    <a href="{% url 'properties:browse' %}">{% trans "Filter &amp; Sort" %} <i class="bi bi-sliders"></i></a>
 </div>
 <div class="row">
     {% for property in page_obj %}
@@ -82,7 +83,7 @@
             {% include "properties/_property_card.html" %}
         </div>
     {% empty %}
-        <p class="text-muted">No verified properties yet. Check back soon!</p>
+        <p class="text-muted">{% trans "No verified properties yet. Check back soon!" %}</p>
     {% endfor %}
 </div>
 
@@ -90,11 +91,11 @@
 <nav>
     <ul class="pagination">
         {% if page_obj.has_previous %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{% trans "Previous" %}</a></li>
         {% endif %}
-        <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+        <li class="page-item disabled"><span class="page-link">{% blocktrans with current=page_obj.number total=page_obj.paginator.num_pages %}Page {{ current }} of {{ total }}{% endblocktrans %}</span></li>
         {% if page_obj.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{% trans "Next" %}</a></li>
         {% endif %}
     </ul>
 </nav>

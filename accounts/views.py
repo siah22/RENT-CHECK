@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView
 from django.core.cache import cache
 from django.shortcuts import redirect, render
+from django.utils.translation import gettext as _
 from django.urls import reverse, reverse_lazy
 
 from .forms import ProfileForm, RegistrationForm
@@ -68,7 +69,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, "Welcome to RentCheck Tanzania! Your account has been created.")
+            messages.success(request, _("Welcome to RentCheck Tanzania! Your account has been created."))
             return redirect("core:home")
     else:
         form = RegistrationForm()
@@ -81,7 +82,7 @@ def profile(request):
         form = ProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            messages.success(request, "Profile updated successfully.")
+            messages.success(request, _("Profile updated successfully."))
             return redirect("accounts:profile")
     else:
         form = ProfileForm(instance=request.user)

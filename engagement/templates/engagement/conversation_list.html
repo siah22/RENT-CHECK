@@ -1,8 +1,9 @@
 ﻿{% extends "base.html" %}
-{% block title %}Messages — RentCheck Tanzania{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Messages — RentCheck Tanzania" %}{% endblock %}
 {% block content %}
 <div class="d-flex align-items-center justify-content-between mb-3">
-    <h2 class="mb-0"><i class="bi bi-chat-left-text"></i> Messages</h2>
+    <h2 class="mb-0"><i class="bi bi-chat-left-text"></i> {% trans "Messages" %}</h2>
 </div>
 <div class="list-group shadow-sm">
     {% for conversation in conversations %}
@@ -21,17 +22,17 @@
                     {% if conversation.last_message %}
                         {{ conversation.last_message.sender.username }}: {{ conversation.last_message.body|truncatechars:50 }}
                     {% else %}
-                        No messages yet
+                        {% trans "No messages yet" %}
                     {% endif %}
                 </small>
             </div>
             {% if conversation.last_message %}
-                <small class="text-muted text-nowrap">{{ conversation.last_message.created_at|timesince }} ago</small>
+                <small class="text-muted text-nowrap">{% blocktrans with time=conversation.last_message.created_at|timesince %}{{ time }} ago{% endblocktrans %}</small>
             {% endif %}
         </a>
     {% empty %}
         <div class="list-group-item text-muted">
-            No conversations yet. Open a property and click <strong>Message Owner</strong> to start one.
+            {% blocktrans %}No conversations yet. Open a property and click <strong>Message Owner</strong> to start one.{% endblocktrans %}
         </div>
     {% endfor %}
 </div>

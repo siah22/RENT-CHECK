@@ -1,0 +1,11 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<form method="post" action="{% url 'set_language' %}" class="d-inline-flex me-2" id="language-switch-form">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{% if LANGUAGE_CODE == 'sw' %}{{ request.path|cut:'/sw' }}{% else %}{{ request.path }}{% endif %}">
+    {% if LANGUAGE_CODE == "en" %}
+        <button type="submit" name="language" value="sw" class="btn btn-sm btn-outline-light border-0 fw-bold px-1" title="{% trans 'Kiswahili' %}">SH</button>
+    {% else %}
+        <button type="submit" name="language" value="en" class="btn btn-sm btn-outline-light border-0 fw-bold px-1" title="{% trans 'English' %}">EN</button>
+    {% endif %}
+</form>

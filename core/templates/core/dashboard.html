@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Admin Control Center — RentCheck Tanzania{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Admin Control Center — RentCheck Tanzania" %}{% endblock %}
 {% block content %}
 
 <!-- Executive Header Banner -->
@@ -7,35 +8,35 @@
     <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-4">
         <div>
             <div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
-                <span class="badge bg-warning text-dark fw-bold px-2 py-1"><i class="bi bi-shield-check me-1"></i>Administrator Control Center</span>
-                <span class="badge bg-success-subtle text-success border border-success-subtle"><i class="bi bi-circle-fill me-1 small"></i>Live System</span>
+                <span class="badge bg-warning text-dark fw-bold px-2 py-1"><i class="bi bi-shield-check me-1"></i>{% trans "Administrator Control Center" %}</span>
+                <span class="badge bg-success-subtle text-success border border-success-subtle"><i class="bi bi-circle-fill me-1 small"></i>{% trans "Live System" %}</span>
             </div>
-            <h1 class="fw-bold mb-2 text-white">Hello, {{ request.user.first_name|default:request.user.username }}</h1>
+            <h1 class="fw-bold mb-2 text-white">{% blocktrans with name=request.user.first_name|default:request.user.username %}Hello, {{ name }}{% endblocktrans %}</h1>
             <p class="mb-0 text-white-50 small" style="max-width: 560px;">
-                Manage Tanzania's verified rental listings, user accounts, and platform integrity from one centralized console.
+                {% trans "Manage Tanzania's verified rental listings, user accounts, and platform integrity from one centralized console." %}
             </p>
         </div>
         <div class="d-flex flex-wrap gap-2 align-items-center">
             <a href="{% url 'core:dashboard_properties' %}?status=PENDING" class="btn btn-warning btn-sm fw-semibold shadow-sm px-3 py-2">
-                <i class="bi bi-patch-check me-1"></i> Verify Listings
+                <i class="bi bi-patch-check me-1"></i> {% trans "Verify Listings" %}
                 {% if stats.pending_properties %}
                     <span class="badge bg-dark text-warning ms-1">{{ stats.pending_properties }}</span>
                 {% endif %}
             </a>
             <a href="{% url 'core:dashboard_reports' %}?status=PENDING" class="btn btn-danger btn-sm fw-semibold shadow-sm px-3 py-2">
-                <i class="bi bi-flag me-1"></i> Reports
+                <i class="bi bi-flag me-1"></i> {% trans "Reports" %}
                 {% if stats.pending_reports %}
                     <span class="badge bg-white text-danger ms-1">{{ stats.pending_reports }}</span>
                 {% endif %}
             </a>
             <a href="{% url 'core:dashboard_users' %}" class="btn btn-light btn-sm fw-semibold shadow-sm px-3 py-2">
-                <i class="bi bi-people me-1"></i> Users
+                <i class="bi bi-people me-1"></i> {% trans "Users" %}
             </a>
             <a href="/admin/" target="_blank" class="btn btn-outline-light btn-sm fw-semibold px-3 py-2">
-                <i class="bi bi-shield-lock me-1"></i> Django Admin <i class="bi bi-box-arrow-up-right small"></i>
+                <i class="bi bi-shield-lock me-1"></i> {% trans "Django Admin" %} <i class="bi bi-box-arrow-up-right small"></i>
             </a>
             <a href="{% url 'core:home' %}?preview=1" class="btn btn-outline-light btn-sm fw-semibold px-3 py-2">
-                <i class="bi bi-globe me-1"></i> Preview Site
+                <i class="bi bi-globe me-1"></i> {% trans "Preview Site" %}
             </a>
         </div>
     </div>
@@ -47,15 +48,15 @@
         <div class="card stat-card-modern kpi-card border-0 shadow-sm rounded-4 h-100 p-4 {% if stats.pending_properties %}stat-card-attention{% endif %}">
             <div class="d-flex justify-content-between align-items-start gap-2">
                 <div class="min-w-0">
-                    <span class="text-uppercase fw-semibold small text-muted">Awaiting Verification</span>
+                    <span class="text-uppercase fw-semibold small text-muted">{% trans "Awaiting Verification" %}</span>
                     <h2 class="fw-bold mt-2 mb-1 {% if stats.pending_properties %}text-warning-emphasis{% else %}text-dark{% endif %}">
                         {{ stats.pending_properties }}
                     </h2>
                     <span class="small {% if stats.pending_properties %}text-warning-emphasis fw-medium{% else %}text-muted{% endif %}">
                         {% if stats.pending_properties %}
-                            <i class="bi bi-exclamation-triangle-fill me-1"></i>Requires admin review
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i>{% trans "Requires admin review" %}
                         {% else %}
-                            <i class="bi bi-check-circle-fill text-success me-1"></i>All listings up to date
+                            <i class="bi bi-check-circle-fill text-success me-1"></i>{% trans "All listings up to date" %}
                         {% endif %}
                     </span>
                 </div>
@@ -65,7 +66,7 @@
             </div>
             <div class="mt-3 pt-3 border-top">
                 <a href="{% url 'core:dashboard_properties' %}?status=PENDING" class="small text-decoration-none fw-semibold text-primary">
-                    Review listings <i class="bi bi-arrow-right"></i>
+                    {% trans "Review listings" %} <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
         </div>
@@ -75,15 +76,15 @@
         <div class="card stat-card-modern kpi-card border-0 shadow-sm rounded-4 h-100 p-4 {% if stats.pending_reports %}stat-card-danger{% endif %}">
             <div class="d-flex justify-content-between align-items-start gap-2">
                 <div class="min-w-0">
-                    <span class="text-uppercase fw-semibold small text-muted">Pending Reports</span>
+                    <span class="text-uppercase fw-semibold small text-muted">{% trans "Pending Reports" %}</span>
                     <h2 class="fw-bold mt-2 mb-1 {% if stats.pending_reports %}text-danger{% else %}text-dark{% endif %}">
                         {{ stats.pending_reports }}
                     </h2>
                     <span class="small {% if stats.pending_reports %}text-danger fw-medium{% else %}text-muted{% endif %}">
                         {% if stats.pending_reports %}
-                            <i class="bi bi-shield-exclamation me-1"></i>Unresolved user flags
+                            <i class="bi bi-shield-exclamation me-1"></i>{% trans "Unresolved user flags" %}
                         {% else %}
-                            <i class="bi bi-check-circle-fill text-success me-1"></i>Zero unresolved flags
+                            <i class="bi bi-check-circle-fill text-success me-1"></i>{% trans "Zero unresolved flags" %}
                         {% endif %}
                     </span>
                 </div>
@@ -93,7 +94,7 @@
             </div>
             <div class="mt-3 pt-3 border-top">
                 <a href="{% url 'core:dashboard_reports' %}?status=PENDING" class="small text-decoration-none fw-semibold text-danger">
-                    Review reports <i class="bi bi-arrow-right"></i>
+                    {% trans "Review reports" %} <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
         </div>
@@ -103,10 +104,10 @@
         <div class="card stat-card-modern kpi-card border-0 shadow-sm rounded-4 h-100 p-4">
             <div class="d-flex justify-content-between align-items-start gap-2">
                 <div class="min-w-0">
-                    <span class="text-uppercase fw-semibold small text-muted">Verified Listings</span>
+                    <span class="text-uppercase fw-semibold small text-muted">{% trans "Verified Listings" %}</span>
                     <h2 class="fw-bold mt-2 mb-1 text-success">{{ stats.verified_properties }}</h2>
                     <span class="small text-muted">
-                        <i class="bi bi-check2-all text-success me-1"></i>{{ stats.active_listings }} active for rent
+                        <i class="bi bi-check2-all text-success me-1"></i>{% blocktrans with active=stats.active_listings %}{{ active }} active for rent{% endblocktrans %}
                     </span>
                 </div>
                 <div class="stat-icon-bubble bg-success-subtle text-success">
@@ -115,7 +116,7 @@
             </div>
             <div class="mt-3 pt-3 border-top">
                 <a href="{% url 'core:dashboard_properties' %}?status=APPROVED" class="small text-decoration-none fw-semibold text-success">
-                    View verified properties <i class="bi bi-arrow-right"></i>
+                    {% trans "View verified properties" %} <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
         </div>
@@ -125,10 +126,10 @@
         <div class="card stat-card-modern kpi-card border-0 shadow-sm rounded-4 h-100 p-4">
             <div class="d-flex justify-content-between align-items-start gap-2">
                 <div class="min-w-0">
-                    <span class="text-uppercase fw-semibold small text-muted">Total Accounts</span>
+                    <span class="text-uppercase fw-semibold small text-muted">{% trans "Total Accounts" %}</span>
                     <h2 class="fw-bold mt-2 mb-1 text-dark">{{ stats.total_users }}</h2>
                     <span class="small text-muted">
-                        {{ stats.total_tenants }} Tenants &middot; {{ stats.total_owners }} Landlords
+                        {% blocktrans with tenants=stats.total_tenants owners=stats.total_owners %}{{ tenants }} Tenants &middot; {{ owners }} Landlords{% endblocktrans %}
                     </span>
                 </div>
                 <div class="stat-icon-bubble bg-info-subtle text-info">
@@ -137,7 +138,7 @@
             </div>
             <div class="mt-3 pt-3 border-top">
                 <a href="{% url 'core:dashboard_users' %}" class="small text-decoration-none fw-semibold text-primary">
-                    Manage users <i class="bi bi-arrow-right"></i>
+                    {% trans "Manage users" %} <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
         </div>
@@ -149,19 +150,19 @@
     <div class="card-body py-4 px-4">
         <div class="row text-center divide-cols gy-3">
             <div class="col-6 col-md-3">
-                <div class="text-uppercase small text-muted fw-semibold">Total Properties</div>
+                <div class="text-uppercase small text-muted fw-semibold">{% trans "Total Properties" %}</div>
                 <div class="fs-3 fw-bold text-dark">{{ stats.total_properties }}</div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="text-uppercase small text-muted fw-semibold">Available Now</div>
+                <div class="text-uppercase small text-muted fw-semibold">{% trans "Available Now" %}</div>
                 <div class="fs-3 fw-bold text-success">{{ stats.active_listings }}</div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="text-uppercase small text-muted fw-semibold">Rejected Listings</div>
+                <div class="text-uppercase small text-muted fw-semibold">{% trans "Rejected Listings" %}</div>
                 <div class="fs-3 fw-bold text-secondary">{{ stats.rejected_properties }}</div>
             </div>
             <div class="col-6 col-md-3">
-                <div class="text-uppercase small text-muted fw-semibold">System Administrators</div>
+                <div class="text-uppercase small text-muted fw-semibold">{% trans "System Administrators" %}</div>
                 <div class="fs-3 fw-bold text-warning-emphasis">{{ stats.total_admins }}</div>
             </div>
         </div>
@@ -174,12 +175,12 @@
         <div class="d-flex align-items-center gap-3">
             <span class="badge bg-warning text-dark p-2 rounded-3"><i class="bi bi-building-check fs-6"></i></span>
             <div>
-                <h5 class="fw-bold mb-0">Listings Awaiting Verification</h5>
-                <small class="text-muted">Review submitted properties before they go live on RentCheck</small>
+                <h5 class="fw-bold mb-0">{% trans "Listings Awaiting Verification" %}</h5>
+                <small class="text-muted">{% trans "Review submitted properties before they go live on RentCheck" %}</small>
             </div>
         </div>
         <a href="{% url 'core:dashboard_properties' %}?status=PENDING" class="btn btn-outline-success btn-sm fw-semibold px-3">
-            View All Pending ({{ stats.pending_properties }})
+            {% blocktrans with count=stats.pending_properties %}View All Pending ({{ count }}){% endblocktrans %}
         </a>
     </div>
     <div class="card-body p-0">
@@ -188,13 +189,13 @@
                 <table class="table table-hover align-middle mb-0 dashboard-table">
                     <thead class="table-light small text-uppercase text-muted">
                         <tr>
-                            <th style="width: 80px;">Photo</th>
-                            <th>Property</th>
-                            <th>Landlord / Agent</th>
-                            <th>Location</th>
-                            <th>Rent / Month</th>
-                            <th>Submitted</th>
-                            <th class="text-end pe-4">Actions</th>
+                            <th style="width: 80px;">{% trans "Photo" %}</th>
+                            <th>{% trans "Property" %}</th>
+                            <th>{% trans "Landlord / Agent" %}</th>
+                            <th>{% trans "Location" %}</th>
+                            <th>{% trans "Rent / Month" %}</th>
+                            <th>{% trans "Submitted" %}</th>
+                            <th class="text-end pe-4">{% trans "Actions" %}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -235,12 +236,12 @@
                                         <form method="post" action="{% url 'core:dashboard_property_action' property.pk 'approve' %}">
                                             {% csrf_token %}
                                             <input type="hidden" name="next" value="{% url 'core:dashboard' %}">
-                                            <button class="btn btn-sm btn-success fw-semibold" type="submit" title="Approve and publish listing">
-                                                <i class="bi bi-check-lg me-1"></i>Approve
+                                            <button class="btn btn-sm btn-success fw-semibold" type="submit" title="{% trans 'Approve and publish listing' %}">
+                                                <i class="bi bi-check-lg me-1"></i>{% trans "Approve" %}
                                             </button>
                                         </form>
-                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#rejectModal{{ property.pk }}" title="Reject listing">
-                                            <i class="bi bi-x-lg me-1"></i>Reject
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#rejectModal{{ property.pk }}" title="{% trans 'Reject listing' %}">
+                                            <i class="bi bi-x-lg me-1"></i>{% trans "Reject" %}
                                         </button>
                                     </div>
 
@@ -252,19 +253,19 @@
                                                     {% csrf_token %}
                                                     <input type="hidden" name="next" value="{% url 'core:dashboard' %}">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title fw-bold">Reject Listing: {{ property.title }}</h5>
+                                                        <h5 class="modal-title fw-bold">{% blocktrans with title=property.title %}Reject Listing: {{ title }}{% endblocktrans %}</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <p class="small text-muted mb-2">
-                                                            Please provide a clear reason for rejecting this listing. The landlord will be notified with this feedback.
+                                                            {% trans "Please provide a clear reason for rejecting this listing. The landlord will be notified with this feedback." %}
                                                         </p>
-                                                        <label class="form-label fw-semibold">Rejection Reason</label>
-                                                        <textarea name="reason" class="form-control" rows="3" placeholder="E.g. Inaccurate location, unclear property photos, or mismatched pricing." required></textarea>
+                                                        <label class="form-label fw-semibold">{% trans "Rejection Reason" %}</label>
+                                                        <textarea name="reason" class="form-control" rows="3" placeholder="{% trans 'E.g. Inaccurate location, unclear property photos, or mismatched pricing.' %}" required></textarea>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-                                                        <button type="submit" class="btn btn-danger btn-sm fw-semibold">Confirm Rejection</button>
+                                                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
+                                                        <button type="submit" class="btn btn-danger btn-sm fw-semibold">{% trans "Confirm Rejection" %}</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -281,10 +282,10 @@
                 <div class="avatar-circle mx-auto bg-success-subtle text-success mb-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
                     <i class="bi bi-check2-circle"></i>
                 </div>
-                <h5 class="fw-bold mb-1">All Listings are Verified</h5>
-                <p class="text-muted small mb-3">There are currently no new property listings awaiting verification.</p>
+                <h5 class="fw-bold mb-1">{% trans "All Listings are Verified" %}</h5>
+                <p class="text-muted small mb-3">{% trans "There are currently no new property listings awaiting verification." %}</p>
                 <a href="{% url 'core:dashboard_properties' %}?status=" class="btn btn-outline-success btn-sm">
-                    Browse All Listings
+                    {% trans "Browse All Listings" %}
                 </a>
             </div>
         {% endif %}
@@ -299,12 +300,12 @@
                 <div class="d-flex align-items-center gap-3">
                     <span class="badge bg-danger text-white p-2 rounded-3"><i class="bi bi-flag fs-6"></i></span>
                     <div>
-                        <h5 class="fw-bold mb-0">Flagged Listings & Reports</h5>
-                        <small class="text-muted">User complaints and potential violations</small>
+                        <h5 class="fw-bold mb-0">{% trans "Flagged Listings & Reports" %}</h5>
+                        <small class="text-muted">{% trans "User complaints and potential violations" %}</small>
                     </div>
                 </div>
                 <a href="{% url 'core:dashboard_reports' %}" class="btn btn-outline-danger btn-sm fw-semibold px-3">
-                    All Reports ({{ stats.total_reports }})
+                    {% blocktrans with count=stats.total_reports %}All Reports ({{ count }}){% endblocktrans %}
                 </a>
             </div>
             <div class="card-body p-0">
@@ -313,11 +314,11 @@
                         <table class="table table-hover align-middle mb-0 dashboard-table">
                             <thead class="table-light small text-uppercase text-muted">
                                 <tr>
-                                    <th>Property</th>
-                                    <th>Reason</th>
-                                    <th>Reporter</th>
-                                    <th>Date</th>
-                                    <th class="text-end pe-4">Action</th>
+                                    <th>{% trans "Property" %}</th>
+                                    <th>{% trans "Reason" %}</th>
+                                    <th>{% trans "Reporter" %}</th>
+                                    <th>{% trans "Date" %}</th>
+                                    <th class="text-end pe-4">{% trans "Action" %}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -347,28 +348,28 @@
                                         <td class="text-end pe-4">
                                             <div class="dropdown">
                                                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                                    Action
+                                                    {% trans "Action" %}
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end shadow-sm">
                                                     <li>
                                                         <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'REVIEWED' %}">
                                                             {% csrf_token %}
                                                             <input type="hidden" name="next" value="{% url 'core:dashboard' %}">
-                                                            <button class="dropdown-item small" type="submit"><i class="bi bi-eye me-2 text-info"></i>Mark Reviewed</button>
+                                                            <button class="dropdown-item small" type="submit"><i class="bi bi-eye me-2 text-info"></i>{% trans "Mark Reviewed" %}</button>
                                                         </form>
                                                     </li>
                                                     <li>
                                                         <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'ACTIONED' %}">
                                                             {% csrf_token %}
                                                             <input type="hidden" name="next" value="{% url 'core:dashboard' %}">
-                                                            <button class="dropdown-item small text-danger" type="submit"><i class="bi bi-shield-x me-2"></i>Take Action</button>
+                                                            <button class="dropdown-item small text-danger" type="submit"><i class="bi bi-shield-x me-2"></i>{% trans "Take Action" %}</button>
                                                         </form>
                                                     </li>
                                                     <li>
                                                         <form method="post" action="{% url 'core:dashboard_report_action' report.pk 'DISMISSED' %}">
                                                             {% csrf_token %}
                                                             <input type="hidden" name="next" value="{% url 'core:dashboard' %}">
-                                                            <button class="dropdown-item small text-muted" type="submit"><i class="bi bi-check me-2"></i>Dismiss Report</button>
+                                                            <button class="dropdown-item small text-muted" type="submit"><i class="bi bi-check me-2"></i>{% trans "Dismiss Report" %}</button>
                                                         </form>
                                                     </li>
                                                 </ul>
@@ -384,8 +385,8 @@
                         <div class="avatar-circle mx-auto bg-success-subtle text-success mb-3" style="width: 50px; height: 50px;">
                             <i class="bi bi-shield-check fs-4"></i>
                         </div>
-                        <h6 class="fw-bold mb-1">No Pending Reports</h6>
-                        <p class="text-muted small mb-0">Platform listings are currently in good standing.</p>
+                        <h6 class="fw-bold mb-1">{% trans "No Pending Reports" %}</h6>
+                        <p class="text-muted small mb-0">{% trans "Platform listings are currently in good standing." %}</p>
                     </div>
                 {% endif %}
             </div>
@@ -399,12 +400,12 @@
                 <div class="d-flex align-items-center gap-3">
                     <span class="badge bg-primary text-white p-2 rounded-3"><i class="bi bi-people fs-6"></i></span>
                     <div>
-                        <h5 class="fw-bold mb-0">Recent Users</h5>
-                        <small class="text-muted">New registrations & roles</small>
+                        <h5 class="fw-bold mb-0">{% trans "Recent Users" %}</h5>
+                        <small class="text-muted">{% trans "New registrations & roles" %}</small>
                     </div>
                 </div>
                 <a href="{% url 'core:dashboard_users' %}" class="btn btn-outline-secondary btn-sm fw-semibold px-3">
-                    Manage ({{ stats.total_users }})
+                    {% blocktrans with count=stats.total_users %}Manage ({{ count }}){% endblocktrans %}
                 </a>
             </div>
             <div class="card-body p-0">
@@ -427,18 +428,18 @@
                             <div class="text-end">
                                 <div>
                                     {% if u.is_admin_role %}
-                                        <span class="badge bg-warning text-dark small">Admin</span>
+                                        <span class="badge bg-warning text-dark small">{% trans "Admin" %}</span>
                                     {% elif u.is_owner_agent %}
-                                        <span class="badge bg-info-subtle text-info border border-info-subtle small">Landlord</span>
+                                        <span class="badge bg-info-subtle text-info border border-info-subtle small">{% trans "Landlord" %}</span>
                                     {% else %}
-                                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle small">Tenant</span>
+                                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle small">{% trans "Tenant" %}</span>
                                     {% endif %}
                                 </div>
                                 <div class="text-muted" style="font-size: 0.72rem;">{{ u.date_joined|date:"d M Y" }}</div>
                             </div>
                         </div>
                     {% empty %}
-                        <div class="text-center py-4 text-muted small">No users found.</div>
+                        <div class="text-center py-4 text-muted small">{% trans "No users found." %}</div>
                     {% endfor %}
                 </div>
             </div>

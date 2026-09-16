@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <div class="card property-card h-100 shadow-sm">
     <div class="card-img-wrap">
         {% if property.main_image %}
@@ -8,19 +9,19 @@
         {% endif %}
         <div class="ribbon-stack">
             {% if property.is_bnb %}
-                <span class="ribbon-bnb"><i class="bi bi-suitcase-lg-fill"></i> Airbnb</span>
+                <span class="ribbon-bnb"><i class="bi bi-suitcase-lg-fill"></i> {% trans "Airbnb" %}</span>
             {% endif %}
             {% if property.is_verified %}
-                <span class="ribbon-verified"><i class="bi bi-patch-check-fill"></i> Verified</span>
+                <span class="ribbon-verified"><i class="bi bi-patch-check-fill"></i> {% trans "Verified" %}</span>
             {% endif %}
             {% if property.is_rented and property.is_bnb %}
-                <span class="ribbon-booked"><i class="bi bi-calendar2-x-fill"></i> Booked</span>
+                <span class="ribbon-booked"><i class="bi bi-calendar2-x-fill"></i> {% trans "Booked" %}</span>
             {% endif %}
         </div>
         {% if user.is_authenticated and user.is_tenant %}
             <form method="post" action="{% url 'engagement:toggle_favorite' property.pk %}">
                 {% csrf_token %}
-                <button class="fav-toggle {% if property.pk in favorite_ids %}is-active{% endif %}" type="submit" title="Toggle favorite">
+                <button class="fav-toggle {% if property.pk in favorite_ids %}is-active{% endif %}" type="submit" title="{% trans 'Toggle favorite' %}">
                     <i class="bi {% if property.pk in favorite_ids %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
                 </button>
             </form>
@@ -29,14 +30,14 @@
     <div class="card-body">
         <h5 class="card-title mb-1">{{ property.title }}</h5>
         <p class="location-line mb-2"><i class="bi bi-geo-alt-fill"></i> {{ property.city }}, {{ property.region }}</p>
-        <p class="price-tag mb-2">TZS {{ property.price|floatformat:0 }} {% if property.is_bnb %}/ night{% else %}/ month{% endif %}</p>
+        <p class="price-tag mb-2">TZS {{ property.price|floatformat:0 }} {% if property.is_bnb %}{% trans "/ night" %}{% else %}{% trans "/ month" %}{% endif %}</p>
         <div class="spec-row mb-1">
-            <span><i class="bi bi-door-closed-fill"></i>{{ property.bedrooms }} bed</span>
-            <span><i class="bi bi-droplet-fill"></i>{{ property.bathrooms }} bath</span>
-            {% if property.size_sqm %}<span><i class="bi bi-rulers"></i>{{ property.size_sqm }} sqm</span>{% endif %}
+            <span><i class="bi bi-door-closed-fill"></i>{% blocktrans with count=property.bedrooms %}{{ count }} bed{% endblocktrans %}</span>
+            <span><i class="bi bi-droplet-fill"></i>{% blocktrans with count=property.bathrooms %}{{ count }} bath{% endblocktrans %}</span>
+            {% if property.size_sqm %}<span><i class="bi bi-rulers"></i>{% blocktrans with size=property.size_sqm %}{{ size }} sqm{% endblocktrans %}</span>{% endif %}
         </div>
     </div>
     <div class="card-footer bg-white border-0">
-        <a href="{% url 'properties:detail' property.pk %}" class="btn btn-gold w-100">View Details <i class="bi bi-arrow-right"></i></a>
+        <a href="{% url 'properties:detail' property.pk %}" class="btn btn-gold w-100">{% trans "View Details" %} <i class="bi bi-arrow-right"></i></a>
     </div>
 </div>

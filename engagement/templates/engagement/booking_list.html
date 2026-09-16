@@ -1,14 +1,15 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block title %}Bookings — RentCheck Tanzania{% endblock %}
 {% block content %}
-<h2 class="mb-3"><i class="bi bi-calendar2-check"></i> Bookings</h2>
+<h2 class="mb-3"><i class="bi bi-calendar2-check"></i> {% trans "Bookings" %}</h2>
 <div class="table-responsive">
 <table class="table bg-white align-middle">
     <thead>
         <tr>
-            <th>{% if user.is_owner_agent %}Guest{% endif %}</th><th>Property</th><th>Check-in</th><th>Check-out</th>
-            <th>Guests</th><th>Total</th><th>Status</th>
-            {% if user.is_owner_agent %}<th>Action</th>{% endif %}
+            <th>{% if user.is_owner_agent %}{% trans "Guest" %}{% endif %}</th><th>{% trans "Property" %}</th><th>{% trans "Check-in" %}</th><th>{% trans "Check-out" %}</th>
+            <th>{% trans "Guests" %}</th><th>{% trans "Total" %}</th><th>{% trans "Status" %}</th>
+            {% if user.is_owner_agent %}<th>{% trans "Action" %}</th>{% endif %}
         </tr>
     </thead>
     <tbody>
@@ -21,26 +22,26 @@
             <td>{{ booking.guests }}</td>
             <td>TZS {{ booking.total_price|floatformat:0 }} <small class="text-muted">({{ booking.nights }} night{{ booking.nights|pluralize }})</small></td>
             <td>
-                {% if booking.status == "CONFIRMED" %}<span class="badge bg-success">Confirmed</span>
-                {% elif booking.status == "REJECTED" %}<span class="badge bg-danger">Rejected</span>
-                {% elif booking.status == "CANCELLED" %}<span class="badge bg-secondary">Cancelled</span>
-                {% else %}<span class="badge bg-warning text-dark">Pending</span>{% endif %}
+                {% if booking.status == "CONFIRMED" %}<span class="badge bg-success">{% trans "Confirmed" %}</span>
+                {% elif booking.status == "REJECTED" %}<span class="badge bg-danger">{% trans "Rejected" %}</span>
+                {% elif booking.status == "CANCELLED" %}<span class="badge bg-secondary">{% trans "Cancelled" %}</span>
+                {% else %}<span class="badge bg-warning text-dark">{% trans "Pending" %}</span>{% endif %}
             </td>
             {% if user.is_owner_agent %}
             <td class="d-flex gap-1">
                 {% if booking.status == "PENDING" %}
                 <form method="post" action="{% url 'engagement:update_booking_status' booking.pk 'CONFIRMED' %}">
-                    {% csrf_token %}<button class="btn btn-sm btn-success" type="submit">Confirm</button>
+                    {% csrf_token %}<button class="btn btn-sm btn-success" type="submit">{% trans "Confirm" %}</button>
                 </form>
                 <form method="post" action="{% url 'engagement:update_booking_status' booking.pk 'REJECTED' %}">
-                    {% csrf_token %}<button class="btn btn-sm btn-outline-danger" type="submit">Reject</button>
+                    {% csrf_token %}<button class="btn btn-sm btn-outline-danger" type="submit">{% trans "Reject" %}</button>
                 </form>
                 {% endif %}
             </td>
             {% endif %}
         </tr>
     {% empty %}
-        <tr><td colspan="8" class="text-muted text-center">No bookings yet.</td></tr>
+        <tr><td colspan="8" class="text-muted text-center">{% trans "No bookings yet." %}</td></tr>
     {% endfor %}
     </tbody>
 </table>

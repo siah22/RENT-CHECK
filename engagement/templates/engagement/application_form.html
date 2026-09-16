@@ -1,127 +1,84 @@
 {% extends "base.html" %}
-{% block title %}Apply to Rent — {{ property.title }}{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Apply to Rent" %} — {{ property.title }}{% endblock %}
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Rental Application</h2>
+    <h2>{% trans "Rental Application" %}</h2>
     <a href="{% url 'properties:detail' property.pk %}" class="btn btn-outline-secondary btn-sm">
-        <i class="bi bi-arrow-left"></i> Back to listing
+        <i class="bi bi-arrow-left"></i> {% trans "Back to listing" %}
     </a>
 </div>
 
 <div class="alert alert-info">
     <i class="bi bi-info-circle-fill me-1"></i>
-    Applying to <strong>{{ property.title }}</strong> — {{ property.city }}, {{ property.region }}.
-    Your answers go straight to the owner/agent for review.
+    {% blocktrans %}Applying to <strong>{{ property.title }}</strong> — {{ property.city }}, {{ property.region }}.
+    Your application goes straight to the owner/agent for review.{% endblocktrans %}
 </div>
 
-<form method="post" enctype="multipart/form-data">
+<form method="post">
     {% csrf_token %}
     {% if form.non_field_errors %}
         <div class="alert alert-danger">{{ form.non_field_errors }}</div>
     {% endif %}
 
+    <div class="card shadow-sm mb-3 border-0 bg-dark text-white">
+        <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-file-earmark-text-fill me-1"></i> {% trans "Tenancy Rules" %}</h5>
+            <p class="small text-white-50 mb-2">{% trans "Please read the rules below before applying." %}</p>
+            {% if property.tenancy_rules %}
+                <div class="tenancy-rules-box p-3 rounded">
+                    {{ property.tenancy_rules|linebreaksbr }}
+                </div>
+            {% else %}
+                <p class="mb-0 text-white-50">{% trans "The owner has not set any specific rules." %}</p>
+            {% endif %}
+        </div>
+    </div>
+
     <div class="card shadow-sm mb-3">
         <div class="card-body">
-            <h5 class="card-title"><i class="bi bi-person-vcard me-1"></i> Personal details</h5>
+            <h5 class="card-title"><i class="bi bi-person-vcard me-1"></i> {% trans "Your contact information" %}</h5>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Full name *</label>
+                    <label class="form-label">{% trans "Full name" %} *</label>
                     {{ form.full_name }}
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Phone number *</label>
+                    <label class="form-label">{% trans "Phone number" %} *</label>
                     {{ form.phone }}
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Email</label>
+                    <label class="form-label">{% trans "Email" %}</label>
                     {{ form.email }}
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Current address</label>
+                    <label class="form-label">{% trans "Current address" %}</label>
                     {{ form.current_address }}
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card shadow-sm mb-3">
-        <div class="card-body">
-            <h5 class="card-title"><i class="bi bi-cash-coin me-1"></i> Employment &amp; income</h5>
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label class="form-label">Employment status *</label>
-                    {{ form.employment_status }}
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label class="form-label">Employer</label>
-                    {{ form.employer }}
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label class="form-label">Monthly income (TZS)</label>
-                    {{ form.monthly_income }}
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label class="form-label">Desired move-in date</label>
-                    {{ form.move_in_date }}
+                <div class="col-12 mb-3">
+                    <label class="form-label">{% trans "Notes" %}</label>
+                    {{ form.notes }}
+                    <div class="form-text">{% trans "Anything else the owner should know?" %}</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card shadow-sm mb-3">
+    <div class="card shadow-sm mb-3 border-warning">
         <div class="card-body">
-            <h5 class="card-title"><i class="bi bi-clock-history me-1"></i> Rental history &amp; references</h5>
-            <div class="mb-3">
-                <label class="form-label">Rental history — previous addresses / landlords</label>
-                {{ form.rental_history }}
-            </div>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Reference name</label>
-                    {{ form.reference_name }}
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Reference phone</label>
-                    {{ form.reference_phone }}
-                </div>
-            </div>
-        </div>
-    </div>
-
-{% if question_list %}
-    <div class="card shadow-sm mb-3">
-        <div class="card-body">
-            <h5 class="card-title"><i class="bi bi-ui-checks me-1"></i> Questions from the owner</h5>
-            {% for q in question_list %}
-                <div class="mb-3">
-                    <label class="form-label">{{ q.text }}{% if q.required %} <span class="text-danger">*</span>{% endif %}</label>
-                    <input type="text" name="question_{{ q.id }}" class="form-control"
-                           {% if q.required %}required{% endif %}
-                           value="{{ q.value }}">
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-{% endif %}
-
-    <div class="card shadow-sm mb-3">
-        <div class="card-body">
-            <h5 class="card-title"><i class="bi bi-paperclip me-1"></i> Documents &amp; notes</h5>
-            <div class="mb-3">
-                <label class="form-label">Supporting document (optional)</label>
-                {{ form.document }}
-                <div class="form-text">e.g. pay stub, employment letter, NIDA ID scan. Max 10 MB.</div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Notes</label>
-                {{ form.notes }}
+            <h5 class="card-title text-warning"><i class="bi bi-file-text-fill me-1"></i> {% trans "Agreement" %}</h5>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="agreement_accepted" id="agreement_accepted" value="1" required>
+                <label class="form-check-label" for="agreement_accepted">
+                    {% blocktrans %}<strong>I have read and I agree to the tenancy rules</strong> for {{ property.title }}. By submitting this application, I confirm the information I provided is accurate.{% endblocktrans %}
+                </label>
             </div>
         </div>
     </div>
 
     <div class="d-grid gap-2 d-md-flex">
-        <button type="submit" class="btn btn-primary btn-lg px-4"><i class="bi bi-check2-circle"></i> Submit Application</button>
-        <a href="{% url 'properties:detail' property.pk %}" class="btn btn-lg btn-outline-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary btn-lg px-4"><i class="bi bi-check2-circle"></i> {% trans "Submit application" %}</button>
+        <a href="{% url 'properties:detail' property.pk %}" class="btn btn-lg btn-outline-secondary">{% trans "Cancel" %}</a>
     </div>
 </form>
 {% endblock %}

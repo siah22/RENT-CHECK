@@ -1,12 +1,13 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block title %}Book — {{ property.title }}{% endblock %}
 {% block content %}
-<h2><i class="bi bi-calendar2-check"></i> Book "{{ property.title }}"</h2>
-<p class="text-muted">TZS {{ property.price|floatformat:0 }} / night</p>
+<h2><i class="bi bi-calendar2-check"></i> {% blocktrans with title=property.title %}Book "{{ title }}"{% endblocktrans %}</h2>
+<p class="text-muted">TZS {{ property.price|floatformat:0 }} / {% trans "night" %}</p>
 
 <div class="card shadow-sm mb-4">
     <div class="card-body">
-        <h5><i class="bi bi-calendar3"></i> Availability</h5>
+        <h5><i class="bi bi-calendar3"></i> {% trans "Availability" %}</h5>
         <div class="row g-3">
             {% for month in calendar %}
                 <div class="col-md-4">
@@ -35,9 +36,9 @@
             {% endfor %}
         </div>
         <div class="small text-muted mt-2">
-            <span class="badge bg-danger">red</span> booked &middot;
-            <span class="badge bg-light text-dark border">grey</span> past &middot;
-            unshaded = available
+            <span class="badge bg-danger">{% trans "red" %}</span> {% trans "booked" %} &middot;
+            <span class="badge bg-light text-dark border">{% trans "grey" %}</span> {% trans "past" %} &middot;
+            {% trans "unshaded = available" %}
         </div>
     </div>
 </div>
@@ -48,24 +49,24 @@
         <div class="col-12"><div class="alert alert-danger">{{ form.non_field_errors }}</div></div>
     {% endif %}
     <div class="col-md-6">
-        <label class="form-label">Check-in</label>
+        <label class="form-label">{% trans "Check-in" %}</label>
         {{ form.check_in }}
     </div>
     <div class="col-md-6">
-        <label class="form-label">Check-out</label>
+        <label class="form-label">{% trans "Check-out" %}</label>
         {{ form.check_out }}
     </div>
     <div class="col-md-4">
-        <label class="form-label">Guests</label>
+        <label class="form-label">{% trans "Guests" %}</label>
         {{ form.guests }}
     </div>
     <div class="col-12">
-        <label class="form-label">Message to host (optional)</label>
+        <label class="form-label">{% trans "Message to host (optional)" %}</label>
         {{ form.message }}
     </div>
     <div class="col-12">
-        <button type="submit" class="btn btn-success"><i class="bi bi-calendar2-check"></i> Submit Booking Request</button>
-        <a href="{% url 'properties:detail' property.pk %}" class="btn btn-link">Cancel</a>
+        <button type="submit" class="btn btn-success"><i class="bi bi-calendar2-check"></i> {% trans "Submit Booking Request" %}</button>
+        <a href="{% url 'properties:detail' property.pk %}" class="btn btn-link">{% trans "Cancel" %}</a>
     </div>
 </form>
 {% endblock %}
