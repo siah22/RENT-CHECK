@@ -40,6 +40,37 @@ if RENDER_EXTERNAL_HOSTNAME:
     CSRF_TRUSTED_ORIGINS = [f"https://{RENDER_EXTERNAL_HOSTNAME}"]
 
 
+# Transactional email. Set EMAIL_HOST etc. (e.g. SendGrid, Mailgun, Amazon SES or
+# Resend SMTP) to enable real delivery; otherwise Django prints emails to the
+# server log via the console backend, which is a safe local default.
+SITE_BASE_URL = env("SITE_BASE_URL", default="https://rentcheck-tanzania.onrender.com")
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+if env("EMAIL_HOST", default=""):
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = env("EMAIL_HOST")
+    EMAIL_PORT = env.int("EMAIL_PORT", default=587)
+    EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
+    EMAIL_USE_SSL = env.bool("EMAIL_USE_SSL", default=False)
+    EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
+    EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
+EMAIL_TIMEOUT = 10
+DEFAULT_FROM_EMAIL = env(
+    "DEFAULT_FROM_EMAIL", default="RentCheck <no-reply@rentcheck-tanzania.onrender.com>"
+)
+
+
+# SMS alerts. SMS_PROVIDER: console (log only) | africastalking | twilio.
+# Any outbound send failure is logged and never breaks a request.
+SMS_PROVIDER = env("SMS_PROVIDER", default="console")
+SMS_API_KEY = env("SMS_API_KEY", default="")
+AT_SMS_USERNAME = env("AT_SMS_USERNAME", default="")
+AT_SMS_FROM = env("AT_SMS_FROM", default="")
+TWILIO_ACCOUNT_SID = env("TWILIO_ACCOUNT_SID", default="")
+TWILIO_AUTH_TOKEN = env("TWILIO_AUTH_TOKEN", default="")
+TWILIO_FROM_NUMBER = env("TWILIO_FROM_NUMBER", default="")
+
+
 # Application definition
 
 INSTALLED_APPS = [

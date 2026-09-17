@@ -13,6 +13,7 @@ A bilingual (English / Kiswahili) rental marketplace for the Tanzanian market. O
 - **Tenant screening scorecard** — owner fills a checklist, the app computes a 0–100 score and stores it with the application.
 - **Engagement tools** — booking requests, viewing scheduling, enquiries with owner responses, favorites, reviews, and an in-site conversation thread with notifications.
 - **Full English / Swahili internationalization** (`/sw/` prefix + EN/SH navbar toggle).
+- **Email & SMS alerts** — every in-app notification (new application, inquiry, viewing, booking, approval/rejection) also emails and SMSs the recipient, and password-reset emails work out of the box (see below).
 
 ## Tech stack
 
@@ -85,6 +86,16 @@ python manage.py makemigrations --check --dry-run
 ```
 
 `--check --dry-run` intentionally reports drift for the pre-existing `accounts/0003_alter_user_managers` migration — do not create or commit it.
+
+## Transactional email & SMS alerts
+
+Every in-app notification (new application, inquiry, viewing, booking, approval/rejection) also fans out to the recipient's **email and SMS** when contact details exist. Password-reset emails use the same channel.
+
+- **Email**: set `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_USE_TLS`, `EMAIL_HOST_USER`, `EMAIL_HOST_PASSWORD` and `DEFAULT_FROM_EMAIL` (works with SendGrid, Mailgun, SES, Resend). With no `EMAIL_HOST` the **console backend** prints emails to the server log (safe local/prod default).
+- **SMS**: set `SMS_PROVIDER` to `africastalking` or `twilio` and the matching `SMS_API_KEY` / `SMS_API_KEY`+`TWILIO_*` / `AT_SMS_*` keys. With `SMS_PROVIDER=console` (or no key) messages are logged instead of sent. Tanzanian numbers like `07XX XXX XXX` are normalized to `+2557XX...` automatically.
+- `SITE_BASE_URL` is used to build absolute links inside emails.
+- Delivery failures are logged and never break a request (all sends are non-blocking `try/except`).
+- Add any placeholder values as service env vars on Render (see `render.yaml`); `.env.example` documents them too.
 
 ## Deployment (Render)
 

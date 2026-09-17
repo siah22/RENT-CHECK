@@ -104,7 +104,8 @@ def send_inquiry(request, pk):
             inquiry.owner = property_obj.owner
             inquiry.property = property_obj
             inquiry.save()
-            notify(property_obj.owner, f"New inquiry on '{property_obj.title}'", property_obj.get_absolute_url())
+            notify(property_obj.owner, f"New inquiry on '{property_obj.title}'", property_obj.get_absolute_url(),
+                   subject="New inquiry")
             messages.success(request, _("Your inquiry has been sent to the owner/agent."))
             return redirect("properties:detail", pk=pk)
     else:
@@ -130,7 +131,7 @@ def respond_inquiry(request, pk):
             inquiry.responded_at = timezone.now()
             inquiry.save()
             notify(inquiry.tenant, f"Your inquiry on '{inquiry.property.title}' received a response",
-                   inquiry.property.get_absolute_url())
+                   inquiry.property.get_absolute_url(), subject="Inquiry response")
             messages.success(request, _("Response sent."))
             return redirect("engagement:inquiry_list")
     else:
@@ -149,7 +150,7 @@ def request_viewing(request, pk):
             viewing.property = property_obj
             viewing.save()
             notify(property_obj.owner, f"New viewing request for '{property_obj.title}'",
-                   property_obj.get_absolute_url())
+                   property_obj.get_absolute_url(), subject="New viewing request")
             messages.success(request, _("Viewing request submitted."))
             return redirect("properties:detail", pk=pk)
     else:
@@ -177,7 +178,7 @@ def update_viewing_status(request, pk, new_status):
     viewing.status = new_status
     viewing.save()
     notify(viewing.tenant, f"Your viewing request for '{viewing.property.title}' was {new_status.lower()}",
-           viewing.property.get_absolute_url())
+                   viewing.property.get_absolute_url(), subject="Viewing request update")
     messages.success(request, _("Viewing request %(status)s.") % {"status": new_status.lower()})
     return redirect("engagement:viewing_list")
 
@@ -198,7 +199,7 @@ def request_booking(request, pk):
             booking.property = property_obj
             booking.save()
             notify(property_obj.owner, f"New booking request for '{property_obj.title}'",
-                   property_obj.get_absolute_url())
+                   property_obj.get_absolute_url(), subject="New booking request")
             messages.success(request, _("Booking request submitted."))
             return redirect("properties:detail", pk=pk)
     else:
@@ -229,7 +230,7 @@ def update_booking_status(request, pk, new_status):
     booking.status = new_status
     booking.save()
     notify(booking.tenant, f"Your booking for '{booking.property.title}' was {new_status.lower()}",
-           booking.property.get_absolute_url())
+           booking.property.get_absolute_url(), subject=f"Booking {new_status.lower()}")
     messages.success(request, _("Booking %(status)s.") % {"status": new_status.lower()})
     return redirect("engagement:booking_list")
 
@@ -272,6 +273,7 @@ def apply_to_property(request, pk):
                 property_obj.owner,
                 f"New rental application from {application.full_name} for '{property_obj.title}'",
                 reverse("engagement:application_detail", args=[application.pk]),
+                subject="New rental application",
             )
             messages.success(request, _("Your application has been submitted to the owner/agent."))
             return redirect("engagement:application_detail", pk=application.pk)
@@ -332,7 +334,8 @@ def update_application_status(request, pk, new_status):
     application.save()
     verb = "approved" if new_status == Application.Status.APPROVED else "rejected"
     notify(application.tenant, f"Your application for '{application.property.title}' was {verb}.",
-           reverse("engagement:application_detail", args=[application.pk]))
+           reverse("engagement:application_detail", args=[application.pk]),
+           subject=f"Application {verb}")
     messages.success(request, _("Application %(verb)s.") % {"verb": verb})
     return redirect("engagement:application_detail", pk=pk)
 
