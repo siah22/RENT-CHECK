@@ -402,8 +402,15 @@ def notification_list(request):
     notifications = Notification.objects.filter(user=request.user)
     unread_ids = list(notifications.filter(is_read=False).values_list("id", flat=True))
     notifications.filter(is_read=False).update(is_read=True)
+    # Each notification is delivered exactly once: only the notifications that were
+    # unread at page load are shown with this response, then they disappear for good.
+    fresh = (
+        Notification.objects.filter(user=request.user, id__in=unread_ids)
+        if unread_ids
+        else Notification.objects.none()
+    )
     return render(request, "engagement/notification_list.html", {
-        "notifications": notifications,
+        "notifications": fresh,
         "unread_count": len(unread_ids),
         "unread_ids": unread_ids,
     })

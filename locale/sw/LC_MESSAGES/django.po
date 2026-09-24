@@ -1537,7 +1537,6 @@ msgid "You already have a pending application for this listing."
 msgstr "Tayari una ombi linalosubiri kwa tangazo hili."
 
 #: .\engagement\views.py:260
-#, fuzzy
 #| msgid "Applicant confirms they have read and agree to the tenancy rules."
 msgid "You must read and agree to the tenancy rules before applying."
 msgstr "Lazima usome na ukubaliane na kanuni za ukodishaji kabla ya kuomba."
@@ -2257,3 +2256,11 @@ msgstr "Umekumbuka nenosiri lako?"
 #: .\templates\registration\password_reset_form.html:38
 msgid "Back to login"
 msgstr "Rudi kwenye kuingia"
+
+msgid "These just arrived. They disappear once you have seen them."
+msgstr "Hizi zimefika hivi karibuni. Zinatoweka utakapoziona."
+
+msgid "{{ n }} new"
+msgid_plural "{{ n }} new"
+msgstr[0] "{{ n }} mpya"
+msgstr[1] "{{ n }} mpya"

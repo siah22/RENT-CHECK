@@ -11,7 +11,7 @@ A bilingual (English / Kiswahili) rental marketplace for the Tanzanian market. O
   - Pending duplicate applications are blocked; rejected applicants can re-apply; applying to your own listing is blocked.
 - **Owner application pipeline** — view, approve, reject (with a decision note), and mark a property as rented (rented properties reject new applications and hide from browse).
 - **Tenant screening scorecard** — owner fills a checklist, the app computes a 0–100 score and stores it with the application.
-- **Engagement tools** — booking requests, viewing scheduling, enquiries with owner responses, favorites, reviews, and an in-site conversation thread with notifications.
+- **Engagement tools** — booking requests, viewing scheduling, enquiries with owner responses, favorites, reviews, and an in-site conversation thread with notifications. Notifications are delivered once: they fade out after you view them and never reappear.
 - **Full English / Swahili internationalization** (`/sw/` prefix + EN/SH navbar toggle).
 - **Email & SMS alerts** — every in-app notification (new application, inquiry, viewing, booking, approval/rejection) also emails and SMSs the recipient, and password-reset emails work out of the box (see below).
 

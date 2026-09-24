@@ -7,20 +7,21 @@
         <h2 class="mb-0"><i class="bi bi-bell-fill"></i> {% trans "Notifications" %}</h2>
         <small class="text-muted">{% trans "Updates about your listings, messages, and bookings" %}</small>
     </div>
-    <div class="d-flex align-items-center gap-2">
+    {% if notifications %}
         <span class="badge bg-success-subtle text-success border border-success-subtle fw-semibold px-3 py-2">
-            <i class="bi bi-bell me-1"></i>{% blocktrans with count=unread_count %}{{ count }} unread{% endblocktrans %}
+            <i class="bi bi-bell me-1"></i>{% blocktrans count n=notifications|length %}{{ n }} new{% plural %}{{ n }} new{% endblocktrans %}
         </span>
-        <span class="badge bg-light text-secondary border fw-semibold px-3 py-2">
-            {% blocktrans with total=notifications|length %}{{ total }} total{% endblocktrans %}
-        </span>
-    </div>
+    {% endif %}
 </div>
 
 {% if notifications %}
-    <div class="list-group shadow-sm rounded-3 overflow-hidden">
+    <div class="alert alert-info d-flex align-items-center gap-2 rounded-3 shadow-sm">
+        <i class="bi bi-hourglass-split"></i>
+        <span>{% trans "These just arrived. They disappear once you have seen them." %}</span>
+    </div>
+    <div id="notif-list" class="list-group shadow-sm rounded-3 overflow-hidden">
         {% for notification in notifications %}
-            <div class="list-group-item d-flex align-items-center gap-3 py-3 {% if notification.pk in unread_ids %}notif-unread{% endif %}">
+            <div class="list-group-item notif-item d-flex align-items-center gap-3 py-3 {% if notification.pk in unread_ids %}notif-unread{% endif %}">
                 <div class="notif-icon notif-icon-{{ notification.icon_tone }}">
                     <i class="bi {{ notification.icon_class }}"></i>
                 </div>
@@ -46,15 +47,34 @@
             </div>
         {% endfor %}
     </div>
-{% else %}
-    <div class="card border-0 shadow-sm rounded-4">
-        <div class="card-body text-center py-5">
-            <div class="avatar-circle mx-auto mb-3 bg-success-subtle text-success" style="width: 72px; height: 72px; font-size: 2rem;">
-                <i class="bi bi-bell-slash"></i>
-            </div>
-            <h4 class="fw-bold mb-1">{% trans "All Caught Up" %}</h4>
-            <p class="text-muted small mb-0">{% trans "You have no notifications right now. New activity on your listings, messages, and bookings will appear here." %}</p>
-        </div>
-    </div>
+    <style>
+        .notif-item { transition: opacity .7s ease, transform .7s ease, max-height .7s ease; }
+        .notif-dying { opacity: 0 !important; transform: translateX(24px); }
+    </style>
+    <script>
+        (function () {
+            var items = Array.prototype.slice.call(document.querySelectorAll('.notif-item'));
+            if (!items.length) return;
+            window.setTimeout(function () {
+                items.forEach(function (el) { el.classList.add('notif-dying'); });
+                window.setTimeout(function () {
+                    var holder = document.getElementById('notif-list');
+                    if (holder) holder.remove();
+                    var caughtUp = document.getElementById('notif-caught-up');
+                    if (caughtUp) caughtUp.classList.remove('d-none');
+                }, 800);
+            }, 4000);
+        })();
+    </script>
 {% endif %}
+
+<div id="notif-caught-up" class="card border-0 shadow-sm rounded-4 {% if notifications %}d-none{% endif %}">
+    <div class="card-body text-center py-5">
+        <div class="avatar-circle mx-auto mb-3 bg-success-subtle text-success" style="width: 72px; height: 72px; font-size: 2rem;">
+            <i class="bi bi-bell-slash"></i>
+        </div>
+        <h4 class="fw-bold mb-1">{% trans "All Caught Up" %}</h4>
+        <p class="text-muted small mb-0">{% trans "You have no notifications right now. New activity on your listings, messages, and bookings will appear here." %}</p>
+    </div>
+</div>
 {% endblock %}
