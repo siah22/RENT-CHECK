@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Payment — RentCheck Tanzania" %}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <a href="{% url 'payments:list' %}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
+            <h2 class="mb-0"><i class="bi bi-credit-card-2-front-fill"></i> {% trans "Payment" %}</h2>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 text-center">
+                {% if payment.status == 'COMPLETED' %}
+                    <div class="avatar-circle mx-auto mb-3 bg-success-subtle text-success" style="width: 80px; height: 80px; font-size: 2.3rem;">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <h3 class="fw-bold mb-1">{% trans "Payment completed" %}</h3>
+                    <p class="text-muted small mb-0">{% trans "Thank you. Your payment has been received." %}</p>
+                {% elif payment.status == 'PENDING' %}
+                    <div class="avatar-circle mx-auto mb-3 bg-warning-subtle text-warning" style="width: 80px; height: 80px; font-size: 2.3rem;">
+                        <i class="bi bi-hourglass-split"></i>
+                    </div>
+                    <h3 class="fw-bold mb-1">{% trans "Waiting for approval" %}</h3>
+                    <p class="text-muted small mb-0">
+                        {% trans "We sent an M-Pesa prompt to" %}
+                        <strong>{{ payment.phone }}</strong>.
+                        {% trans "Enter your M-Pesa PIN to approve, then check the status below." %}
+                    </p>
+                {% elif payment.status == 'REVERSED' %}
+                    <div class="avatar-circle mx-auto mb-3 bg-secondary-subtle text-secondary" style="width: 80px; height: 80px; font-size: 2.3rem;">
+                        <i class="bi bi-arrow-counterclockwise"></i>
+                    </div>
+                    <h3 class="fw-bold mb-1">{% trans "Payment reversed" %}</h3>
+                {% else %}
+                    <div class="avatar-circle mx-auto mb-3 bg-danger-subtle text-danger" style="width: 80px; height: 80px; font-size: 2.3rem;">
+                        <i class="bi bi-x-circle-fill"></i>
+                    </div>
+                    <h3 class="fw-bold mb-1">{% trans "Payment failed" %}</h3>
+                    <p class="text-muted small mb-0">{% trans "Check the phone number and try again." %}</p>
+                {% endif %}
+
+                <hr class="my-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <strong>{{ payment.reference }}</strong>
+                    <h4 class="price-tag fw-bold mb-0">TZS {{ payment.amount|floatformat:0 }}</h4>
+                </div>
+                <div class="d-flex justify-content-between text-muted small mt-2">
+                    <span>{{ payment.get_purpose_display }}</span>
+                    <span>{{ payment.created_at|date:"M d, Y H:i" }}</span>
+                </div>
+                <div class="d-flex justify-content-between text-muted small mt-1">
+                    <span>{% trans "Status" %}</span>
+                    <span class="fw-semibold">{{ payment.get_status_display }}</span>
+                </div>
+
+                {% if payment.status == 'PENDING' %}
+                    <form method="post" class="mt-4">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success w-100 py-2 fw-semibold">
+                            <i class="bi bi-arrow-repeat me-1"></i>{% trans "Check payment status" %}
+                        </button>
+                    </form>
+                    <small class="text-muted d-block text-center mt-2">
+                        {% trans "Payment is confirmed automatically once approved on your phone." %}
+                    </small>
+                {% else %}
+                    <a href="{% url 'payments:new' %}" class="btn btn-success w-100 mt-4 py-2 fw-semibold">
+                        <i class="bi bi-plus-lg me-1"></i>{% trans "Make another payment" %}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

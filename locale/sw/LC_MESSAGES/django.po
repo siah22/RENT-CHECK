@@ -2264,3 +2264,129 @@ msgid "{{ n }} new"
 msgid_plural "{{ n }} new"
 msgstr[0] "{{ n }} mpya"
 msgstr[1] "{{ n }} mpya"
+
+msgid "Payments"
+msgstr "Malipo"
+
+msgid "Payments — RentCheck Tanzania"
+msgstr "Malipo — RentCheck Tanzania"
+
+msgid "Security deposits, booking deposits, and service packages paid by M-Pesa"
+msgstr "Amana za usalama, amana za kuhifadhi, na vifurushi vya huduma vinavyolipwa kwa M-Pesa"
+
+msgid "Make a payment"
+msgstr "Fanya malipo"
+
+msgid "Reference"
+msgstr "Rejea"
+
+msgid "Amount"
+msgstr "Kiasi"
+
+msgid "Purpose"
+msgstr "Madhumuni"
+
+msgid "Completed"
+msgstr "Imekamilika"
+
+msgid "Reversed"
+msgstr "Imerejeshwa"
+
+msgid "Failed"
+msgstr "Imeshindikana"
+
+msgid "No payments yet"
+msgstr "Hakuna malipo bado"
+
+msgid "Pay a security deposit, advance rent, or a booking deposit securely with M-Pesa."
+msgstr "Lipa amana ya usalama, kodi ya mapema, au amana ya kuhifadhi kwa usalama kupitia M-Pesa."
+
+msgid "Make an M-Pesa payment"
+msgstr "Fanya malipo kwa M-Pesa"
+
+msgid "You will get an M-Pesa prompt on your phone. Confirm it to authorize the payment."
+msgstr "Utapokea maombi ya M-Pesa kwenye simu yako. Thibitisha ili uidhinishe malipo."
+
+msgid "Request payment via M-Pesa"
+msgstr "Omba malipo kwa M-Pesa"
+
+msgid "Payment"
+msgstr "Malipo"
+
+msgid "Payment completed"
+msgstr "Malipo yamekamilika"
+
+msgid "Thank you. Your payment has been received."
+msgstr "Asante. Malipo yako yamepokelewa."
+
+msgid "Waiting for approval"
+msgstr "Kusubiri idhini"
+
+msgid "We sent an M-Pesa prompt to"
+msgstr "Tumetuma maombi ya M-Pesa kwa"
+
+msgid "Enter your M-Pesa PIN to approve, then check the status below."
+msgstr "Ingiza PIN yako ya M-Pesa kuidhinisha, kisha angalia hali hapa chini."
+
+msgid "Payment reversed"
+msgstr "Malipo yamerejeshwa"
+
+msgid "Payment failed"
+msgstr "Malipo yameshindikana"
+
+msgid "Check the phone number and try again."
+msgstr "Angalia namba ya simu kisha ujaribu tena."
+
+msgid "Check payment status"
+msgstr "Angalia hali ya malipo"
+
+msgid "Payment is confirmed automatically once approved on your phone."
+msgstr "Malipo yanathibitishwa kiotomatiki mara baada ya kuidhinishwa kwenye simu yako."
+
+msgid "Make another payment"
+msgstr "Fanya malipo mengine"
+
+msgid "Security deposit / advance rent"
+msgstr "Amana ya usalama / kodi ya mapema"
+
+msgid "Booking deposit"
+msgstr "Amana ya kuhifadhi"
+
+msgid "Listing or service package"
+msgstr "Kifurushi cha matangazo au huduma"
+
+msgid "What this payment is for"
+msgstr "Malipo haya ni ya kitu gani"
+
+msgid "Amount (TZS)"
+msgstr "Kiasi (TZS)"
+
+msgid "Minimum 100 TZS"
+msgstr "Kiwango cha chini ni TZS 100"
+
+msgid "M-Pesa phone number"
+msgstr "Namba ya simu ya M-Pesa"
+
+msgid "The M-Pesa number that will approve this payment"
+msgstr "Namba ya M-Pesa itakayoidhinisha malipo haya"
+
+msgid "Details (optional)"
+msgstr "Maelezo (si lazima)"
+
+msgid "e.g. Security deposit — 2-bed flat #12"
+msgstr "mf. Amana ya usalama — gorofa ya vyumba viwili #12"
+
+msgid "Enter a Tanzanian M-Pesa number, e.g. 0712345678."
+msgstr "Ingiza namba ya M-Pesa ya Tanzania, mf. 0712345678."
+
+msgid "Payment completed successfully."
+msgstr "Malipo yamekamilika kwa mafanikio."
+
+msgid "M-Pesa could not process this payment. Check the number and try again."
+msgstr "M-Pesa haikuweza kusindika malipo haya. Angalia namba kisha ujaribu tena."
+
+msgid "Payment request sent. Approve it on your phone."
+msgstr "Maombi ya malipo yametumwa. Yaidhinishe kwenye simu yako."
+
+msgid "Payment status refreshed."
+msgstr "Hali ya malipo imesasishwa."

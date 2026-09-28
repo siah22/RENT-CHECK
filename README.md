@@ -14,6 +14,7 @@ A bilingual (English / Kiswahili) rental marketplace for the Tanzanian market. O
 - **Engagement tools** — booking requests, viewing scheduling, enquiries with owner responses, favorites, reviews, and an in-site conversation thread with notifications. Notifications are delivered once: they fade out after you view them and never reappear.
 - **Full English / Swahili internationalization** (`/sw/` prefix + EN/SH navbar toggle).
 - **Email & SMS alerts** — every in-app notification (new application, inquiry, viewing, booking, approval/rejection) also emails and SMSs the recipient, and password-reset emails work out of the box (see below).
+- **M-Pesa payments** — tenants pay security deposits, advance rent, or booking deposits by M-Pesa (Vodacom Open API), confirmed via callback (see below).
 
 ## Tech stack
 
@@ -96,6 +97,17 @@ Every in-app notification (new application, inquiry, viewing, booking, approval/
 - `SITE_BASE_URL` is used to build absolute links inside emails.
 - Delivery failures are logged and never break a request (all sends are non-blocking `try/except`).
 - Add any placeholder values as service env vars on Render (see `render.yaml`); `.env.example` documents them too.
+
+## M-Pesa payments
+
+Tenants initiate payments from the **Payments** page (`/payments/`), choosing an amount, purpose (security deposit / advance rent, booking deposit, or service package), and their M-Pesa number.
+
+- Provider is the **Vodacom M-Pesa Open API** (RSA-encrypted API key → session → C2B single-stage push to the customer's phone).
+- While `MPESA_API_KEY` is empty the app runs in **simulated mode**: payments complete instantly and are marked `SIMULATED` (safe for develop/new-launch and tests).
+- When a customer approves on their phone, M-Pesa POSTs a confirmation to
+  `https://<host>/payments/callback/<MPESA_CALLBACK_TOKEN>/` (no CSRF, outside locale prefixes); the app reconciles the payment to **Completed**.
+- The status page has a **Check payment status** button that queries `queryTransactionStatus`.
+- Set the env vars in `.env.example` / `render.yaml`; register the callback URL with your M-Pesa application once live.
 
 ## Deployment (Render)
 

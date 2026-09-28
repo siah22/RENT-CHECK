@@ -116,6 +116,11 @@
                         {% include '_language_switch.html' %}
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link position-relative" href="{% url 'payments:list' %}" title="{% trans 'Payments' %}">
+                            <i class="bi bi-credit-card-fill"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link position-relative" href="{% url 'engagement:notification_list' %}" title="{% trans 'Notifications' %}">
                             <i class="bi bi-bell-fill"></i>
                             {% if unread_notifications_count %}
@@ -230,6 +235,9 @@
         </a>
         <a href="{% url 'accounts:profile' %}" class="{% if request.resolver_match.view_name == 'accounts:profile' %}active{% endif %}">
             <i class="bi bi-person-circle"></i> {% trans "Profile" %}
+        </a>
+        <a href="{% url 'payments:list' %}" class="{% if request.resolver_match.view_name == 'payments:list' %}active{% endif %}">
+            <i class="bi bi-credit-card-fill"></i> {% trans "Payments" %}
         </a>
     {% endif %}
 </nav>

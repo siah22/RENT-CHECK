@@ -32,3 +32,13 @@ services:
         sync: false
       - key: DEFAULT_FROM_EMAIL
         sync: false
+      - key: MPESA_ENVIRONMENT
+        value: "sandbox"
+      - key: MPESA_API_KEY
+        sync: false
+      - key: MPESA_PUBLIC_KEY
+        sync: false
+      - key: MPESA_SERVICE_PROVIDER_CODE
+        sync: false
+      - key: MPESA_CALLBACK_TOKEN
+        sync: false

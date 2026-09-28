@@ -71,6 +71,21 @@ TWILIO_AUTH_TOKEN = env("TWILIO_AUTH_TOKEN", default="")
 TWILIO_FROM_NUMBER = env("TWILIO_FROM_NUMBER", default="")
 
 
+# M-Pesa (Vodacom Tanzania Open API) payments. Leave MPESA_API_KEY empty to run
+# in simulated mode (payments complete instantly, nothing sent to a phone).
+MPESA_API_KEY = env("MPESA_API_KEY", default="")
+MPESA_PUBLIC_KEY = env("MPESA_PUBLIC_KEY", default="")
+MPESA_ENVIRONMENT = env("MPESA_ENVIRONMENT", default="sandbox")  # sandbox | openapi
+MPESA_BASE_URL = env("MPESA_BASE_URL", default="https://openapi.m-pesa.com")
+MPESA_MARKET = env("MPESA_MARKET", default="vodacomTZN")
+MPESA_COUNTRY = env("MPESA_COUNTRY", default="TZN")
+MPESA_CURRENCY = env("MPESA_CURRENCY", default="TZS")
+MPESA_SERVICE_PROVIDER_CODE = env("MPESA_SERVICE_PROVIDER_CODE", default="000000")
+MPESA_ORIGIN = env("MPESA_ORIGIN", default="*")
+MPESA_TIMEOUT = env.int("MPESA_TIMEOUT", default=20)
+MPESA_CALLBACK_TOKEN = env("MPESA_CALLBACK_TOKEN", default="")
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -86,6 +101,7 @@ INSTALLED_APPS = [
     'accounts',
     'properties',
     'engagement',
+    'payments',
 ]
 
 MIDDLEWARE = [

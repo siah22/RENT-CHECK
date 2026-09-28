@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}{% trans "Make a payment — RentCheck Tanzania" %}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-md-9">
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <a href="{% url 'payments:list' %}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i></a>
+            <h2 class="mb-0"><i class="bi bi-credit-card-2-front-fill"></i> {% trans "Make an M-Pesa payment" %}</h2>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4 mb-3">
+            <div class="card-body">
+                <p class="text-muted small mb-0">
+                    <i class="bi bi-phone me-1"></i>
+                    {% trans "You will get an M-Pesa prompt on your phone. Confirm it to authorize the payment." %}
+                </p>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger py-2">{{ form.non_field_errors }}</div>
+                    {% endif %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-success w-100 py-2 fw-semibold">
+                        <i class="bi bi-phone-fill me-1"></i>{% trans "Request payment via M-Pesa" %}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
